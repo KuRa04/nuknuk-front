@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from "react"
+import React, { useState, useEffect, useRef, useCallback } from "react"
 import axios from 'axios'
 import {AppBar, Tabs, Tab, Toolbar, Drawer, Box, List, ListItem, Avatar, createTheme, ThemeProvider} from '@material-ui/core'
 import LogoWhite from '../images/logo_white.png'
@@ -12,7 +12,6 @@ import {
   TwitterShareButton,
   TwitterIcon
 } from 'react-share'
-import { PortableWifiOffSharp } from "@material-ui/icons";
 import "../styles/pages/movies.scss";
 
 const Movies = (props) => {
@@ -20,40 +19,35 @@ const Movies = (props) => {
   const [movies, setMovie] = useState([])
   const [isSideMenu, openSideMenu] = useState(false)
   const [tabValue, setTabValue] = useState(1)
-  const [purchaseCount, setPurchaseCount] = useState(props.movie_purchase_count)
 
   // dbのパス
   // const db_url = Rails.env === 'development' ? DB_LOCAL_URL : DB_PRODUCTION_URL
   const db_url = props.db_url
-  const ip_address = props.ip_address
 
-  const HTMLComponent = ({ htmlString }) => {
-    const divRef = useRef();
+  // const data = useCallback( async () => {
+  // let array = [];
+  //  await axios.get(db_url + '/movies').then((res) => {
+  //   console.log(res.data.movies)
+  //   array = res.data.movies.slice(0,10);
+  //   console.log(array)
+  //     // setMovie(array)
+  //   }).catch((res) => {
+  //     console.log(res)
+  //   })
+  //   console.log(array)
+  //   return array;
+  // }, []);
 
-    useLayoutEffect(() => {
-      if (!divRef.current) {
-        return;
-      }
-
-      const fragment = document
-        .createRange()
-        .createContextualFragment(htmlString);
-
-      divRef.current.appendChild(fragment);
-    }, [htmlString]);
-
-    return <div ref={divRef} />;
-  };
-
-  useEffect(() => {
-    axios.get(db_url + '/movies').then((res) => {
+  useEffect( async () => {
+    await axios.get(db_url + '/movies').then((res) => {
       console.log(res.data.movies)
       const array = res.data.movies.slice(0,10);
+      console.log(array)
       setMovie(array)
-    }).catch((res) => {
-      console.log(res)
-    })
-  }, [])
+      }).catch((res) => {
+        console.log(res)
+      })
+  }, []);
 
   // 0人気 1新着
   const tabsChange = (value) => {
