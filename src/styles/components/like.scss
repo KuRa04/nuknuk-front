@@ -1,0 +1,13 @@
+.wrapper-favorites {
+  position: absolute;
+  right: 0px;
+  bottom: 115px;
+  display:flex;
+  flex-flow: column;
+  z-index: 9999;
+}
+
+.favorites-count {
+  color: white;
+  text-align: center;
+}

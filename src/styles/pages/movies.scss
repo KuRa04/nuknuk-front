@@ -1,0 +1,70 @@
+// Place all the styles related to the movies controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+body {
+  margin: 0;
+}
+
+.movie-list {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.wrapper-movie {
+  position: relative;
+}
+
+.movie-title {
+  position: absolute;
+  left: 0;
+  right:0;
+  bottom: 120px; /*コントローラー分下部に余白を*/
+  width: 240px;
+  font-size: 16px;
+  color: white;
+  white-space: nowrap;  
+  overflow: hidden;  
+  text-overflow: ellipsis;  
+  text-align: center;
+  text-overflow: ellipsis; 
+  padding: 0 10px 10px;
+}
+
+.video-btn {
+  content: "";
+  position: absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom: 80px; /*コントローラー分下部に余白を*/
+  cursor: pointer;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 9999; // サイドバーが1200のため
+}
+
+.menu-icon {
+  margin: 0 0 0 10px;
+  width: 50px;
+  height: 50px;
+}
+
+.share-btn {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.sidebar {
+  display: flex;
+  align-items: flex-end;
+}
+
