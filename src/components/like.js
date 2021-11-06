@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from "react"
-import {Button, AppBar, Tabs, Tab, Toolbar, Drawer, Box, List, ListItem, Avatar, createTheme, ThemeProvider} from '@material-ui/core'
+import React, { useState, useEffect } from "react"
 import axios from 'axios'
 import TitleLogo from '../images/title_logo.png'
 import FavoriteImg from '../images/favorite.png'
@@ -46,11 +45,11 @@ const Likes = (props) => {
 
   useEffect(() => {
     setLiked(isLiked)
-  }, [count])
+  }, [isLiked])
 
   return (
     <div className="wrapper-favorites">
-      <img onClick={(e) => postFavorites(props.movie, e)} width="50" height="50" src={isLiked ? TitleLogo : FavoriteImg}  />
+      <img onClick={(e) => postFavorites(props.movie, e)} alt="" width="50" height="50" src={isLiked ? TitleLogo : FavoriteImg}  />
       <span className="favorites-count">{count}</span>
     </div>
   )
