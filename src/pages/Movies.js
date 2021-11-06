@@ -47,7 +47,7 @@ const Movies = (props) => {
       }).catch((res) => {
         console.log(res)
       })
-  }, [movies]);
+  }, [db_url]);
 
   // 0人気 1新着
   const tabsChange = (value) => {
