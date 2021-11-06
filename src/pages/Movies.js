@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react"
+import React, { useState, useEffect } from "react"
 import axios from 'axios'
 import {AppBar, Tabs, Tab, Toolbar, Drawer, Box, List, ListItem, Avatar, createTheme, ThemeProvider} from '@material-ui/core'
 import LogoWhite from '../images/logo_white.png'
@@ -38,8 +38,8 @@ const Movies = (props) => {
   //   return array;
   // }, []);
 
-  useEffect( async () => {
-    await axios.get(db_url + '/movies').then((res) => {
+  useEffect( () => {
+     axios.get(db_url + '/movies').then((res) => {
       console.log(res.data.movies)
       const array = res.data.movies.slice(0,10);
       console.log(array)
@@ -70,15 +70,15 @@ const Movies = (props) => {
     }
   }
 
-  const switchStopPlaying = (index) => {
-    console.log("aaa")
-    let video = document.getElementById("movie-list-" + index);
-    if(video.paused) {
-      video.play()
-    }else {
-      video.pause();
-    }
-  }
+  // const switchStopPlaying = (index) => {
+  //   console.log("aaa")
+  //   let video = document.getElementById("movie-list-" + index);
+  //   if(video.paused) {
+  //     video.play()
+  //   }else {
+  //     video.pause();
+  //   }
+  // }
 
   const postShare = (movieId, channelName) => {
     console.log(movieId)
@@ -159,7 +159,7 @@ const Movies = (props) => {
   }
 
   const InviewComponent =  (props) => {
-    let video = document.getElementById("movie-list-" + props.index);
+    // let video = document.getElementById("movie-list-" + props.index);
 
     return (
       <MovieComponent movie={props.movie} movieTitle={props.title} index={props.index} movieImage={props.movieImage} movieUrl={props.movieUrl} affiliateLink={props.affiliateLink}/>
@@ -194,7 +194,7 @@ const Movies = (props) => {
             position="fixed"
           >
             <Toolbar>
-              <div><img src={LogoWhite} /></div>
+              <div><img src={LogoWhite} alt=""/></div>
             </Toolbar>
             <Tabs
               value={tabValue} // 0人気 1新着
