@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react"
 import { Button } from '@material-ui/core'
 import axios from 'axios'
 import RightArrowImg from '../images/right_arrow.png'
+import "../styles/components/purchase.scss";
+
 
 const Purchases = (props) => {
 

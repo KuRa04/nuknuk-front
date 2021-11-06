@@ -3,6 +3,7 @@ import {Button, AppBar, Tabs, Tab, Toolbar, Drawer, Box, List, ListItem, Avatar,
 import axios from 'axios'
 import TitleLogo from '../images/title_logo.png'
 import FavoriteImg from '../images/favorite.png'
+import "../styles/components/like.scss";
 
 const Likes = (props) => {
   const [count, setCount] = useState(props.movie_favorites_count)

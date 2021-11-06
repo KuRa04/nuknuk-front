@@ -13,6 +13,7 @@ import {
   TwitterIcon
 } from 'react-share'
 import { PortableWifiOffSharp } from "@material-ui/icons";
+import "../styles/pages/movies.scss";
 
 const Movies = (props) => {
   // 状態変数
@@ -47,7 +48,8 @@ const Movies = (props) => {
   useEffect(() => {
     axios.get(db_url + '/movies').then((res) => {
       console.log(res.data.movies)
-      setMovie(res.data.movies)
+      const array = res.data.movies.slice(0,10);
+      setMovie(array)
     }).catch((res) => {
       console.log(res)
     })
