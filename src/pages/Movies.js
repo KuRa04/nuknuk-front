@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react"
 import axios from 'axios'
-import {AppBar, Tabs, Tab, Toolbar, Drawer, Box, List, ListItem, Avatar, createTheme, ThemeProvider} from '@material-ui/core'
+import {AppBar, Tabs, Tab, Toolbar, Drawer, Box, List, ListItem, Avatar, createTheme, ThemeProvider, Button} from '@material-ui/core'
 import LogoWhite from '../images/logo_white.png'
+import ShareButton from '../images/share.png'
+import CopyLink from '../images/copy_link.svg'
 import SideImageWhite from '../images/side_menu.png'
 import SideImageBlack from '../images/side_menu_black.png'
 import Likes from '../components/like'
 import Purchases from '../components/purchase'
 import {
-  FacebookShareButton,
-  FacebookIcon,
+  LineShareButton,
+  LineIcon,
   TwitterShareButton,
   TwitterIcon
 } from 'react-share'
@@ -19,24 +21,12 @@ const Movies = (props) => {
   const [movies, setMovie] = useState([])
   const [isSideMenu, openSideMenu] = useState(false)
   const [tabValue, setTabValue] = useState(1)
+  const [shareDrawer, setShareDrawer] = useState(false)
+  const [shareMovieId, setShareMovieId] = useState(0)
 
   // dbのパス
   // const db_url = Rails.env === 'development' ? DB_LOCAL_URL : DB_PRODUCTION_URL
   const db_url = props.db_url
-
-  // const data = useCallback( async () => {
-  // let array = [];
-  //  await axios.get(db_url + '/movies').then((res) => {
-  //   console.log(res.data.movies)
-  //   array = res.data.movies.slice(0,10);
-  //   console.log(array)
-  //     // setMovie(array)
-  //   }).catch((res) => {
-  //     console.log(res)
-  //   })
-  //   console.log(array)
-  //   return array;
-  // }, []);
 
   useEffect( () => {
      axios.get(db_url + '/movies').then((res) => {
@@ -80,7 +70,8 @@ const Movies = (props) => {
   //   }
   // }
 
-  const postShare = (movieId, channelName) => {
+  const postShare = (channelName) => {
+    const movieId = shareMovieId
     console.log(movieId)
     console.log(channelName)
     axios.post(db_url + '/shares', {
@@ -97,19 +88,10 @@ const Movies = (props) => {
     return props.ip_address && movie_ip_address.includes(props.ip_address)
   }
 
-  // const HTMLComponent = ({ htmlString }) => {
-  //   const divRef = useRef();
-
-  //   useLayoutEffect(() => {
-  //     if (!divRef.current) {
-  //       return;
-  //     }
-  //     else
-  //     {
-  //       video.pause();
-  //       playPauseStatus = "pause"
-  //     }
-  // }
+  const toggleShareDrawer = (movie_id) => {
+    setShareMovieId(movie_id)
+    setShareDrawer(!shareDrawer)
+  }
 
   const MovieComponent = (props) => {
 
@@ -128,17 +110,13 @@ const Movies = (props) => {
         >
         </video>
         <p className="movie-title">{props.movieTitle}</p>
-        <Purchases 
+        <Purchases
           movie={props.movie}
           affiliateLink={props.affiliateLink}
           db_url={db_url}
           movie_purchases_count={props.movie_purchases_count}
         />
         <div className="video-btn">
-          {/* <div className="wrapper-favorites">
-            <img onClick={(e) => postFavorites(props.movie, e)} width="50" height="50" src={toggleFavorites(props.movie.favorite_ip_address) ? TitleLogo : FavoriteImg}  />
-            <span className="favorites-count">{movie.favorites_count}</span>
-          </div> */}
           <Likes
             movie={props.movie}
             db_url={db_url}
@@ -146,12 +124,9 @@ const Movies = (props) => {
             movie_favorites_count={props.movie.favorites_count}
           />
           <div className="share-btn">
-            <TwitterShareButton onClick={() => postShare(props.movie.id, 1)} url={"https://www.google.com/?hl=ja"}>
-                <TwitterIcon size={50} round />
-            </TwitterShareButton>
-            <FacebookShareButton onClick={() => postShare(props.movie.id, 2)} url={"https://www.google.com/?hl=ja"}>
-                <FacebookIcon size={50} round />
-            </FacebookShareButton>
+            {/* シェアボタンを表示、クリックで各SNSのボタンが表示される */}
+            <img alt="" width="50" height="50" src={ShareButton} onClick={() => toggleShareDrawer(props.movie.id)} />
+            <span className="favorites-count">{10}</span>
           </div>
         </div>
       </div>
@@ -214,9 +189,39 @@ const Movies = (props) => {
               </div>
             })
           }
-        {/* <HTMLComponent className="jtw6poe" htmlString={"<script id=\"mgs_Widget_affiliate\" type=\"text/javascript\" charset=\"utf-8\" src=\"https://static.mgstage.com/mgs/script/common/mgs_Widget_affiliate.js?c=CENI825OEAJYTYAC2ZYLTSZAM3&t=text&o=f&b=t&s=%E3%81%8A%E5%A4%A9%E6%B0%97%E3%82%AD%E3%83%A3%E3%82%B9%E3%82%BF%E3%83%BC%20%E7%BE%8E%E5%92%B2%E3%81%AA%E3%81%AA(23)%20AV%E3%83%87%E3%83%93%E3%83%A5%E3%83%BC%20%E3%83%8D%E3%83%83%E3%83%88%E9%85%8D%E4%BF%A1%E3%81%AE%E3%81%8A%E5%A4%A9%E6%B0%97%E3%82%AD%E3%83%A3%E3%82%B9%E3%82%BF%E3%83%BC%E3%81%8C%E3%83%89%E3%82%AD%E3%83%89%E3%82%AD%E5%88%9D%E6%92%AE%E3%82%8ASEX%E3%81%A7%E5%A4%A7%E8%88%88%E5%A5%AE%EF%BC%81%EF%BC%81&p=DIC-078&from=ppv&class=jtw6poe\"></script>"} />
-        <span className="jtw6poe"></span> */}
 
+        {/* シェア */}
+        <Drawer className="share-drawer-box" anchor='bottom' open={shareDrawer} onClick={() => setShareDrawer(!shareDrawer)} >
+          <div className="share-title">シェア：</div>
+          <div className="share-drawer">
+            <div>
+              <Avatar
+                color="secondary"
+                className="copy-link"
+                alt=""
+                src={CopyLink}
+              />
+              <div>リンクをコピー</div>
+            </div>
+            <div>
+              <TwitterShareButton onClick={() => postShare(1)} url={"https://www.google.com/?hl=ja"}>
+                  <TwitterIcon size={50} round />
+              </TwitterShareButton>
+              <div>twitter</div>
+            </div>
+            <div>
+              <LineShareButton onClick={() => postShare(2)} url={"https://www.google.com/?hl=ja"}>
+                <LineIcon size={50} round />
+              </LineShareButton>
+              <div>Line</div>
+            </div>
+          </div>
+          <div className="share-footer">
+            <Button onClick={() => setShareDrawer(false)}>キャンセル</Button>
+          </div>
+        </Drawer>
+
+        {/* サイドバー */}
         <Drawer anchor= 'left' open={isSideMenu} onClick={() => openSideMenu(!isSideMenu)} >
           <Box className="sidebar" width="150px">
             <List>
