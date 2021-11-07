@@ -16,6 +16,7 @@
     "react-share": "^4.4.0",
     "react-swipeable-views": "^0.14.0",
     "sass": "^1.43.4",
+    "serve": "^13.0.2",
     "web-vitals": "^0.2.4",
     "workbox-background-sync": "^5.1.3",
     "workbox-broadcast-update": "^5.1.3",
@@ -31,7 +32,7 @@
     "workbox-streams": "^5.1.3"
   },
   "scripts": {
-    "start": "PORT=3001 react-scripts start",
+    "start": "PORT=3001 serve -s build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
