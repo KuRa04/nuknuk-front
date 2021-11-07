@@ -72,13 +72,11 @@ const Movies = (props) => {
 
   const postShare = (channelName) => {
     const movieId = shareMovieId
-    console.log(movieId)
-    console.log(channelName)
     axios.post(db_url + '/shares', {
       channel: channelName,
       movie_id: movieId,
     }).then((res) => {
-      console.log(res.data.shares)
+      console.log(res.data)
     }).catch((data) => {
       console.log(data)
     })
