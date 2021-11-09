@@ -29,14 +29,14 @@ const Movies = (props) => {
   const db_url = props.db_url
 
   useEffect( () => {
-     axios.get(db_url + '/movies').then((res) => {
-      console.log(res.data.movies)
-      const array = res.data.movies.slice(0,10);
-      console.log(array)
-      setMovie(array)
-      }).catch((res) => {
-        console.log(res)
-      })
+    axios.get(db_url + '/movies').then((res) => {
+    console.log(res.data.movies)
+    const array = res.data.movies.slice(0,10);
+    console.log(array)
+    setMovie(array)
+    }).catch((res) => {
+      console.log(res)
+    })
   }, [db_url]);
 
   // 0人気 1新着
@@ -118,6 +118,7 @@ const Movies = (props) => {
           <Likes
             movie={props.movie}
             db_url={db_url}
+            ip_address={props.ip_address}
             isLiked={toggleFavorites(props.movie.favorite_ip_address)}
             movie_favorites_count={props.movie.favorites_count}
           />
@@ -135,7 +136,15 @@ const Movies = (props) => {
     // let video = document.getElementById("movie-list-" + props.index);
 
     return (
-      <MovieComponent movie={props.movie} movieTitle={props.title} index={props.index} movieImage={props.movieImage} movieUrl={props.movieUrl} affiliateLink={props.affiliateLink}/>
+      <MovieComponent
+        movie={props.movie}
+        movieTitle={props.title}
+        index={props.index}
+        movieImage={props.movieImage}
+        movieUrl={props.movieUrl}
+        affiliateLink={props.affiliateLink}
+        ip_address={props.ip_address}
+        />
     )
   }
 
@@ -183,7 +192,15 @@ const Movies = (props) => {
           {
             movies.map((movie, index) =>{
               return <div key={index} className={'movie-list'}>
-                <InviewComponent index={index} movie={movie} title={movie.title} movieImage={movie.image} movieUrl={movie.movie_url} affiliateLink={movie.affiliate_link} />
+                <InviewComponent
+                  index={index}
+                  movie={movie}
+                  title={movie.title}
+                  movieImage={movie.image}
+                  movieUrl={movie.movie_url}
+                  affiliateLink={movie.affiliate_link}
+                  ip_address={props.ip_address}
+                  />
               </div>
             })
           }

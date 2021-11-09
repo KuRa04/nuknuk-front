@@ -14,7 +14,8 @@ const Likes = (props) => {
     e.stopPropagation()
     const favorites_db = db_url + '/favorites'
     if (isLiked) {
-      const params = {movie_id: movie.id}
+      console.log(props.ip_address)
+      const params = {movie_id: movie.id, ip_address: props.ip_address}
       console.log(params)
       axios.delete(favorites_db, {data: params}).then((res) => {
         console.log(res.data)
@@ -27,7 +28,8 @@ const Likes = (props) => {
         console.log(res)
       })
     }else {
-      axios.post(favorites_db, {movie_id: movie.id}).then((res) => {
+      console.log(props.ip_address)
+      axios.post(favorites_db, {movie_id: movie.id, ip_address: props.ip_address}).then((res) => {
         const isBool = !isLiked
         setLiked(isBool)
         const new_count = res.data.movie_favorites_count
