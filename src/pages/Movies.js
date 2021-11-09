@@ -24,6 +24,22 @@ const Movies = (props) => {
   const [shareDrawer, setShareDrawer] = useState(false)
   const [shareMovieId, setShareMovieId] = useState(0)
 
+  const categories =　[
+    "巨乳",
+    "素人",
+    "ナンパ",
+    "ギャル",
+    "3P",
+    "OL",
+    "マッサージ",
+    "人妻",
+    "寝取り寝取られ",
+    "ハメ撮り",
+    "乱行",
+    "JK",
+    "スレンダー",
+    "ハーフ"];
+
   // dbのパス
   // const db_url = Rails.env === 'development' ? DB_LOCAL_URL : DB_PRODUCTION_URL
   const db_url = props.db_url
@@ -180,6 +196,16 @@ const Movies = (props) => {
             </Tabs>
           </AppBar>
         </Box>
+        <ul className="wrapper-category">
+        {
+          categories.map((category,index) => {
+            return (
+              <li className="category-list" key={index}>{category}</li>
+            )
+          }) 
+        }
+        </ul>
+
           {
             movies.map((movie, index) =>{
               return <div key={index} className={'movie-list'}>
