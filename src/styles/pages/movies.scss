@@ -20,7 +20,13 @@ body {
 
 .category-list {
   color: white;
+  cursor: pointer;
   list-style: none;
+  z-index: 10000 !important;
+}
+
+.category-link {
+  text-decoration: none;
 }
 
 .wrapper-movie {

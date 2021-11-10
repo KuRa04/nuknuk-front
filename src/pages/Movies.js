@@ -76,6 +76,19 @@ const Movies = (props) => {
     }
   }
 
+  const categoriesChange = (value) => {
+    axios.get(db_url + '/movies?tab_value=' + value).then((res) => {
+      console.log(res.data.movies)
+      const array = res.data.movies.slice(0,10);
+      console.log(array)
+      console.log(db_url + '/popular_movies?tab_value=' + value)
+      setMovie(array)
+    }).catch((res) => {
+      console.log(res)
+    })
+  }
+
+
   // const switchStopPlaying = (index) => {
   //   console.log("aaa")
   //   let video = document.getElementById("movie-list-" + index);
@@ -209,7 +222,7 @@ const Movies = (props) => {
         {
           categories.map((category,index) => {
             return (
-              <li className="category-list" key={index}>{category}</li>
+              <li className="category-list" key={index} onClick={() => categoriesChange(index)}>{category}</li>
             )
           }) 
         }
