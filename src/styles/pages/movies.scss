@@ -13,6 +13,18 @@ body {
   justify-content: center;
 }
 
+.wrapper-category {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.category-list {
+  color: white;
+  cursor: pointer;
+  list-style: none;
+  z-index: 10000 !important;
+}
+
 .wrapper-movie {
   position: relative;
 }
