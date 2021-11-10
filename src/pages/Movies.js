@@ -226,7 +226,7 @@ const Movies = (props) => {
           }) 
         }
         </ul>
-
+        <div className="movies">
           {
             movies.map((movie, index) =>{
               return <div key={index} className={'movie-list'}>
@@ -242,7 +242,7 @@ const Movies = (props) => {
               </div>
             })
           }
-
+        </div>
         {/* シェア */}
         <Drawer className="share-drawer-box" anchor='bottom' open={shareDrawer} onClick={() => setShareDrawer(!shareDrawer)} >
           <div className="share-title">シェア：</div>
