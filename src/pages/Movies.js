@@ -109,6 +109,13 @@ const Movies = (props) => {
       console.log(data)
     })
   }
+
+  const copyLink = () => {
+    const url = window.location.href
+    navigator.clipboard.writeText(url)
+    // document.execCommand(url)
+  }
+
   const toggleFavorites = (movie_ip_address) => {
     console.log(movie_ip_address.includes(props.ip_address))
     return props.ip_address && movie_ip_address.includes(props.ip_address)
@@ -122,7 +129,7 @@ const Movies = (props) => {
   const MovieComponent = (props) => {
 
     return (
-      <div className="wrapper-movie">
+      <div className="wrapper-movie" id={"movie-url-" + props.movie.id}>
         <video
           muted
           controls={false}
@@ -223,7 +230,7 @@ const Movies = (props) => {
             return (
               <li className="category-list" key={index} onClick={() => categoriesChange(index)}>{category}</li>
             )
-          }) 
+          })
         }
         </ul>
         <div className="movies">
@@ -253,6 +260,7 @@ const Movies = (props) => {
                 className="copy-link"
                 alt=""
                 src={CopyLink}
+                onClick={() => copyLink()}
               />
               <div>リンクをコピー</div>
             </div>
