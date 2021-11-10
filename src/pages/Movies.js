@@ -88,7 +88,6 @@ const Movies = (props) => {
     })
   }
 
-
   // const switchStopPlaying = (index) => {
   //   console.log("aaa")
   //   let video = document.getElementById("movie-list-" + index);
