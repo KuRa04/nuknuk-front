@@ -8,9 +8,8 @@ function App() {
 
   //creating function to load ip address from the API
   const getData = async () => {
-    const res = await axios.get('https://ipinfo.io/?callback=callback')
-    console.log(res.data);
-    setIP(res.data.IPv4)
+    const res = await axios.get('https://ipinfo.io/?callback')
+    setIP(res.data.ip)
   }
 
   useEffect( () => {
@@ -18,8 +17,6 @@ function App() {
     getData()
 
   }, [])
-  console.log(process.env.REACT_APP_HEROKU_DB_URL)
-  console.log(process.env.REACT_APP_HEROKU_DB_URL)
   return (
     <>
       <Movies ip_address={ip} db_url={process.env.REACT_APP_HEROKU_DB_URL} />
