@@ -46,7 +46,12 @@ const Movies = (props) => {
   const db_url = props.db_url
 
   useEffect( () => {
-    axios.get(db_url + '/movies').then((res) => {
+    const param = window.location.search
+    let get_db_url = db_url
+    // get_db_url += param ? "/" + param.slice(1, param.length) : "/movies"
+    get_db_url += param ? "/movies" + param : "/movies"
+    console.log(get_db_url)
+    axios.get(get_db_url).then((res) => {
     console.log(res.data.movies)
     const array = res.data.movies.slice(0,10);
     console.log(array)
@@ -264,13 +269,13 @@ const Movies = (props) => {
               <div>リンクをコピー</div>
             </div>
             <div>
-              <TwitterShareButton onClick={() => postShare("twitter")} url={"https://nuknuk-front-01.herokuapp.com/"}>
+              <TwitterShareButton onClick={() => postShare("twitter")} url={"https://nuknuk-front-01.herokuapp.com?movie_id=" + shareMovieId}>
                   <TwitterIcon size={50} round />
               </TwitterShareButton>
               <div>twitter</div>
             </div>
             <div>
-              <LineShareButton onClick={() => postShare("Line")} url={"https://nuknuk-front-01.herokuapp.com/"}>
+              <LineShareButton onClick={() => postShare("line")} url={"https://nuknuk-front-01.herokuapp.com?movie_id=" + shareMovieId}>
                 <LineIcon size={50} round />
               </LineShareButton>
               <div>Line</div>
