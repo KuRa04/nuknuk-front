@@ -23,8 +23,9 @@ const Movies = (props) => {
   const [tabValue, setTabValue] = useState(1)
   const [shareDrawer, setShareDrawer] = useState(false)
   const [shareMovieId, setShareMovieId] = useState(0)
+  // const [shareCount, setShareCount] = useState(0)
 
-  const categories =　[
+  const categories = [
     "巨乳",
     "素人",
     "ナンパ",
@@ -100,6 +101,10 @@ const Movies = (props) => {
 
   const postShare = (channelName) => {
     const movieId = shareMovieId
+    if (channelName === 'copy'){
+      // httpsでしか動かない
+      navigator.clipboard.writeText(window.location.href)
+    }
     axios.post(db_url + '/shares', {
       channel: channelName,
       movie_id: movieId,
@@ -108,12 +113,6 @@ const Movies = (props) => {
     }).catch((data) => {
       console.log(data)
     })
-  }
-
-  const copyLink = () => {
-    const url = window.location.href
-    navigator.clipboard.writeText(url)
-    // document.execCommand(url)
   }
 
   const toggleFavorites = (movie_ip_address) => {
@@ -160,7 +159,7 @@ const Movies = (props) => {
           <div className="share-btn">
             {/* シェアボタンを表示、クリックで各SNSのボタンが表示される */}
             <img alt="" width="50" height="50" src={ShareButton} onClick={() => toggleShareDrawer(props.movie.id)} />
-            <span className="favorites-count">{10}</span>
+            <span className="favorites-count">{props.movie.shared_movies_count}</span>
           </div>
         </div>
       </div>
@@ -260,18 +259,18 @@ const Movies = (props) => {
                 className="copy-link"
                 alt=""
                 src={CopyLink}
-                onClick={() => copyLink()}
+                onClick={() => postShare("copy")}
               />
               <div>リンクをコピー</div>
             </div>
             <div>
-              <TwitterShareButton onClick={() => postShare(1)} url={"https://www.google.com/?hl=ja"}>
+              <TwitterShareButton onClick={() => postShare("twitter")} url={"https://nuknuk-front-01.herokuapp.com/"}>
                   <TwitterIcon size={50} round />
               </TwitterShareButton>
               <div>twitter</div>
             </div>
             <div>
-              <LineShareButton onClick={() => postShare(2)} url={"https://www.google.com/?hl=ja"}>
+              <LineShareButton onClick={() => postShare("Line")} url={"https://nuknuk-front-01.herokuapp.com/"}>
                 <LineIcon size={50} round />
               </LineShareButton>
               <div>Line</div>
