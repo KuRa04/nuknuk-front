@@ -112,8 +112,8 @@ const Movies = (props) => {
 
   const copyLink = () => {
     const url = window.location.href
+    // httpsでしか動かない
     navigator.clipboard.writeText(url)
-    // document.execCommand(url)
   }
 
   const toggleFavorites = (movie_ip_address) => {
@@ -265,13 +265,13 @@ const Movies = (props) => {
               <div>リンクをコピー</div>
             </div>
             <div>
-              <TwitterShareButton onClick={() => postShare(1)} url={"https://www.google.com/?hl=ja"}>
+              <TwitterShareButton onClick={() => postShare(1)} url={"https://nuknuk-front-01.herokuapp.com/"}>
                   <TwitterIcon size={50} round />
               </TwitterShareButton>
               <div>twitter</div>
             </div>
             <div>
-              <LineShareButton onClick={() => postShare(2)} url={"https://www.google.com/?hl=ja"}>
+              <LineShareButton onClick={() => postShare(2)} url={"https://nuknuk-front-01.herokuapp.com/"}>
                 <LineIcon size={50} round />
               </LineShareButton>
               <div>Line</div>
