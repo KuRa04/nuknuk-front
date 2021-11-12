@@ -1,8 +1,7 @@
 .wrapper-favorites {
-  position: absolute;
-  right: 0px;
-  bottom: 115px;
+  width: 50px;
   display:flex;
+  justify-content: center;
   flex-flow: column;
   z-index: 2;
 }
