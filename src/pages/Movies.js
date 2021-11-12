@@ -136,41 +136,47 @@ const Movies = (props) => {
 
     return (
       <div className="wrapper-movie" id={"movie-url-" + props.movie.id} onClick={() => playVideo()}>
-        <video
-          muted
-          controls={false}
-          playsInline
-          width="370"
-          height="600"
-          poster={props.movieImage}
-          src={props.movieUrl}
-          id={'movie-list-' + props.index}
-          preload="metadata"
-          ref={videoRef}
-        >
-        </video>
-        <p className="movie-title">{props.movieTitle}</p>
-        <Purchases
-          movie={props.movie}
-          affiliateLink={props.affiliateLink}
-          db_url={db_url}
-          movie_purchases_count={props.movie_purchases_count}
-        />
-        <div className="video-btn">
-          <Likes
-            movie={props.movie}
-            db_url={db_url}
-            ip_address={props.ip_address}
-            isLiked={toggleFavorites(props.movie.favorite_ip_address)}
-            movie_favorites_count={props.movie.favorites_count}
-          />
-          <div className="share-btn">
-            {/* シェアボタンを表示、クリックで各SNSのボタンが表示される */}
-            <img alt="" width="50" height="50" src={ShareButton} onClick={() => toggleShareDrawer(props.movie.id)} />
-            <span className="favorites-count">{props.movie.shared_movies_count}</span>
+        <div className="wrapper-video">
+          <video
+            muted
+            controls={false}
+            playsInline
+            width="370"
+            height="600"
+            poster={props.movieImage}
+            src={props.movieUrl}
+            id={'movie-list-' + props.index}
+            preload="metadata"
+            ref={videoRef}
+          >
+          </video>
+        </div>
+        <div className="movie-object">
+          <div className="wrapper-title">
+            <p className="movie-title">{props.movieTitle}</p>
+            <Purchases
+              movie={props.movie}
+              affiliateLink={props.affiliateLink}
+              db_url={db_url}
+              movie_purchases_count={props.movie_purchases_count}
+            />
+            </div>
+            <div className="video-btn">
+              <Likes
+                movie={props.movie}
+                db_url={db_url}
+                ip_address={props.ip_address}
+                isLiked={toggleFavorites(props.movie.favorite_ip_address)}
+                movie_favorites_count={props.movie.favorites_count}
+              />
+              <div className="share-btn">
+                {/* シェアボタンを表示、クリックで各SNSのボタンが表示される */}
+                <img alt="" width="50" height="50" src={ShareButton} onClick={() => toggleShareDrawer(props.movie.id)} />
+                <span className="favorites-count">{props.movie.shared_movies_count}</span>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
     )
   }
 

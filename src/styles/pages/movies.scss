@@ -11,6 +11,7 @@ body {
   scroll-snap-type: y mandatory;
   position: relative;
   width: 100%;
+  height: 100vh;
   overflow-y: scroll;
   margin-top: 80px;
 }
@@ -55,11 +56,21 @@ body {
   z-index: 1;
 }
 
+.movie-object {
+  width: 100%;
+  display: flex;
+  position: relative;
+}
+
+.wrapper-video {
+  height: 60vh;
+}
+
+.wrapper-title {
+  z-index: 10;
+}
+
 .movie-title {
-  position: absolute;
-  left: 0;
-  right:0;
-  bottom: 120px; /*コントローラー分下部に余白を*/
   width: 240px;
   font-size: 16px;
   color: white;
@@ -68,17 +79,15 @@ body {
   text-overflow: ellipsis;
   text-align: center;
   text-overflow: ellipsis;
-  padding: 0 10px 10px;
 }
 
 .video-btn {
-  content: "";
-  position: absolute;
-  top:0;
-  left:0;
-  right:0;
-  bottom: 80px; /*コントローラー分下部に余白を*/
+  width: 120px;
+  display:flex;
+  flex-flow: column;
+  align-items: flex-end;
   cursor: pointer;
+  z-index: 10;
 }
 
 .footer {
@@ -95,11 +104,14 @@ body {
 }
 
 .share-btn {
+  width: 50px;
   display: flex;
   flex-direction: column;
-  position: absolute;
-  right: 0;
-  bottom: 30px;
+}
+
+.favorites-count {
+  color: white;
+  text-align: center;
 }
 
 .sidebar {
