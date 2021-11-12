@@ -147,7 +147,6 @@ const Movies = (props) => {
           id={'movie-list-' + props.index}
           preload="metadata"
           ref={videoRef}
-          // autoPlay
         >
         </video>
         <p className="movie-title">{props.movieTitle}</p>
@@ -228,9 +227,7 @@ const Movies = (props) => {
               <Tab label="人気" style={{color: "white"}} onClick={() => tabsChange(0)} />
               <Tab label="新着" style={{color: "white"}} onClick={() => tabsChange(1)} />
             </Tabs>
-          </AppBar>
-        </Box>
-        <ul className="wrapper-category">
+            <ul className="wrapper-category">
         {
           categories.map((category,index) => {
             return (
@@ -239,6 +236,8 @@ const Movies = (props) => {
           })
         }
         </ul>
+          </AppBar>
+        </Box>
         <div className="movies">
           {
             movies.map((movie, index) =>{
