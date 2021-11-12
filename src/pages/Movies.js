@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import axios from 'axios'
 import {AppBar, Tabs, Tab, Toolbar, Drawer, Box, List, ListItem, Avatar, createTheme, ThemeProvider, Button} from '@material-ui/core'
 import LogoWhite from '../images/logo_white.png'
@@ -94,16 +94,6 @@ const Movies = (props) => {
     })
   }
 
-  // const switchStopPlaying = (index) => {
-  //   console.log("aaa")
-  //   let video = document.getElementById("movie-list-" + index);
-  //   if(video.paused) {
-  //     video.play()
-  //   }else {
-  //     video.pause();
-  //   }
-  // }
-
   const postShare = (channelName) => {
     const movieId = shareMovieId
     if (channelName === 'copy'){
@@ -131,9 +121,21 @@ const Movies = (props) => {
   }
 
   const MovieComponent = (props) => {
+    const [isPlaying, setIsPlaying] = useState(false)
+    const videoRef = useRef();
+
+    const playVideo = (e) => {
+      if(!isPlaying) {
+        videoRef.current && videoRef.current.play();
+        setIsPlaying(true);
+      } else {
+        videoRef.current && videoRef.current.pause();
+        setIsPlaying(false);
+      }
+    }
 
     return (
-      <div className="wrapper-movie" id={"movie-url-" + props.movie.id}>
+      <div className="wrapper-movie" id={"movie-url-" + props.movie.id} onClick={() => playVideo()}>
         <video
           muted
           controls={false}
@@ -144,6 +146,8 @@ const Movies = (props) => {
           src={props.movieUrl}
           id={'movie-list-' + props.index}
           preload="metadata"
+          ref={videoRef}
+          // autoPlay
         >
         </video>
         <p className="movie-title">{props.movieTitle}</p>
@@ -172,8 +176,6 @@ const Movies = (props) => {
   }
 
   const InviewComponent =  (props) => {
-    // let video = document.getElementById("movie-list-" + props.index);
-
     return (
       <MovieComponent
         movie={props.movie}
@@ -258,6 +260,7 @@ const Movies = (props) => {
         <Drawer className="share-drawer-box" anchor='bottom' open={shareDrawer} onClick={() => setShareDrawer(!shareDrawer)} >
           <div className="share-title">シェア：</div>
           <div className="share-drawer">
+
             <div>
               <Avatar
                 color="secondary"
