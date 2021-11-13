@@ -4,7 +4,7 @@ import axios from 'axios'
 import {AppBar, Tabs, Tab, Toolbar, Drawer, Box, List, ListItem, Avatar, createTheme, ThemeProvider, Button} from '@material-ui/core'
 import LogoWhite from '../images/logo_white.png'
 import ShareButton from '../images/share.png'
-import CopyLink from '../images/copy_link.svg'
+import CopyLink from '../images/copy_clip.svg'
 import SideImageWhite from '../images/side_menu.png'
 import SideImageBlack from '../images/side_menu_black.png'
 import Likes from '../components/like'
@@ -276,34 +276,32 @@ const Movies = (props) => {
         </div>
         {/* シェア */}
         <Drawer className="share-drawer-box" anchor='bottom' open={shareDrawer} onClick={() => setShareDrawer(!shareDrawer)} >
-          <div className="share-title">シェア：</div>
+          <p className="share-title">シェア：</p>
           <div className="share-drawer">
-
-            <div>
-              <Avatar
-                color="secondary"
+            <div className="share-icon">
+              <img
                 className="copy-link"
                 alt=""
                 src={CopyLink}
                 onClick={() => postShare("copy")}
               />
-              <div>リンクをコピー</div>
+              <p className="share-text">リンクをコピー</p>
             </div>
-            <div>
+            <div className="share-icon">
               <TwitterShareButton onClick={() => postShare("twitter")} url={"https://nuknuk-front-01.herokuapp.com?movie_id=" + shareMovieId}>
                   <TwitterIcon size={50} round />
               </TwitterShareButton>
-              <div>twitter</div>
+              <p className="share-text">Twitter</p>
             </div>
-            <div>
+            <div className="share-icon">
               <LineShareButton onClick={() => postShare("line")} url={"https://nuknuk-front-01.herokuapp.com?movie_id=" + shareMovieId}>
                 <LineIcon size={50} round />
               </LineShareButton>
-              <div>Line</div>
+              <p className="share-text">LINE</p>
             </div>
           </div>
           <div className="share-footer">
-            <Button onClick={() => setShareDrawer(false)}>キャンセル</Button>
+            <Button className="cancel-button" onClick={() => setShareDrawer(false)}>キャンセル</Button>
           </div>
         </Drawer>
 
