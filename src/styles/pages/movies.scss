@@ -32,10 +32,19 @@ body {
 
 .wrapper-category {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   height: 16px;
   overflow-x: auto;
   white-space: nowrap;
+  -ms-overflow-style: none; 
+  scrollbar-width: none;  
+  padding-inline-start: 10px;
+  padding-inline-end: 10px;
+
+}
+
+.wrapper-category::-webkit-scrollbar {  /* Chrome, Safari 対応 */
+  display:none;
 }
 
 .category-list {
@@ -47,8 +56,8 @@ body {
   vertical-align: middle;
   z-index: 1;
   line-height: 16px;
-  margin: 0 8px;
-  padding: 0 8px;
+  margin: 0; 
+  padding: 0 4px;
 }
 
 .wrapper-movie {
