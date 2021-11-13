@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react"
+import useInView from "react-cool-inview"
 import axios from 'axios'
 import {AppBar, Tabs, Tab, Toolbar, Drawer, Box, List, ListItem, Avatar, createTheme, ThemeProvider, Button} from '@material-ui/core'
 import LogoWhite from '../images/logo_white.png'
 import ShareButton from '../images/share.png'
-import CopyLink from '../images/copy_link.svg'
+import CopyLink from '../images/copy_clip.svg'
 import SideImageWhite from '../images/side_menu.png'
 import SideImageBlack from '../images/side_menu_black.png'
 import Likes from '../components/like'
@@ -134,9 +135,35 @@ const Movies = (props) => {
       }
     }
 
+    const { observe } = useInView({
+      threshold: 1,
+      onEnter: ({ observe, unobserve }) => {
+        //viewportに入ったらvideoをスタート
+        unobserve();
+        videoRef.current && videoRef.current.play();
+        setIsPlaying(true);
+        console.log("onEnter")
+        observe();
+        // if(video.ended()) {
+        //   //ここに動画終了後の処理を記述
+        //   //今は最初から動画を流す設定
+        //   video.play();
+        // }
+
+      },
+      onLeave: ({ observe, unobserve }) => {
+        //viewportから出たらvideoを止める
+        unobserve();
+        videoRef.current.currentTime = 0; //videoの再生時間を最初に戻す
+        videoRef.current && videoRef.current.pause();
+        setIsPlaying(false);
+        console.log("onLeave")
+        observe();
+      },
+    });
     return (
       <div className="wrapper-movie" id={"movie-url-" + props.movie.id} onClick={() => playVideo()}>
-        <div className="wrapper-video">
+        <div ref={observe} className="wrapper-video">
           <video
             muted
             controls={false}
@@ -153,7 +180,7 @@ const Movies = (props) => {
         </div>
         <div className="movie-object">
           <div className="wrapper-title">
-            <p className="movie-title">{props.movieTitle}</p>
+            <p className="movie-title">{props.title}</p>
             <Purchases
               movie={props.movie}
               affiliateLink={props.affiliateLink}
@@ -177,20 +204,6 @@ const Movies = (props) => {
             </div>
           </div>
         </div>
-    )
-  }
-
-  const InviewComponent =  (props) => {
-    return (
-      <MovieComponent
-        movie={props.movie}
-        movieTitle={props.title}
-        index={props.index}
-        movieImage={props.movieImage}
-        movieUrl={props.movieUrl}
-        affiliateLink={props.affiliateLink}
-        ip_address={props.ip_address}
-        />
     )
   }
 
@@ -248,7 +261,7 @@ const Movies = (props) => {
           {
             movies.map((movie, index) =>{
               return <div key={index} className={'movie-list'}>
-                <InviewComponent
+                <MovieComponent
                   index={index}
                   movie={movie}
                   title={movie.title}
@@ -263,34 +276,32 @@ const Movies = (props) => {
         </div>
         {/* シェア */}
         <Drawer className="share-drawer-box" anchor='bottom' open={shareDrawer} onClick={() => setShareDrawer(!shareDrawer)} >
-          <div className="share-title">シェア：</div>
+          <p className="share-title">シェア：</p>
           <div className="share-drawer">
-
-            <div>
-              <Avatar
-                color="secondary"
+            <div className="share-icon">
+              <img
                 className="copy-link"
                 alt=""
                 src={CopyLink}
                 onClick={() => postShare("copy")}
               />
-              <div>リンクをコピー</div>
+              <p className="share-text">リンクをコピー</p>
             </div>
-            <div>
+            <div className="share-icon">
               <TwitterShareButton onClick={() => postShare("twitter")} url={"https://nuknuk-front-01.herokuapp.com?movie_id=" + shareMovieId}>
                   <TwitterIcon size={50} round />
               </TwitterShareButton>
-              <div>twitter</div>
+              <p className="share-text">Twitter</p>
             </div>
-            <div>
+            <div className="share-icon">
               <LineShareButton onClick={() => postShare("line")} url={"https://nuknuk-front-01.herokuapp.com?movie_id=" + shareMovieId}>
                 <LineIcon size={50} round />
               </LineShareButton>
-              <div>Line</div>
+              <p className="share-text">LINE</p>
             </div>
           </div>
           <div className="share-footer">
-            <Button onClick={() => setShareDrawer(false)}>キャンセル</Button>
+            <Button className="cancel-button" onClick={() => setShareDrawer(false)}>キャンセル</Button>
           </div>
         </Drawer>
 
