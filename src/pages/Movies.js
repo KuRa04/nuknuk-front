@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react"
+import useInView from "react-cool-inview"
 import axios from 'axios'
 import {AppBar, Tabs, Tab, Toolbar, Drawer, Box, List, ListItem, Avatar, createTheme, ThemeProvider, Button} from '@material-ui/core'
 import LogoWhite from '../images/logo_white.png'
@@ -134,9 +135,35 @@ const Movies = (props) => {
       }
     }
 
+    const { observe } = useInView({
+      threshold: 1,
+      onEnter: ({ observe, unobserve }) => {
+        //viewportに入ったらvideoをスタート
+        unobserve();
+        videoRef.current && videoRef.current.play();
+        setIsPlaying(true);
+        console.log("onEnter")
+        observe();
+        // if(video.ended()) {
+        //   //ここに動画終了後の処理を記述
+        //   //今は最初から動画を流す設定
+        //   video.play();
+        // }
+
+      },
+      onLeave: ({ observe, unobserve }) => {
+        //viewportから出たらvideoを止める
+        unobserve();
+        videoRef.current.currentTime = 0; //videoの再生時間を最初に戻す
+        videoRef.current && videoRef.current.pause();
+        setIsPlaying(false);
+        console.log("onLeave")
+        observe();
+      },
+    });
     return (
       <div className="wrapper-movie" id={"movie-url-" + props.movie.id} onClick={() => playVideo()}>
-        <div className="wrapper-video">
+        <div ref={observe} className="wrapper-video">
           <video
             muted
             controls={false}
@@ -181,8 +208,35 @@ const Movies = (props) => {
   }
 
   const InviewComponent =  (props) => {
+    let video = document.getElementById("movie-list-" + props.index);
+
+    // const { observe } = useInView({
+    //   threshold: 1,
+    //   onEnter: ({ observe, unobserve }) => {
+    //     //viewportに入ったらvideoをスタート
+    //     unobserve();
+    //     // video.play();
+    //     console.log("onEnter")
+    //     observe();
+    //     // if(video.ended()) {
+    //     //   //ここに動画終了後の処理を記述
+    //     //   //今は最初から動画を流す設定
+    //     //   video.play();
+    //     // }
+
+    //   },
+    //   onLeave: ({ observe, unobserve }) => {
+    //     //viewportから出たらvideoを止める
+    //     unobserve();
+    //     // video.pause();
+    //     console.log("onLeave")
+    //     observe();
+    //   },
+    // });
+
     return (
       <MovieComponent
+        // observe={observe}
         movie={props.movie}
         movieTitle={props.title}
         index={props.index}
