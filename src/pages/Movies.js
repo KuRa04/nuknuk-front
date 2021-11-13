@@ -207,47 +207,6 @@ const Movies = (props) => {
     )
   }
 
-  const InviewComponent =  (props) => {
-    let video = document.getElementById("movie-list-" + props.index);
-
-    // const { observe } = useInView({
-    //   threshold: 1,
-    //   onEnter: ({ observe, unobserve }) => {
-    //     //viewportに入ったらvideoをスタート
-    //     unobserve();
-    //     // video.play();
-    //     console.log("onEnter")
-    //     observe();
-    //     // if(video.ended()) {
-    //     //   //ここに動画終了後の処理を記述
-    //     //   //今は最初から動画を流す設定
-    //     //   video.play();
-    //     // }
-
-    //   },
-    //   onLeave: ({ observe, unobserve }) => {
-    //     //viewportから出たらvideoを止める
-    //     unobserve();
-    //     // video.pause();
-    //     console.log("onLeave")
-    //     observe();
-    //   },
-    // });
-
-    return (
-      <MovieComponent
-        // observe={observe}
-        movie={props.movie}
-        movieTitle={props.title}
-        index={props.index}
-        movieImage={props.movieImage}
-        movieUrl={props.movieUrl}
-        affiliateLink={props.affiliateLink}
-        ip_address={props.ip_address}
-        />
-    )
-  }
-
   const theme = createTheme({
     status: {
       danger: '#e53e3e',
@@ -302,7 +261,7 @@ const Movies = (props) => {
           {
             movies.map((movie, index) =>{
               return <div key={index} className={'movie-list'}>
-                <InviewComponent
+                <MovieComponent
                   index={index}
                   movie={movie}
                   title={movie.title}
