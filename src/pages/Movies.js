@@ -180,7 +180,7 @@ const Movies = (props) => {
         </div>
         <div className="movie-object">
           <div className="wrapper-title">
-            <p className="movie-title">{props.movieTitle}</p>
+            <p className="movie-title">{props.title}</p>
             <Purchases
               movie={props.movie}
               affiliateLink={props.affiliateLink}
