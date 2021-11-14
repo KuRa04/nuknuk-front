@@ -34,6 +34,7 @@ body {
   display: flex;
   justify-content: flex-start;
   height: 16px;
+  margin: 0;
   overflow-x: auto;
   white-space: nowrap;
   -ms-overflow-style: none; 
@@ -57,7 +58,7 @@ body {
   z-index: 1;
   line-height: 16px;
   margin: 0; 
-  padding: 0 4px;
+  padding: 0 14px;
 }
 
 .wrapper-movie {
@@ -69,14 +70,6 @@ body {
   width: 100%;
   display: flex;
   position: relative;
-}
-
-.wrapper-video {
-  // position: absolute;
-  // top: -50%;
-  // left: 0;
-
-  // height: 60vh;
 }
 
 .wrapper-title {
