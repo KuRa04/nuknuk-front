@@ -1,6 +1,6 @@
 import React from "react"
 import axios from 'axios'
-import RightArrowImg from '../images/right_arrow.png'
+import RightArrowImg from '../images/right_arrow.svg'
 import "../styles/components/purchase.scss";
 
 const Purchases = (props) => {

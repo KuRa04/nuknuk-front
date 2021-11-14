@@ -3,11 +3,11 @@ import useInView from "react-cool-inview"
 import SwipeableViews from 'react-swipeable-views';
 import axios from 'axios'
 import {AppBar, Tabs, Tab, Toolbar, Drawer, Box, List, ListItem, Avatar, createTheme, ThemeProvider, Button} from '@material-ui/core'
-import LogoWhite from '../images/logo_white.png'
-import ShareButton from '../images/share.png'
+import LogoWhite from '../images/logo_white.svg'
+import ShareButton from '../images/share.svg'
 import CopyLink from '../images/copy_clip.svg'
-import SideImageWhite from '../images/side_menu.png'
-import SideImageBlack from '../images/side_menu_black.png'
+import SideImageWhite from '../images/side_menu_white.svg'
+import SideImageBlack from '../images/side_menu_black.svg'
 import Likes from '../components/like'
 import Purchases from '../components/purchase'
 import {
@@ -277,7 +277,15 @@ const Movies = (props) => {
             position="fixed"
           >
             <Toolbar>
-              <div><img src={LogoWhite} alt=""/></div>
+              <div className="tool-bar">
+                <img src={LogoWhite} alt=""/>
+                <Avatar
+                  alt=""
+                  className="menu-icon"
+                  src={isSideMenu ? SideImageBlack : SideImageWhite}
+                  onClick={() => openSideMenu(!isSideMenu)}
+                />
+              </div>
             </Toolbar>
             <Tabs
               value={tabValue} // 0人気 1新着
@@ -404,12 +412,7 @@ const Movies = (props) => {
         </Drawer>
 
         <footer className="footer">
-          <Avatar
-            alt=""
-            className="menu-icon"
-            src={isSideMenu ? SideImageBlack : SideImageWhite}
-            onClick={() => openSideMenu(!isSideMenu)}
-          />
+          
         </footer>
       </ThemeProvider>
     </React.Fragment>
