@@ -265,12 +265,13 @@ const Movies = (props) => {
               <Tab label="新着" style={{color: "white"}} onClick={() => tabsChange(2)} />
             </Tabs>
             <ul className="wrapper-category">
-        {
+        {  tabValue === 1 ?
           categories.map((category,index) => {
             return (
               <li className="category-list" key={index} onClick={() => categoriesChange(index)}>{category}</li>
             )
-          })
+          }) :
+          <></>
         }
         </ul>
           </AppBar>
