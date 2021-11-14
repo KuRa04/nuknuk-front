@@ -3,7 +3,7 @@ import useInView from "react-cool-inview"
 import SwipeableViews from 'react-swipeable-views';
 import axios from 'axios'
 import {AppBar, Tabs, Tab, Toolbar, Drawer, Box, List, ListItem, createTheme, ThemeProvider, Button} from '@material-ui/core'
-import LogoWhite from '../images/logo_white.svg'
+import LogoWhite from '../images/logo_white_2.svg'
 import ShareButton from '../images/share.svg'
 import CopyLink from '../images/clip.svg'
 import SideImageWhite from '../images/side_menu_white.svg'
@@ -310,9 +310,9 @@ const Movies = (props) => {
             }}}
               centered
             >
-              <Tab label="人気" style={{color: "white"}} onClick={() => tabsChange(0)} />
-              <Tab label="ジャンル別" style={{color: "white"}} onClick={() => tabsChange(1)} />
-              <Tab label="新着" style={{color: "white"}} onClick={() => tabsChange(2)} />
+              <Tab label="人気" style={{color: "white", fontSize: '17px'}} onClick={() => tabsChange(0)} />
+              <Tab label="ジャンル別" style={{color: "white", fontSize: '17px'}} onClick={() => tabsChange(1)} />
+              <Tab label="新着" style={{color: "white", fontSize: '17px'}} onClick={() => tabsChange(2)} />
             </Tabs>
             <ul className="wrapper-category">
               { tabValue === 1 ?
