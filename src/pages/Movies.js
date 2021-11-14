@@ -163,7 +163,7 @@ const Movies = (props) => {
     });
     return (
       <div className="wrapper-movie" id={"movie-url-" + props.movie.id} onClick={() => playVideo()}>
-        <div ref={observe} className="wrapper-video">
+        <div ref={observe}>
           <video
             muted
             controls={false}
@@ -244,6 +244,7 @@ const Movies = (props) => {
               centered
             >
               <Tab label="人気" style={{color: "white"}} onClick={() => tabsChange(0)} />
+              <Tab label="ジャンル別" style={{color: "white"}} onClick={() => tabsChange(1)} />
               <Tab label="新着" style={{color: "white"}} onClick={() => tabsChange(1)} />
             </Tabs>
             <ul className="wrapper-category">
