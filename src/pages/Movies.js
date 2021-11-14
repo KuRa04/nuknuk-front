@@ -64,22 +64,39 @@ const Movies = (props) => {
 
   // 0人気 1新着
   const tabsChange = (value) => {
-    if (value === 0) {
-      axios.get(db_url + '/movies').then((res) => {
-        console.log(res.data.movies)
-        setMovie(res.data.movies)
-        setTabValue(0)
-      }).catch((res) => {
-        console.log(res)
-      })
-    }else {
-      axios.get(db_url + '/movies').then((res) => {
-        console.log(res.data.movies)
-        setMovie(res.data.movies)
-        setTabValue(1)
-      }).catch((res) => {
-        console.log(res)
-      })
+    switch(value) {
+      case 0:
+        axios.get(db_url + '/movies').then((res) => {
+          console.log(res.data.movies)
+          setMovie(res.data.movies)
+          setTabValue(value)
+          console.log("人気")
+        }).catch((res) => {
+          console.log(res)
+        })
+        break;
+      case 1:
+        axios.get(db_url + '/movies').then((res) => {
+          console.log(res.data.movies)
+          setMovie(res.data.movies)
+          setTabValue(value)
+          console.log("ジャンル別")
+        }).catch((res) => {
+          console.log(res)
+        })
+        break;
+      case 2:
+        axios.get(db_url + '/movies').then((res) => {
+          console.log(res.data.movies)
+          setMovie(res.data.movies)
+          setTabValue(value)
+          console.log("新着")
+        }).catch((res) => {
+          console.log(res)
+        })
+        break;
+      default:
+        console.log("どれにも属していません")
     }
   }
 
@@ -245,7 +262,7 @@ const Movies = (props) => {
             >
               <Tab label="人気" style={{color: "white"}} onClick={() => tabsChange(0)} />
               <Tab label="ジャンル別" style={{color: "white"}} onClick={() => tabsChange(1)} />
-              <Tab label="新着" style={{color: "white"}} onClick={() => tabsChange(1)} />
+              <Tab label="新着" style={{color: "white"}} onClick={() => tabsChange(2)} />
             </Tabs>
             <ul className="wrapper-category">
         {
