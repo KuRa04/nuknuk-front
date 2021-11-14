@@ -30,6 +30,10 @@ body {
   scroll-snap-align: end;
 }
 
+.MuiTab-wrapper {
+  font-weight: bold;
+}
+
 .wrapper-category {
   display: flex;
   justify-content: flex-start;
@@ -54,6 +58,7 @@ body {
   color: white;
   cursor: pointer;
   list-style: none;
+  font-weight: bold;
   vertical-align: middle;
   z-index: 1;
   line-height: 16px;
@@ -85,6 +90,7 @@ body {
   text-overflow: ellipsis;
   text-align: center;
   text-overflow: ellipsis;
+  font-weight: bold;
 }
 
 .video-btn {
@@ -118,6 +124,7 @@ body {
 .favorites-count {
   color: white;
   text-align: center;
+  font-weight: bold;
 }
 
 .sidebar {
@@ -162,6 +169,7 @@ body {
   margin: 0;
   text-align: center;
   font-size: 12px;
+  font-weight: bold;
 }
 
 .share-footer {
@@ -186,4 +194,8 @@ body {
 .cancel-button {
   background-color: #fff;
   color: #000;
+}
+
+.MuiButton-label {
+  font-weight: bold;
 }
