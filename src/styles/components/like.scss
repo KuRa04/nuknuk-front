@@ -1,5 +1,6 @@
 .wrapper-favorites {
-  width: 50px;
+  position: relative;
+  width: 35px;
   display:flex;
   justify-content: center;
   flex-flow: column;
@@ -9,4 +10,5 @@
 .favorites-count {
   color: white;
   text-align: center;
+  vertical-align: bottom;
 }

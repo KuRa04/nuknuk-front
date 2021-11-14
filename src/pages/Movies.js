@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from "react"
 import useInView from "react-cool-inview"
 import SwipeableViews from 'react-swipeable-views';
 import axios from 'axios'
-import {AppBar, Tabs, Tab, Toolbar, Drawer, Box, List, ListItem, Avatar, createTheme, ThemeProvider, Button} from '@material-ui/core'
+import {AppBar, Tabs, Tab, Toolbar, Drawer, Box, List, ListItem, createTheme, ThemeProvider, Button} from '@material-ui/core'
 import LogoWhite from '../images/logo_white.svg'
 import ShareButton from '../images/share.svg'
-import CopyLink from '../images/copy_clip.svg'
+import CopyLink from '../images/clip.svg'
 import SideImageWhite from '../images/side_menu_white.svg'
 import SideImageBlack from '../images/side_menu_black.svg'
 import Likes from '../components/like'
@@ -24,6 +24,7 @@ const Movies = (props) => {
   const [isSideMenu, openSideMenu] = useState(false)
   const [tabValue, setTabValue] = useState(1)
   const [tabValueIndex, setTabValueIndex] = useState(1)
+  const [isTabColor, setTabColor] = useState([false])
   const [shareDrawer, setShareDrawer] = useState(false)
   const [shareMovieId, setShareMovieId] = useState(0)
 
@@ -132,9 +133,24 @@ const Movies = (props) => {
       console.log(array)
       console.log(db_url + '/popular_movies?tab_value=' + value)
       setMovie(array)
+      setTabColor(!isTabColor[value])
     }).catch((res) => {
       console.log(res)
     })
+  }
+
+  //ジャンル選択時に色変える　まだ完成していない
+  const categoriesColor = (value) => {
+    if(!isTabColor[value]) {
+      return (
+        'category-list-selected'
+      )
+    } 
+    else {
+      return (
+        'category-list'
+      )
+    }  
   }
 
   const postShare = (channelName) => {
@@ -240,7 +256,7 @@ const Movies = (props) => {
               />
               <div className="share-btn">
                 {/* シェアボタンを表示、クリックで各SNSのボタンが表示される */}
-                <img alt="" width="50" height="50" src={ShareButton} onClick={() => toggleShareDrawer(props.movie.id)} />
+                <img alt="" width="35" height="35" src={ShareButton} onClick={() => toggleShareDrawer(props.movie.id)} />
                 <span className="favorites-count">{props.movie.shared_movies_count}</span>
               </div>
             </div>
@@ -279,7 +295,7 @@ const Movies = (props) => {
             <Toolbar>
               <div className="tool-bar">
                 <img src={LogoWhite} alt=""/>
-                <Avatar
+                <img
                   alt=""
                   className="menu-icon"
                   src={isSideMenu ? SideImageBlack : SideImageWhite}
@@ -290,7 +306,8 @@ const Movies = (props) => {
             <Tabs
               value={tabValue} // 0人気 1新着
               onChange={() => tabsChange}
-              TabIndicatorProps={{style: {display: "none"}}}
+              TabIndicatorProps={{style: {background:'yellow'
+            }}}
               centered
             >
               <Tab label="人気" style={{color: "white"}} onClick={() => tabsChange(0)} />
@@ -303,7 +320,7 @@ const Movies = (props) => {
                   {
                     categories.map((category,index) => {
                       return (
-                        <li className="category-list" key={index} onClick={() => categoriesChange(index)}>{category}</li>
+                        <li className={categoriesColor(index)} key={index} onClick={() => categoriesChange(index)}>{category}</li>
                         // <Tab key={index} label={category} style={{color: "white"}} onClick={() => categoriesChange(index)} />
                       )
                     })
