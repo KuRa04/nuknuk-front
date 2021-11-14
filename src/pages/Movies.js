@@ -108,14 +108,17 @@ const Movies = (props) => {
   const tabsChangeIndex = (value) => {
     switch(value) {
       case 0:
+        setTabValue(value)
         setTabValueIndex(value)
         console.log("人気")
         break;
       case 1:
+        setTabValue(value)
         setTabValueIndex(value)
         console.log("ジャンル別")
         break;
       case 2:
+        setTabValue(value)
         setTabValueIndex(value)
         console.log("新着")
         break;
@@ -311,7 +314,7 @@ const Movies = (props) => {
               <Tab label="新着" style={{color: "white"}} onClick={() => tabsChange(2)} />
             </Tabs>
             <ul className="wrapper-category">
-        {  tabValue === 1 ?
+        { tabValue === 1　|| tabValueIndex === 1 ?
           categories.map((category,index) => {
             return (
               <li className="category-list" key={index} onClick={() => categoriesChange(index)}>{category}</li>
