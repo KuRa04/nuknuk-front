@@ -55,7 +55,7 @@ body {
   white-space: nowrap;
   -ms-overflow-style: none; 
   scrollbar-width: none;
-  margin: 0;
+  margin-top: 15px;
   padding-inline-start: 10px;
   padding-inline-end: 10px;
 }
@@ -110,13 +110,12 @@ body {
 
 .movie-title {
   width: 240px;
-  font-size: 16px;
+  font-size: 12px;
   color: white;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: center;
-  text-overflow: ellipsis;
   font-weight: bold;
 }
 
