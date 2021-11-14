@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
 import useInView from "react-cool-inview"
+import SwipeableViews from 'react-swipeable-views';
 import axios from 'axios'
 import {AppBar, Tabs, Tab, Toolbar, Drawer, Box, List, ListItem, Avatar, createTheme, ThemeProvider, Button} from '@material-ui/core'
 import LogoWhite from '../images/logo_white.png'
@@ -22,6 +23,7 @@ const Movies = (props) => {
   const [movies, setMovie] = useState([])
   const [isSideMenu, openSideMenu] = useState(false)
   const [tabValue, setTabValue] = useState(1)
+  const [tabValueIndex, setTabValueIndex] = useState(1)
   const [shareDrawer, setShareDrawer] = useState(false)
   const [shareMovieId, setShareMovieId] = useState(0)
   // const [shareCount, setShareCount] = useState(0)
@@ -68,7 +70,8 @@ const Movies = (props) => {
       case 0:
         axios.get(db_url + '/movies').then((res) => {
           console.log(res.data.movies)
-          setMovie(res.data.movies)
+          const array = res.data.movies.slice(0,10);
+          setMovie(array)
           setTabValue(value)
           console.log("人気")
         }).catch((res) => {
@@ -78,7 +81,8 @@ const Movies = (props) => {
       case 1:
         axios.get(db_url + '/movies').then((res) => {
           console.log(res.data.movies)
-          setMovie(res.data.movies)
+          const array = res.data.movies.slice(0,10);
+          setMovie(array)
           setTabValue(value)
           console.log("ジャンル別")
         }).catch((res) => {
@@ -88,12 +92,32 @@ const Movies = (props) => {
       case 2:
         axios.get(db_url + '/movies').then((res) => {
           console.log(res.data.movies)
-          setMovie(res.data.movies)
+          const array = res.data.movies.slice(0,10);
+          setMovie(array)
           setTabValue(value)
           console.log("新着")
         }).catch((res) => {
           console.log(res)
         })
+        break;
+      default:
+        console.log("どれにも属していません")
+    }
+  }
+
+  const tabsChangeIndex = (value) => {
+    switch(value) {
+      case 0:
+        setTabValueIndex(value)
+        console.log("人気")
+        break;
+      case 1:
+        setTabValueIndex(value)
+        console.log("ジャンル別")
+        break;
+      case 2:
+        setTabValueIndex(value)
+        console.log("新着")
         break;
       default:
         console.log("どれにも属していません")
@@ -223,6 +247,28 @@ const Movies = (props) => {
         </div>
     )
   }
+  // const HorizonComponent = (props) => {
+  //   //横スワイプ監視
+  //   return (
+  //     <div className="movies">
+  //       {
+  //       movies.map((movie, index) =>{
+  //         return <div key={index} className={'movie-list'}>
+  //           <MovieComponent
+  //             index={index}
+  //             movie={movie}
+  //             title={movie.title}
+  //             movieImage={movie.image}
+  //             movieUrl={movie.movie_url}
+  //             affiliateLink={movie.affiliate_link}
+  //             ip_address={props.ip_address}
+  //             />
+  //         </div>
+  //       })
+  //       }
+  //     </div>
+  //   )
+  // }
 
   const theme = createTheme({
     status: {
@@ -276,22 +322,60 @@ const Movies = (props) => {
         </ul>
           </AppBar>
         </Box>
-        <div className="movies">
-          {
-            movies.map((movie, index) =>{
-              return <div key={index} className={'movie-list'}>
-                <MovieComponent
-                  index={index}
-                  movie={movie}
-                  title={movie.title}
-                  movieImage={movie.image}
-                  movieUrl={movie.movie_url}
-                  affiliateLink={movie.affiliate_link}
-                  ip_address={props.ip_address}
-                  />
-              </div>
-            })
-          }
+        <div>
+          <SwipeableViews index={tabValueIndex} onChangeIndex={tabsChangeIndex}>
+            <div className="movies">
+            {
+              movies.map((movie, index) =>{
+                return <div key={index} className={'movie-list'}>
+                  <MovieComponent
+                    index={index}
+                    movie={movie}
+                    title={movie.title}
+                    movieImage={movie.image}
+                    movieUrl={movie.movie_url}
+                    affiliateLink={movie.affiliate_link}
+                    ip_address={props.ip_address}
+                    />
+                </div>
+              })
+            }
+            </div>
+            <div className="movies">
+            {
+              movies.map((movie, index) =>{
+                return <div key={index} className={'movie-list'}>
+                  <MovieComponent
+                    index={index}
+                    movie={movie}
+                    title={movie.title}
+                    movieImage={movie.image}
+                    movieUrl={movie.movie_url}
+                    affiliateLink={movie.affiliate_link}
+                    ip_address={props.ip_address}
+                    />
+                </div>
+              })
+            }
+            </div>
+            <div className="movies">
+            {
+              movies.map((movie, index) =>{
+                return <div key={index} className={'movie-list'}>
+                  <MovieComponent
+                    index={index}
+                    movie={movie}
+                    title={movie.title}
+                    movieImage={movie.image}
+                    movieUrl={movie.movie_url}
+                    affiliateLink={movie.affiliate_link}
+                    ip_address={props.ip_address}
+                    />
+                </div>
+              })
+            }
+            </div>
+          </SwipeableViews>
         </div>
         {/* シェア */}
         <Drawer className="share-drawer-box" anchor='bottom' open={shareDrawer} onClick={() => setShareDrawer(!shareDrawer)} >
