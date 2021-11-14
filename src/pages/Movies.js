@@ -26,7 +26,6 @@ const Movies = (props) => {
   const [tabValueIndex, setTabValueIndex] = useState(1)
   const [shareDrawer, setShareDrawer] = useState(false)
   const [shareMovieId, setShareMovieId] = useState(0)
-  // const [shareCount, setShareCount] = useState(0)
 
   const categories = [
     "巨乳",
@@ -51,7 +50,6 @@ const Movies = (props) => {
   useEffect( () => {
     const param = window.location.search
     let get_db_url = db_url
-    // get_db_url += param ? "/" + param.slice(1, param.length) : "/movies"
     get_db_url += param ? "/movies" + param : "/movies"
     console.log(get_db_url)
     axios.get(get_db_url).then((res) => {
@@ -250,28 +248,6 @@ const Movies = (props) => {
         </div>
     )
   }
-  // const HorizonComponent = (props) => {
-  //   //横スワイプ監視
-  //   return (
-  //     <div className="movies">
-  //       {
-  //       movies.map((movie, index) =>{
-  //         return <div key={index} className={'movie-list'}>
-  //           <MovieComponent
-  //             index={index}
-  //             movie={movie}
-  //             title={movie.title}
-  //             movieImage={movie.image}
-  //             movieUrl={movie.movie_url}
-  //             affiliateLink={movie.affiliate_link}
-  //             ip_address={props.ip_address}
-  //             />
-  //         </div>
-  //       })
-  //       }
-  //     </div>
-  //   )
-  // }
 
   const theme = createTheme({
     status: {
@@ -314,69 +290,75 @@ const Movies = (props) => {
               <Tab label="新着" style={{color: "white"}} onClick={() => tabsChange(2)} />
             </Tabs>
             <ul className="wrapper-category">
-        { tabValue === 1　|| tabValueIndex === 1 ?
-          categories.map((category,index) => {
-            return (
-              <li className="category-list" key={index} onClick={() => categoriesChange(index)}>{category}</li>
-            )
-          }) :
-          <></>
-        }
-        </ul>
+              { tabValue === 1 ?
+                <>
+                  {
+                    categories.map((category,index) => {
+                      return (
+                        <li className="category-list" key={index} onClick={() => categoriesChange(index)}>{category}</li>
+                        // <Tab key={index} label={category} style={{color: "white"}} onClick={() => categoriesChange(index)} />
+                      )
+                    })
+                  }
+                </>
+                :
+                <></>
+              }
+            </ul>
           </AppBar>
         </Box>
         <div>
           <SwipeableViews index={tabValueIndex} onChangeIndex={tabsChangeIndex}>
             <div className="movies">
-            {
-              movies.map((movie, index) =>{
-                return <div key={index} className={'movie-list'}>
-                  <MovieComponent
-                    index={index}
-                    movie={movie}
-                    title={movie.title}
-                    movieImage={movie.image}
-                    movieUrl={movie.movie_url}
-                    affiliateLink={movie.affiliate_link}
-                    ip_address={props.ip_address}
-                    />
-                </div>
-              })
-            }
+              {
+                movies.map((movie, index) =>{
+                  return <div key={index} className={'movie-list'}>
+                    <MovieComponent
+                      index={index}
+                      movie={movie}
+                      title={movie.title}
+                      movieImage={movie.image}
+                      movieUrl={movie.movie_url}
+                      affiliateLink={movie.affiliate_link}
+                      ip_address={props.ip_address}
+                      />
+                  </div>
+                })
+              }
             </div>
             <div className="movies">
-            {
-              movies.map((movie, index) =>{
-                return <div key={index} className={'movie-list'}>
-                  <MovieComponent
-                    index={index}
-                    movie={movie}
-                    title={movie.title}
-                    movieImage={movie.image}
-                    movieUrl={movie.movie_url}
-                    affiliateLink={movie.affiliate_link}
-                    ip_address={props.ip_address}
-                    />
-                </div>
-              })
-            }
+              {
+                movies.map((movie, index) =>{
+                  return <div key={index} className={'movie-list'}>
+                    <MovieComponent
+                      index={index}
+                      movie={movie}
+                      title={movie.title}
+                      movieImage={movie.image}
+                      movieUrl={movie.movie_url}
+                      affiliateLink={movie.affiliate_link}
+                      ip_address={props.ip_address}
+                      />
+                  </div>
+                })
+              }
             </div>
             <div className="movies">
-            {
-              movies.map((movie, index) =>{
-                return <div key={index} className={'movie-list'}>
-                  <MovieComponent
-                    index={index}
-                    movie={movie}
-                    title={movie.title}
-                    movieImage={movie.image}
-                    movieUrl={movie.movie_url}
-                    affiliateLink={movie.affiliate_link}
-                    ip_address={props.ip_address}
-                    />
-                </div>
-              })
-            }
+              {
+                movies.map((movie, index) =>{
+                  return <div key={index} className={'movie-list'}>
+                    <MovieComponent
+                      index={index}
+                      movie={movie}
+                      title={movie.title}
+                      movieImage={movie.image}
+                      movieUrl={movie.movie_url}
+                      affiliateLink={movie.affiliate_link}
+                      ip_address={props.ip_address}
+                      />
+                  </div>
+                })
+              }
             </div>
           </SwipeableViews>
         </div>
