@@ -24,7 +24,7 @@ const Movies = (props) => {
   const [isSideMenu, openSideMenu] = useState(false)
   const [tabValue, setTabValue] = useState(1)
   const [tabValueIndex, setTabValueIndex] = useState(1)
-  const [isTabColor, setTabColor] = useState([false])
+  const [categoryValue, setCategoryValue] = useState(0)
   const [shareDrawer, setShareDrawer] = useState(false)
   const [shareMovieId, setShareMovieId] = useState(0)
 
@@ -133,25 +133,11 @@ const Movies = (props) => {
       console.log(array)
       console.log(db_url + '/popular_movies?tab_value=' + value)
       setMovie(array)
-      setTabColor(!isTabColor[value])
+      setCategoryValue(value)
     }).catch((res) => {
       console.log(res)
     })
   }
-
-  //ジャンル選択時に色変える　まだ完成していない
-  // const categoriesColor = (value) => {
-  //   if(!isTabColor[value]) {
-  //     return (
-  //       'category-list-selected'
-  //     )
-  //   } 
-  //   else {
-  //     return (
-  //       'category-list'
-  //     )
-  //   }  
-  // }
 
   const postShare = (channelName) => {
     const movieId = shareMovieId
@@ -314,13 +300,35 @@ const Movies = (props) => {
               <Tab label="ジャンル別" style={{color: "white", fontSize: '17px'}} onClick={() => tabsChange(1)} />
               <Tab label="おすすめ" style={{color: "white", fontSize: '17px'}} onClick={() => tabsChange(2)} />
             </Tabs>
-            <ul className="wrapper-category">
+            { tabValue === 1 ?
+                <>
+            <Tabs
+              value={categoryValue} // 0人気 1新着
+              onChange={() => categoriesChange}
+              variant='scrollable'
+              TabIndicatorProps={{style: {display: "none"}}}
+              centered
+            >
+              <Tab label="巨乳" style={{color: "white", fontSize: '17px'}} onClick={() => categoriesChange(0)} />
+              <Tab label="素人" style={{color: "white", fontSize: '17px'}} onClick={() => categoriesChange(1)} />
+              <Tab label="ナンパ" style={{color: "white", fontSize: '17px'}} onClick={() => categoriesChange(2)} />
+              <Tab label="ギャル" style={{color: "white", fontSize: '17px'}} onClick={() => categoriesChange(3)} />
+              <Tab label="OL" style={{color: "white", fontSize: '17px'}} onClick={() => categoriesChange(5)} />
+              <Tab label="人妻" style={{color: "white", fontSize: '17px'}} onClick={() => categoriesChange(7)} />
+              <Tab label="ハメ撮り" style={{color: "white", fontSize: '17px'}} onClick={() => categoriesChange(9)} />
+              <Tab label="スレンダー" style={{color: "white", fontSize: '17px'}} onClick={() => categoriesChange(12)} />
+            </Tabs>
+              </>
+                :
+                <></>
+              }
+            {/* <ul className="wrapper-category">
               { tabValue === 1 ?
                 <>
                   {
                     categories.map((category,index) => {
                       return (
-                        <li className="category-list" key={index} onClick={() => categoriesChange(index)}>{category}</li>
+                        <li className="category-list current" key={index} onClick={() => categoriesChange(index)}>{category}</li>
                         // <Tab key={index} label={category} style={{color: "white"}} onClick={() => categoriesChange(index)} />
                       )
                     })
@@ -329,7 +337,7 @@ const Movies = (props) => {
                 :
                 <></>
               }
-            </ul>
+            </ul> */}
           </AppBar>
         </Box>
         <div>
