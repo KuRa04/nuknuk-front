@@ -58,6 +58,9 @@ const Movies = (props) => {
     const array = res.data.movies.slice(0,10);
     console.log(array)
     setMovie(array)
+    // let video = document.getElementById("movie-list-0")
+    // console.log(video)
+    // video.play()
     }).catch((res) => {
       console.log(res)
     })
@@ -186,7 +189,7 @@ const Movies = (props) => {
         unobserve();
         videoRef.current && videoRef.current.play();
         setIsPlaying(true);
-        console.log("onEnter")
+        console.log(videoRef)
         observe();
         // if(video.ended()) {
         //   //ここに動画終了後の処理を記述
@@ -307,16 +310,15 @@ const Movies = (props) => {
               onChange={() => categoriesChange}
               variant='scrollable'
               TabIndicatorProps={{style: {display: "none"}}}
-              centered
             >
-              <Tab label="巨乳" style={{color: "white", fontSize: '17px'}} onClick={() => categoriesChange(0)} />
-              <Tab label="素人" style={{color: "white", fontSize: '17px'}} onClick={() => categoriesChange(1)} />
-              <Tab label="ナンパ" style={{color: "white", fontSize: '17px'}} onClick={() => categoriesChange(2)} />
-              <Tab label="ギャル" style={{color: "white", fontSize: '17px'}} onClick={() => categoriesChange(3)} />
-              <Tab label="OL" style={{color: "white", fontSize: '17px'}} onClick={() => categoriesChange(5)} />
-              <Tab label="人妻" style={{color: "white", fontSize: '17px'}} onClick={() => categoriesChange(7)} />
-              <Tab label="ハメ撮り" style={{color: "white", fontSize: '17px'}} onClick={() => categoriesChange(9)} />
-              <Tab label="スレンダー" style={{color: "white", fontSize: '17px'}} onClick={() => categoriesChange(12)} />
+              <Tab label="巨乳" style={{color: "white", fontSize: '14px'}} onClick={() => categoriesChange(0)} />
+              <Tab label="素人" style={{color: "white", fontSize: '14px'}} onClick={() => categoriesChange(1)} />
+              <Tab label="ナンパ" style={{color: "white", fontSize: '14px'}} onClick={() => categoriesChange(2)} />
+              <Tab label="ギャル" style={{color: "white", fontSize: '14px'}} onClick={() => categoriesChange(3)} />
+              <Tab label="OL" style={{color: "white", fontSize: '14px'}} onClick={() => categoriesChange(5)} />
+              <Tab label="人妻" style={{color: "white", fontSize: '14px'}} onClick={() => categoriesChange(7)} />
+              <Tab label="ハメ撮り" style={{color: "white", fontSize: '14px'}} onClick={() => categoriesChange(9)} />
+              <Tab label="スレンダー" style={{color: "white", fontSize: '14px'}} onClick={() => categoriesChange(12)} />
             </Tabs>
               </>
                 :
