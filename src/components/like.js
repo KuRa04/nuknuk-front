@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import axios from 'axios'
-import TitleLogo from '../images/title_logo.png'
-import FavoriteImg from '../images/favorite.png'
+import BeforeFavoriteImg from '../images/before_favorite.svg'
+import AfterFavoriteImg from '../images/after_favorite.svg'
 import "../styles/components/like.scss";
 
 const Likes = (props) => {
@@ -51,7 +51,7 @@ const Likes = (props) => {
 
   return (
     <div className="wrapper-favorites">
-      <img onClick={(e) => postFavorites(props.movie, e)} alt="" width="50" height="50" src={isLiked ? TitleLogo : FavoriteImg}  />
+      <img onClick={(e) => postFavorites(props.movie, e)} alt="" width="35" height="35" src={isLiked ? AfterFavoriteImg : BeforeFavoriteImg}  />
       <span className="favorites-count">{count}</span>
     </div>
   )

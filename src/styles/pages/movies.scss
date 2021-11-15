@@ -7,6 +7,19 @@ body {
   background-color: black;
 }
 
+.tool-bar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menu-icon {
+  margin: 0 0 0 10px;
+  width: 25px;
+  height: 25px;
+}
+
 .movies {
   scroll-snap-type: y mandatory;
   position: relative;
@@ -30,55 +43,80 @@ body {
   scroll-snap-align: end;
 }
 
+.MuiTab-wrapper {
+  font-weight: bold;
+}
+
 .wrapper-category {
   display: flex;
-  justify-content: center;
-  height: 16px;
+  justify-content: flex-start;
+  height: 22px;
   overflow-x: auto;
   white-space: nowrap;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  margin-top: 15px;
+  padding-inline-start: 10px;
+  padding-inline-end: 10px;
+}
+
+.wrapper-category::-webkit-scrollbar {  /* Chrome, Safari 対応 */
+  display:none;
 }
 
 .category-list {
   width: 60%;
   display: inline-block;
-  color: white;
+  color: #9B9B9B;
   cursor: pointer;
   list-style: none;
+  font-weight: bold;
   vertical-align: middle;
-  z-index: 1;
-  line-height: 16px;
-  margin: 0 8px;
-  padding: 0 8px;
+  line-height: 14px;
+  font-size: 14px;
+  padding: 8px 14px;
+}
+
+.category-list-selected {
+  width: 60%;
+  display: inline-block;
+
+  cursor: pointer;
+  list-style: none;
+  font-weight: bold;
+  vertical-align: middle;
+  line-height: 14px;
+  font-size: 14px;
+  padding: 8px 14px;
 }
 
 .wrapper-movie {
   position: relative;
-  z-index: 1;
+  margin-top: 20px;
+  z-index: 0;
 }
 
 .movie-object {
   width: 100%;
   display: flex;
   position: relative;
-}
-
-.wrapper-video {
-  height: 60vh;
+  align-items: flex-end;
 }
 
 .wrapper-title {
   z-index: 10;
+  margin-bottom: 3px;
 }
 
 .movie-title {
   width: 240px;
-  font-size: 16px;
+  font-size: 12px;
   color: white;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: center;
-  text-overflow: ellipsis;
+  font-weight: bold;
 }
 
 .video-btn {
@@ -97,14 +135,8 @@ body {
   z-index: 1; // サイドバーが1200のため
 }
 
-.menu-icon {
-  margin: 0 0 0 10px;
-  width: 50px;
-  height: 50px;
-}
-
 .share-btn {
-  width: 50px;
+  width: 35px;
   display: flex;
   flex-direction: column;
 }
@@ -112,6 +144,7 @@ body {
 .favorites-count {
   color: white;
   text-align: center;
+  font-weight: bold;
 }
 
 .sidebar {
@@ -129,31 +162,64 @@ body {
   font-size: 18px;
   font-weight: bold;
   text-align: center;
+  margin: 0;
   padding: 10px 0 20px 0;
   background-color: lightgrey;
+  border: 0;
 }
 
 .share-drawer {
-  width: 375px;
+  width: 100%;
   height: 100px;
   display: flex;
   justify-content: space-around;
   background-color: lightgrey;
+  // border-top: 2px solid lightgray;
+
+}
+
+.share-icon {
+  width: 33.333%;
+  text-align: center;
+  margin-top: 8px;
+}
+
+
+.share-text {
+  margin: 0;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
 }
 
 .share-footer {
   text-align: center;
+  width: 100%;
   height: 50px;
-  width: 375px;
   z-index: 2;
-  margin: 0 0 40px 0;
+  margin: 0;
   font-size: 18px;
   font-weight: bold;
-  background-color: aqua;
+  background-color: #fff;
 }
 
 .copy-link {
   width: 50px;
   height: 50px;
+  margin: 0 auto;
+  border-radius: 50%;
   background-color: red;
+}
+
+.cancel-button {
+  background-color: #fff;
+  color: #000;
+}
+
+.MuiButton-label {
+  font-weight: bold;
+}
+
+.tab-color {
+  color: white !important;
 }
