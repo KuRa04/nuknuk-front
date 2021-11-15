@@ -140,18 +140,18 @@ const Movies = (props) => {
   }
 
   //ジャンル選択時に色変える　まだ完成していない
-  const categoriesColor = (value) => {
-    if(!isTabColor[value]) {
-      return (
-        'category-list-selected'
-      )
-    } 
-    else {
-      return (
-        'category-list'
-      )
-    }  
-  }
+  // const categoriesColor = (value) => {
+  //   if(!isTabColor[value]) {
+  //     return (
+  //       'category-list-selected'
+  //     )
+  //   } 
+  //   else {
+  //     return (
+  //       'category-list'
+  //     )
+  //   }  
+  // }
 
   const postShare = (channelName) => {
     const movieId = shareMovieId
@@ -312,7 +312,7 @@ const Movies = (props) => {
             >
               <Tab label="人気" style={{color: "white", fontSize: '17px'}} onClick={() => tabsChange(0)} />
               <Tab label="ジャンル別" style={{color: "white", fontSize: '17px'}} onClick={() => tabsChange(1)} />
-              <Tab label="新着" style={{color: "white", fontSize: '17px'}} onClick={() => tabsChange(2)} />
+              <Tab label="おすすめ" style={{color: "white", fontSize: '17px'}} onClick={() => tabsChange(2)} />
             </Tabs>
             <ul className="wrapper-category">
               { tabValue === 1 ?
@@ -320,7 +320,7 @@ const Movies = (props) => {
                   {
                     categories.map((category,index) => {
                       return (
-                        <li className={categoriesColor(index)} key={index} onClick={() => categoriesChange(index)}>{category}</li>
+                        <li className="category-list" key={index} onClick={() => categoriesChange(index)}>{category}</li>
                         // <Tab key={index} label={category} style={{color: "white"}} onClick={() => categoriesChange(index)} />
                       )
                     })
