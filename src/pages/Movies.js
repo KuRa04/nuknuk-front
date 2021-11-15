@@ -306,20 +306,14 @@ const Movies = (props) => {
               variant='scrollable'
               TabIndicatorProps={{style: {display: "none"}}}
             >
-              <Tab label="巨乳" style={{color: "white", fontSize: '14px'}} onClick={() => categoriesChange(0, "巨乳")} />
-              <Tab label="素人" style={{color: "white", fontSize: '14px'}} onClick={() => categoriesChange(1, "素人")} />
-              <Tab label="ナンパ" style={{color: "white", fontSize: '14px'}} onClick={() => categoriesChange(2, "ナンパ")} />
-              <Tab label="ギャル" style={{color: "white", fontSize: '14px'}} onClick={() => categoriesChange(3, "ギャル")} />
-              {/* <Tab label="3P" style={{color: "white", fontSize: '14px'}} onClick={() => categoriesChange(4)} /> */}
-              <Tab label="OL" style={{color: "white", fontSize: '14px'}} onClick={() => categoriesChange(5, "OL")} />
-              {/* <Tab label="マッサージ" style={{color: "white", fontSize: '14px'}} onClick={() => categoriesChange(6)} /> */}
-              <Tab label="人妻" style={{color: "white", fontSize: '14px'}} onClick={() => categoriesChange(7, "人妻")} />
-              {/* <Tab label="寝取り寝取られ" style={{color: "white", fontSize: '14px'}} onClick={() => categoriesChange(8)} /> */}
-              <Tab label="ハメ撮り" style={{color: "white", fontSize: '14px'}} onClick={() => categoriesChange(9, "ハメ撮り")} />
-              {/* <Tab label="乱行" style={{color: "white", fontSize: '14px'}} onClick={() => categoriesChange(10)} /> */}
-              {/* <Tab label="JK" style={{color: "white", fontSize: '14px'}} onClick={() => categoriesChange(11)} /> */}
-              <Tab label="スレンダー" style={{color: "white", fontSize: '14px'}} onClick={() => categoriesChange(12, "スレンダー")} />
-              {/* <Tab label="ハーフ" style={{color: "white", fontSize: '14px'}} onClick={() => categoriesChange(13)} /> */}
+              <Tab label="巨乳" className={{'tab-color': categoryValue === 0}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(0,"巨乳")} />
+              <Tab label="素人" className={{'tab-color': categoryValue === 1}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(1, "素人")} />
+              <Tab label="ナンパ" className={{'tab-color': categoryValue === 2}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(2, "ナンパ")} />
+              <Tab label="ギャル" className={{'tab-color': categoryValue === 3}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(3, "ギャル")} />
+              <Tab label="OL" className={{'tab-color': categoryValue === 4}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(5, "OL")} />
+              <Tab label="人妻" className={{'tab-color': categoryValue === 5}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(7, "人妻")} />
+              <Tab label="ハメ撮り" className={{'tab-color': categoryValue === 6}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(9, "ハメ撮り")} />
+              <Tab label="スレンダー" className={{'tab-color': categoryValue === 7}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(12, "スレンダー")} />
             </Tabs>
               </>
                 :
@@ -440,7 +434,6 @@ const Movies = (props) => {
         </Drawer>
 
         <footer className="footer">
-          
         </footer>
       </ThemeProvider>
     </React.Fragment>
