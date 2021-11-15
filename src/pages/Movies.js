@@ -33,16 +33,11 @@ const Movies = (props) => {
     "素人",
     "ナンパ",
     "ギャル",
-    "3P",
     "OL",
-    "マッサージ",
     "人妻",
-    "寝取り寝取られ",
     "ハメ撮り",
-    "乱行",
-    "JK",
-    "スレンダー",
-    "ハーフ"];
+    "スレンダー"
+  ];
 
   // dbのパス
   // const db_url = Rails.env === 'development' ? DB_LOCAL_URL : DB_PRODUCTION_URL
@@ -129,14 +124,14 @@ const Movies = (props) => {
     }
   }
 
-  const categoriesChange = (value) => {
+  const categoriesChange = (value, text) => {
     axios.get(db_url + '/movies?tab_value=' + value).then((res) => {
       console.log(res.data.movies)
       const array = res.data.movies.slice(0,10);
       console.log(array)
       console.log(db_url + '/popular_movies?tab_value=' + value)
       setMovie(array)
-      setCategoryValue(value)
+      setCategoryValue(categories.indexOf(text))
     }).catch((res) => {
       console.log(res)
     })
@@ -311,14 +306,14 @@ const Movies = (props) => {
               variant='scrollable'
               TabIndicatorProps={{style: {display: "none"}}}
             >
-              <Tab label="巨乳" className={{'tab-color': categoryValue === 0}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(0)} />
-              <Tab label="素人" className={{'tab-color': categoryValue === 1}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(1)} />
-              <Tab label="ナンパ" className={{'tab-color': categoryValue === 2}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(2)} />
-              <Tab label="ギャル" className={{'tab-color': categoryValue === 3}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(3)} />
-              <Tab label="OL" className={{'tab-color': categoryValue === 4}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(5)} />
-              <Tab label="人妻" className={{'tab-color': categoryValue === 5}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(7)} />
-              <Tab label="ハメ撮り" className={{'tab-color': categoryValue === 6}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(9)} />
-              <Tab label="スレンダー" className={{'tab-color': categoryValue === 7}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(12)} />
+              <Tab label="巨乳" className={{'tab-color': categoryValue === 0}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(0,"巨乳")} />
+              <Tab label="素人" className={{'tab-color': categoryValue === 1}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(1, "素人")} />
+              <Tab label="ナンパ" className={{'tab-color': categoryValue === 2}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(2, "ナンパ")} />
+              <Tab label="ギャル" className={{'tab-color': categoryValue === 3}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(3, "ギャル")} />
+              <Tab label="OL" className={{'tab-color': categoryValue === 4}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(5, "OL")} />
+              <Tab label="人妻" className={{'tab-color': categoryValue === 5}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(7, "人妻")} />
+              <Tab label="ハメ撮り" className={{'tab-color': categoryValue === 6}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(9, "ハメ撮り")} />
+              <Tab label="スレンダー" className={{'tab-color': categoryValue === 7}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(12, "スレンダー")} />
             </Tabs>
               </>
                 :
@@ -439,7 +434,6 @@ const Movies = (props) => {
         </Drawer>
 
         <footer className="footer">
-
         </footer>
       </ThemeProvider>
     </React.Fragment>
