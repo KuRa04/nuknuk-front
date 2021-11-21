@@ -1,0 +1,18 @@
+.wrapper_favorites {
+  position: relative;
+  margin-bottom: 20px;
+  width: 35px;
+  display:flex;
+  justify-content: center;
+  flex-flow: column;
+  z-index: 2;
+}
+
+.favorites_count {
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  vertical-align: bottom;
+}
