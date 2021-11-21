@@ -1,0 +1,16 @@
+.wrapper_purchases {
+  display: block;
+  width: 200px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  background-color: #519EFF;
+  color: white;
+  text-decoration:none;
+  font-weight: bold;
+  z-index: 2;
+}
+
+.right_arrow {
+  margin-left: 4px;
+}
