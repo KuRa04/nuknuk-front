@@ -12,6 +12,7 @@ import CopyLink from '../../public/images/clip.svg'
 import SideImageWhite from '../../public/images/side_menu_white.svg'
 import SideImageBlack from '../../public/images/side_menu_black.svg'
 import Likes from '../components/like'
+import Shares from '../components/share'
 import Purchases from '../components/purchase'
 import {
   LineShareButton,
@@ -59,6 +60,7 @@ const Page = (props: Props) => {
   const [categoryValue, setCategoryValue] = useState(0)
   const [shareDrawer, setShareDrawer] = useState(false)
   const [shareMovieId, setShareMovieId] = useState(0)
+  const [shareCount, setShareCount] = useState(0)
 
   const categories = [
     "巨乳",
@@ -87,6 +89,10 @@ const Page = (props: Props) => {
       console.log(res)
     })
   }, [dbUrl]);
+
+  // useEffect(() => {
+  //   setShareCount(props.movie.shared_movies_count)
+  // }, [shareCount])
 
   const tabsChange = (value: number) => {
     switch(value) {
@@ -173,6 +179,7 @@ const Page = (props: Props) => {
     axios.post(dbUrl + '/shares', {
       channel: channelName,
       movie_id: movieId,
+  
     }).then((res) => {
       console.log(res.data)
     }).catch((data) => {
@@ -189,8 +196,6 @@ const Page = (props: Props) => {
     setShareMovieId(movie_id)
     setShareDrawer(!shareDrawer)
   }
-
-
 
   const MovieComponent = (props: Props) => {
     const [isPlaying, setIsPlaying] = useState(false)
@@ -268,9 +273,11 @@ const Page = (props: Props) => {
                 ip_address={props.ip_address}
               />
               <div className={styles.share_btn}>
-                {/* シェアボタンを表示、クリックで各SNSのボタンが表示される */}
-                <Image src={ShareButton} alt='menu' width={35} height={35} onClick={() => toggleShareDrawer(props.movie.id)} />
-                <span className={styles.favorites_count}>{props.movie.shared_movies_count}</span>
+              <Shares
+                movie={props.movie}
+                ip_address={props.ip_address}
+                onToggle={toggleShareDrawer}
+              />
               </div>
             </div>
           </div>
