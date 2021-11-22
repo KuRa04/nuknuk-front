@@ -41,7 +41,7 @@ const Likes = (props: Props) => {
 
   const dbUrl = process.env.NEXT_PUBLIC_HEROKU_DB_URL;
 
-  const postFavorites = async (e: any) => {
+  const postFavorites = async (e: any, movieIp_address: string) => {
     e.stopPropagation()
     const favorites_db = dbUrl + '/favorites'
     if (isLiked) {
@@ -70,6 +70,7 @@ const Likes = (props: Props) => {
         console.log(res)
       })
     }
+    return props.ip_address && movieIp_address.includes(props.ip_address)
   }
 
   useEffect(() => {
@@ -82,7 +83,7 @@ const Likes = (props: Props) => {
 
   return (
     <div className={styles.wrapper_favorites}>
-      <Image src={isLiked ? AfterFavoriteImg : BeforeFavoriteImg} alt='menu' width={35} height={35} onClick={(e) => postFavorites(e)} />
+      <Image src={isLiked ? AfterFavoriteImg : BeforeFavoriteImg} alt='menu' width={35} height={35} onClick={(e) => postFavorites(e, props.ip_address)} />
       <span className={styles.favorites_count}>{count}</span>
     </div>
   )
