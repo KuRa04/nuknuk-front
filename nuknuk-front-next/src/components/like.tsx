@@ -7,7 +7,7 @@ import styles from "../../styles/components/like.module.css";
 
 interface Props {
   ip_address: string
-  onClick?: Function               
+  onClick?: Function           
   movie: {
     id: number
     title: string
