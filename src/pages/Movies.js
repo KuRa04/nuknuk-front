@@ -141,7 +141,7 @@ const Movies = (props) => {
     const movieId = shareMovieId
     if (channelName === 'copy'){
       // httpsでしか動かない
-      navigator.clipboard.writeText(window.location.href)
+      navigator.clipboard.writeText(window.location.href + "?movie_id=" + movieId)
     }
     axios.post(db_url + '/shares', {
       channel: channelName,

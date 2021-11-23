@@ -14,6 +14,7 @@ import SideImageBlack from '../../public/images/side_menu_black.svg'
 import Likes from '../components/like'
 import Shares from '../components/share'
 import Purchases from '../components/purchase'
+import RequestMovie from '../pages/api/axios'
 import {
   LineShareButton,
   LineIcon,
@@ -52,6 +53,14 @@ type Movie = {
   is_favorited: boolean
 }
 
+type RequestMovieParam = {
+  small_tab: string,
+  large_tab: string,
+  movie_id: number,
+  page: number,
+  ip_address: string,
+}
+
 const Page = (props: Props) => {
   const [movies, setMovie] = useState<Array<Movie>>([])
   const [isSideMenu, openSideMenu] = useState(false)
@@ -73,18 +82,19 @@ const Page = (props: Props) => {
     "スレンダー"
   ];
 
-  const dbUrl = process.env.NEXT_PUBLIC_HEROKU_DB_URL;
+  // const dbUrl = process.env.NEXT_PUBLIC_HEROKU_DB_URL;
+  const dbUrl = process.env.NEXT_PUBLIC_LOCAL_DB_URL;
 
   useEffect( () => {
-    const param = window.location.search
+    const searchUrl = window.location.search
     let getDbUrl = dbUrl
-    getDbUrl += param ? "/movies" + param : "/movies"
+    getDbUrl += searchUrl ? "/movies" + searchUrl : "/movies"
     console.log(getDbUrl)
-    axios.get(getDbUrl).then((res) => {
-    console.log(res.data.movies)
-    const array = res.data.movies.slice(0,10);
-    console.log(array)
-    setMovie(array)
+    const param = new RequestMovie(null, 'new', null, 1, "")
+    axios.get<any>(getDbUrl, {params: param}).then((res) => {
+      const array = res.data.movies;
+      console.log(array)
+      setMovie(array)
     }).catch((res) => {
       console.log(res)
     })
@@ -95,11 +105,12 @@ const Page = (props: Props) => {
   // }, [shareCount])
 
   const tabsChange = (value: number) => {
+    const param = new RequestMovie(null, null, null, null, null)
     switch(value) {
       case 0:
-        axios.get(dbUrl + '/movies').then((res) => {
+        axios.get<any>(dbUrl + '/movies', {params: param}).then((res) => {
           console.log(res.data.movies)
-          const array = res.data.movies.slice(0,10);
+          const array = res.data.movies;
           setMovie(array)
           setTabValue(value)
           console.log("人気")
@@ -108,9 +119,10 @@ const Page = (props: Props) => {
         })
         break;
       case 1:
+        const param = new RequestMovie(0, 'genre', null, 1, "")
         axios.get(dbUrl + '/movies').then((res) => {
           console.log(res.data.movies)
-          const array = res.data.movies.slice(0,10);
+          const array = res.data.movies;
           setMovie(array)
           setTabValue(value)
           console.log("ジャンル別")
@@ -121,7 +133,7 @@ const Page = (props: Props) => {
       case 2:
         axios.get(dbUrl + '/movies').then((res) => {
           console.log(res.data.movies)
-          const array = res.data.movies.slice(0,10);
+          const array = res.data.movies;
           setMovie(array)
           setTabValue(value)
           console.log("新着")
@@ -160,7 +172,7 @@ const Page = (props: Props) => {
   const categoriesChange = (value: number, text: string) => {
     axios.get(dbUrl + '/movies?tab_value=' + value).then((res) => {
       console.log(res.data.movies)
-      const array = res.data.movies.slice(0,10);
+      const array = res.data.movies;
       console.log(array)
       console.log(dbUrl + '/popular_movies?tab_value=' + value)
       setMovie(array)
@@ -174,12 +186,12 @@ const Page = (props: Props) => {
     const movieId = shareMovieId
     if (channelName === 'copy'){
       // httpsでしか動かない
-      navigator.clipboard.writeText(window.location.href)
+      navigator.clipboard.writeText(window.location.href + "?movie_id=" + movieId)
     }
     axios.post(dbUrl + '/shares', {
       channel: channelName,
       movie_id: movieId,
-  
+
     }).then((res) => {
       console.log(res.data)
     }).catch((data) => {
@@ -328,7 +340,7 @@ const Page = (props: Props) => {
                       onChange={() => categoriesChange}
                       variant='scrollable'
                       TabIndicatorProps={{style: {display: "none"}}}
-                    > 
+                    >
                       <Tab label="巨乳" className={categoryValue === 0 ? styles.tab_color : styles.tab_not_color} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(0,"巨乳")} />
                       <Tab label="素人" className={categoryValue === 1 ? styles.tab_color : styles.tab_not_color} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(1, "素人")} />
                       <Tab label="ナンパ" className={categoryValue === 2 ? styles.tab_color : styles.tab_not_color} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(2, "ナンパ")} />
@@ -336,7 +348,7 @@ const Page = (props: Props) => {
                       <Tab label="OL" className={categoryValue === 4 ? styles.tab_color : styles.tab_not_color} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(5, "OL")} />
                       <Tab label="人妻" className={categoryValue === 5 ? styles.tab_color : styles.tab_not_color} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(7, "人妻")} />
                       <Tab label="ハメ撮り" className={categoryValue === 6 ? styles.tab_color : styles.tab_not_color} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(9, "ハメ撮り")} />
-                      <Tab label="スレンダー" className={categoryValue === 7 ? styles.tab_color : styles.tab_not_color} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(12, "スレンダー")} /> 
+                      <Tab label="スレンダー" className={categoryValue === 7 ? styles.tab_color : styles.tab_not_color} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(12, "スレンダー")} />
                     </Tabs>
                   </>
                     :
