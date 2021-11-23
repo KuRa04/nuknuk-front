@@ -14,11 +14,11 @@ class RequestMovie {
     this.ip_address = ip_address
   }
 
-  set setSmallTab(small_tab: number) {
+  set smallTab(small_tab: number) {
     this.small_tab = small_tab
   }
 
-  set setLargeTab(large_tab: string) {
+  set largeTab(large_tab: string) {
     this.large_tab = large_tab
   }
 }

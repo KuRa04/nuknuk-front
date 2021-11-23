@@ -105,9 +105,10 @@ const Page = (props: Props) => {
   // }, [shareCount])
 
   const tabsChange = (value: number) => {
-    const param = new RequestMovie(null, null, null, null, null)
+    let param = new RequestMovie(null, null, null, 1, "")
     switch(value) {
       case 0:
+        param.largeTab = 'popular'
         axios.get<any>(dbUrl + '/movies', {params: param}).then((res) => {
           console.log(res.data.movies)
           const array = res.data.movies;
@@ -119,7 +120,8 @@ const Page = (props: Props) => {
         })
         break;
       case 1:
-        const param = new RequestMovie(0, 'genre', null, 1, "")
+        param.largeTab = 'genre'
+        param.smallTab = 0
         axios.get(dbUrl + '/movies').then((res) => {
           console.log(res.data.movies)
           const array = res.data.movies;
@@ -131,6 +133,7 @@ const Page = (props: Props) => {
         })
         break;
       case 2:
+        param.largeTab = 'new'
         axios.get(dbUrl + '/movies').then((res) => {
           console.log(res.data.movies)
           const array = res.data.movies;
@@ -170,11 +173,11 @@ const Page = (props: Props) => {
 
 
   const categoriesChange = (value: number, text: string) => {
-    axios.get(dbUrl + '/movies?tab_value=' + value).then((res) => {
-      console.log(res.data.movies)
+    let param = new RequestMovie(value, 'genre', null, 1, "")
+    console.log(param)
+    axios.get(dbUrl + '/movies', {params: param}).then((res) => {
       const array = res.data.movies;
       console.log(array)
-      console.log(dbUrl + '/popular_movies?tab_value=' + value)
       setMovie(array)
       setCategoryValue(categories.indexOf(text))
     }).catch((res) => {
