@@ -1,22 +1,26 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect, useRef } from 'react';
+import ReactDOM from 'react-dom'
 import useInView from "react-cool-inview"
+import axios from 'axios';
 import SwipeableViews from 'react-swipeable-views';
-import axios from 'axios'
 import {AppBar, Tabs, Tab, Toolbar, Drawer, Box, List, ListItem, createTheme, ThemeProvider, Button} from '@material-ui/core'
-import LogoWhite from '../images/logo_white_2.svg'
-import ShareButton from '../images/share.svg'
-import CopyLink from '../images/clip.svg'
-import SideImageWhite from '../images/side_menu_white.svg'
-import SideImageBlack from '../images/side_menu_black.svg'
+import LogoWhite from '../../public/images/logo_white_2.svg'
+import CopyLink from '../../public/images/clip.svg'
+import SideImageWhite from '../../public/images/side_menu_white.svg'
+import SideImageBlack from '../../public/images/side_menu_black.svg'
+import VideoStartIcon from '../../public/images/video_start.svg'
 import Likes from '../components/like'
+import Shares from '../components/share'
 import Purchases from '../components/purchase'
+import RequestMovie from './api/axios'
+import VideoComponent from 'components/video';
 import {
   LineShareButton,
   LineIcon,
   TwitterShareButton,
   TwitterIcon
 } from 'react-share'
-import "../styles/pages/movies.scss";
+import styles from "../../styles/pages/index.module.css";
 
 const Movies = (props) => {
   // 状態変数
