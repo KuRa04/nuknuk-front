@@ -7,17 +7,26 @@ body {
   background-color: black;
 }
 
-.tool-bar {
+.main {
+  background-color: #000;
+}
+
+.tool_bar {
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.menu-icon {
+.menu_icon {
   margin: 0 0 0 10px;
   width: 25px;
   height: 25px;
+}
+
+.MuiTab-wrapped {
+  display: flex;
+  justify-content: center;
 }
 
 .movies {
@@ -29,7 +38,7 @@ body {
   margin-top: 80px;
 }
 
-.movie-list {
+.movie_list {
   scroll-snap-align: center;
   width: 100%;
   height: 100%;
@@ -37,7 +46,7 @@ body {
   justify-content: center;
 }
 
-.movie-list::after {
+.movie_list::after {
   display: block;
   content: "";
   scroll-snap-align: end;
@@ -47,7 +56,7 @@ body {
   font-weight: bold;
 }
 
-.wrapper-category {
+.wrapper_category {
   display: flex;
   justify-content: flex-start;
   height: 22px;
@@ -60,11 +69,11 @@ body {
   padding-inline-end: 10px;
 }
 
-.wrapper-category::-webkit-scrollbar {  /* Chrome, Safari 対応 */
+.wrapper_category::-webkit-scrollbar {  /* Chrome, Safari 対応 */
   display:none;
 }
 
-.category-list {
+.category_list {
   width: 60%;
   display: inline-block;
   color: #9B9B9B;
@@ -77,7 +86,7 @@ body {
   padding: 8px 14px;
 }
 
-.category-list-selected {
+.category_list_selected {
   width: 60%;
   display: inline-block;
 
@@ -90,7 +99,7 @@ body {
   padding: 8px 14px;
 }
 
-.category-list-selected {
+.category_list_selected {
   width: 60%;
   display: inline-block;
 
@@ -103,28 +112,44 @@ body {
   padding: 8px 14px;
 }
 
-.wrapper-movie {
+.wrapper_movie {
+  width: 100%;
+  height: 100%;
   position: relative;
   margin-top: 20px;
   z-index: 0;
 }
 
-.movie-object {
+.video_wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.video_start_icon { 
+  width: 100%;
+  position: absolute;
+  top: 15%;
+  display: flex;
+  justify-content: center;
+}
+
+.movie_object {
   width: 100%;
   display: flex;
   position: relative;
   align-items: flex-end;
+  z-index: 0;
 }
 
-.wrapper-title {
+.wrapper_title {
   z-index: 10;
   margin-bottom: 3px;
 }
 
-.movie-title {
+.movie_title {
   width: 240px;
   font-size: 12px;
-  color: white;
+  color: #F0F0F0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -132,7 +157,7 @@ body {
   font-weight: bold;
 }
 
-.video-btn {
+.video_btn {
   width: 120px;
   display:flex;
   flex-flow: column;
@@ -145,17 +170,17 @@ body {
   position: fixed;
   bottom: 0;
   width: 100%;
-  z-index: 1; // サイドバーが1200のため
+  z-index: 1;
 }
 
-.share-btn {
+.share_btn {
   width: 35px;
   display: flex;
   flex-direction: column;
 }
 
-.favorites-count {
-  color: white;
+.favorites_count {
+  color: #F0F0F0;
   text-align: center;
   font-weight: bold;
 }
@@ -165,13 +190,13 @@ body {
   align-items: flex-end;
 }
 
-.share-drawer-box {
+.share_drawer_box {
   height: 210px;
   width: 375px;
   margin-bottom: 40px;
 }
 
-.share-title {
+.share_title {
   font-size: 18px;
   font-weight: bold;
   text-align: center;
@@ -181,31 +206,31 @@ body {
   border: 0;
 }
 
-.share-drawer {
+.share_drawer {
   width: 100%;
   height: 100px;
   display: flex;
   justify-content: space-around;
   background-color: lightgrey;
-  // border-top: 2px solid lightgray;
+  border-top: 2px solid lightgray;
 
 }
 
-.share-icon {
+.share_icon {
   width: 33.333%;
   text-align: center;
   margin-top: 8px;
 }
 
 
-.share-text {
+.share_text {
   margin: 0;
   text-align: center;
   font-size: 12px;
   font-weight: bold;
 }
 
-.share-footer {
+.share_footer {
   text-align: center;
   width: 100%;
   height: 50px;
@@ -216,7 +241,7 @@ body {
   background-color: #fff;
 }
 
-.copy-link {
+.copy_link {
   width: 50px;
   height: 50px;
   margin: 0 auto;
@@ -224,7 +249,7 @@ body {
   background-color: red;
 }
 
-.cancel-button {
+.cancel_button {
   background-color: #fff;
   color: #000;
 }
@@ -233,6 +258,11 @@ body {
   font-weight: bold;
 }
 
-.tab-color {
-  color: white !important;
+.tab_color {
+  color: #F0F0F0 !important;
+}
+
+.empty_component {
+  width: 370px;
+  height: 300px;
 }

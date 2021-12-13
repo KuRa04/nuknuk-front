@@ -1,5 +1,6 @@
-.wrapper-favorites {
+.wrapper_favorites {
   position: relative;
+  height: 20px;
   margin-bottom: 20px;
   width: 35px;
   display:flex;
@@ -8,11 +9,11 @@
   z-index: 2;
 }
 
-.favorites-count {
+.favorites_count {
   margin-top: 4px;
   font-size: 14px;
   font-weight: bold;
-  color: white;
+  color: #F0F0F0;
   text-align: center;
   vertical-align: bottom;
 }
