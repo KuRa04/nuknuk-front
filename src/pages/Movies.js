@@ -1,15 +1,19 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect, useRef } from 'react';
+import ReactDOM from 'react-dom'
 import useInView from "react-cool-inview"
+import axios from 'axios';
 import SwipeableViews from 'react-swipeable-views';
-import axios from 'axios'
 import {AppBar, Tabs, Tab, Toolbar, Drawer, Box, List, ListItem, createTheme, ThemeProvider, Button} from '@material-ui/core'
 import LogoWhite from '../images/logo_white_2.svg'
-import ShareButton from '../images/share.svg'
 import CopyLink from '../images/clip.svg'
 import SideImageWhite from '../images/side_menu_white.svg'
 import SideImageBlack from '../images/side_menu_black.svg'
+import VideoStartIcon from '../images/video_start.svg'
 import Likes from '../components/like'
+import Shares from '../components/share'
 import Purchases from '../components/purchase'
+import RequestMovie from './api/axios'
+import VideoComponent from '../components/video';
 import {
   LineShareButton,
   LineIcon,
@@ -18,118 +22,107 @@ import {
 } from 'react-share'
 import "../styles/pages/movies.scss";
 
+
 const Movies = (props) => {
   // 状態変数
   const [movies, setMovie] = useState([])
   const [isSideMenu, openSideMenu] = useState(false)
-  const [tabValue, setTabValue] = useState(1)
-  const [tabValueIndex, setTabValueIndex] = useState(1)
+  const [tabValue, setTabValue] = useState(0)
+  // const [tabValueIndex, setTabValueIndex] = useState(1)
   const [categoryValue, setCategoryValue] = useState(0)
+  // const [categoryValueIndex, setCategoryValueIndex] = useState(0)
   const [shareDrawer, setShareDrawer] = useState(false)
   const [shareMovieId, setShareMovieId] = useState(0)
+  // const [shareCount, setShareCount] = useState(0)
 
   const categories = [
-    "巨乳",
+    "人気",
     "素人",
-    "ナンパ",
-    "ギャル",
-    "OL",
-    "人妻",
+    "巨乳・美乳",
+    "制服（JK、ナース他）",
+    "人妻・若妻",
     "ハメ撮り",
-    "スレンダー"
+    "スレンダー",
+    "美少女",
+    "お姉さん",
+    "複数人",
+    "ナンパ",
+    "女子大生",
+    "盗撮・のぞき",
+    "おすすめ"
   ];
 
   // dbのパス
   // const db_url = Rails.env === 'development' ? DB_LOCAL_URL : DB_PRODUCTION_URL
-  const db_url = props.db_url
+  const dbUrl = props.dbUrl
+  let tapCount = 0;
 
   useEffect( () => {
-    const param = window.location.search
-    let get_db_url = db_url
-    get_db_url += param ? "/movies" + param : "/movies"
-    console.log(get_db_url)
-    axios.get(get_db_url).then((res) => {
-    console.log(res.data.movies)
-    const array = res.data.movies.slice(0,10);
-    console.log(array)
-    setMovie(array)
-    // let video = document.getElementById("movie-list-0")
-    // console.log(video)
-    // video.play()
+    const searchUrl = window.location.search
+    let getDbUrl = dbUrl
+    getDbUrl += searchUrl ? "/movies" + searchUrl : "/movies"
+    console.log(getDbUrl)
+    const param = new RequestMovie(null, 'new', null, 1, "")
+    axios.get(getDbUrl, {params: param}).then((res) => {
+      const array = res.data.movies;
+      console.log(array)
+      setMovie(array)
     }).catch((res) => {
       console.log(res)
     })
-  }, [db_url]);
+  }, [dbUrl]);
 
   // 0人気 1新着
-  const tabsChange = (value) => {
-    switch(value) {
-      case 0:
-        axios.get(db_url + '/movies').then((res) => {
-          console.log(res.data.movies)
-          const array = res.data.movies.slice(0,10);
-          setMovie(array)
-          setTabValue(value)
-          console.log("人気")
-        }).catch((res) => {
-          console.log(res)
-        })
-        break;
-      case 1:
-        axios.get(db_url + '/movies').then((res) => {
-          console.log(res.data.movies)
-          const array = res.data.movies.slice(0,10);
-          setMovie(array)
-          setTabValue(value)
-          console.log("ジャンル別")
-        }).catch((res) => {
-          console.log(res)
-        })
-        break;
-      case 2:
-        axios.get(db_url + '/movies').then((res) => {
-          console.log(res.data.movies)
-          const array = res.data.movies.slice(0,10);
-          setMovie(array)
-          setTabValue(value)
-          console.log("新着")
-        }).catch((res) => {
-          console.log(res)
-        })
-        break;
-      default:
-        console.log("どれにも属していません")
+  const tabsChange = (value, text) => {
+    let param = new RequestMovie(null, null, null, 1, "")
+    if (value === 0)
+      param.largeTab = 'popular'
+    else if (1 <= value && value <= 12)
+    {
+      param.largeTab = 'genre'
+      setCategoryValue(categories.indexOf(text))
     }
+    else if (value === 13)
+      param.largeTab = 'new'    
+    axios.get(dbUrl + '/movies', {params: param}).then((res) => {
+    console.log(res.data.movies)
+    const array = res.data.movies;
+    setMovie(array)
+    setTabValue(value)
+    console.log(value)
+    }).catch((res) => {
+      console.log(res)
+    })
   }
 
-  const tabsChangeIndex = (value) => {
-    switch(value) {
-      case 0:
-        setTabValue(value)
-        setTabValueIndex(value)
-        console.log("人気")
-        break;
-      case 1:
-        setTabValue(value)
-        setTabValueIndex(value)
-        console.log("ジャンル別")
-        break;
-      case 2:
-        setTabValue(value)
-        setTabValueIndex(value)
-        console.log("新着")
-        break;
-      default:
-        console.log("どれにも属していません")
-    }
-  }
+  // const tabsChangeIndex = (value) => {
+  //   switch(value) {
+  //     case 0:
+  //       setTabValue(value)
+  //       setTabValueIndex(value)
+  //       console.log("人気")
+  //       break;
+  //     case 1:
+  //       setTabValue(value)
+  //       setTabValueIndex(value)
+  //       console.log("ジャンル別")
+  //       break;
+  //     case 2:
+  //       setTabValue(value)
+  //       setTabValueIndex(value)
+  //       console.log("新着")
+  //       break;
+  //     default:
+  //       console.log("どれにも属していません")
+  //   }
+  // }
 
   const categoriesChange = (value, text) => {
-    axios.get(db_url + '/movies?tab_value=' + value).then((res) => {
-      console.log(res.data.movies)
-      const array = res.data.movies.slice(0,10);
+    let param = new RequestMovie(value - 1, 'genre', null, 1, "")
+    console.log(param)
+    axios.get(dbUrl + '/movies', {params: param}).then((res) => {
+      const array = res.data.movies;
       console.log(array)
-      console.log(db_url + '/popular_movies?tab_value=' + value)
       setMovie(array)
       setCategoryValue(categories.indexOf(text))
     }).catch((res) => {
@@ -143,7 +136,7 @@ const Movies = (props) => {
       // httpsでしか動かない
       navigator.clipboard.writeText(window.location.href + "?movie_id=" + movieId)
     }
-    axios.post(db_url + '/shares', {
+    axios.post(dbUrl + '/shares', {
       channel: channelName,
       movie_id: movieId,
     }).then((res) => {
@@ -153,10 +146,10 @@ const Movies = (props) => {
     })
   }
 
-  const toggleFavorites = (movie_ip_address) => {
-    console.log(movie_ip_address.includes(props.ip_address))
-    return props.ip_address && movie_ip_address.includes(props.ip_address)
-  }
+  // const toggleFavorites = (movie_ip_address) => {
+  //   console.log(movie_ip_address.includes(props.ip_address))
+  //   return props.ip_address && movie_ip_address.includes(props.ip_address)
+  // }
 
   const toggleShareDrawer = (movie_id) => {
     setShareMovieId(movie_id)
@@ -166,82 +159,85 @@ const Movies = (props) => {
   const MovieComponent = (props) => {
     const [isPlaying, setIsPlaying] = useState(false)
     const videoRef = useRef();
+    const divRef = useRef();
 
     const playVideo = (e) => {
-      if(!isPlaying) {
-        videoRef.current && videoRef.current.play();
-        setIsPlaying(true);
-      } else {
-        videoRef.current && videoRef.current.pause();
-        setIsPlaying(false);
+      if(!tapCount) {
+        ++tapCount;  
+        console.log( "シングルタップに成功しました!!" );
+        setTimeout(() => {
+          if (tapCount === 1)
+          {
+            if(!isPlaying) {
+              videoRef.current && videoRef.current.play();
+              setIsPlaying(true);
+            } else {
+              videoRef.current && videoRef.current.pause();
+              setIsPlaying(false);
+            }
+          }
+          tapCount = 0;
+        }, 500)
+      }
+      else { 
+        e.preventDefault();
+        console.log( "ダブルタップに成功しました!!" );
+        tapCount = 0 ;
       }
     }
 
     const { observe } = useInView({
       threshold: 1,
       onEnter: ({ observe, unobserve }) => {
-        //viewportに入ったらvideoをスタート
         unobserve();
+        console.log("onEnter")
+        const movieId = divRef.current.id.split('video-player-')[1]
+        const movie = movies.filter((movie) => movie.id === Number(movieId))[0]
+        console.log(movie)
+        ReactDOM.render(<VideoComponent movie={movie} videoRef={videoRef}/>, document.getElementById("video-player-" + movieId));
         videoRef.current && videoRef.current.play();
-        setIsPlaying(true);
-        console.log(videoRef)
         observe();
-        // if(video.ended()) {
-        //   //ここに動画終了後の処理を記述
-        //   //今は最初から動画を流す設定
-        //   video.play();
-        // }
-
       },
       onLeave: ({ observe, unobserve }) => {
-        //viewportから出たらvideoを止める
         unobserve();
-        videoRef.current.currentTime = 0; //videoの再生時間を最初に戻す
-        videoRef.current && videoRef.current.pause();
-        setIsPlaying(false);
         console.log("onLeave")
+        const movieId = divRef.current.id.split('video-player-')[1]
+        let movie = document.getElementById("video-player-" + movieId).replaceChildren;
+        movie = null;
+        console.log(movie)
         observe();
       },
     });
     return (
-      <div className="wrapper-movie" id={"movie-url-" + props.movie.id} onClick={() => playVideo()}>
-        <div ref={observe}>
-          <video
-            muted
-            controls={false}
-            playsInline
-            width="370"
-            height="300"
-            poster={props.movieImage}
-            src={props.movieUrl}
-            id={'movie-list-' + props.index}
-            preload="metadata"
-            ref={videoRef}
-          >
-          </video>
-        </div>
-        <div className="movie-object">
-          <div className="wrapper-title">
-            <p className="movie-title">{props.title}</p>
+      <div className="wrapper_movie" id={"movie-url-" + props.movie.id} onTouchStart={(e) => playVideo(e)}>
+        {
+          isPlaying &&
+          <div className="video_start_icon">
+            <img src={VideoStartIcon} alt="" width={48} height={59}/>
+          </div>
+        }
+          <div ref={observe}>
+            <div className="empty_component" id={"video-player-" + props.movie.id} ref={divRef}></div>
+          </div>
+        <div className="movie_object">
+          <div className="styles.wrapper_title">
+            <p className="movie_title">{props.movie.title}</p>
             <Purchases
               movie={props.movie}
-              affiliateLink={props.affiliateLink}
-              db_url={db_url}
-              movie_purchases_count={props.movie_purchases_count}
+              ip_address={props.ip_address}
             />
             </div>
-            <div className="video-btn">
+            <div className="video_btn">
               <Likes
                 movie={props.movie}
-                db_url={db_url}
                 ip_address={props.ip_address}
-                isLiked={toggleFavorites(props.movie.favorite_ip_address)}
-                movie_favorites_count={props.movie.favorites_count}
               />
-              <div className="share-btn">
-                {/* シェアボタンを表示、クリックで各SNSのボタンが表示される */}
-                <img alt="" width="35" height="35" src={ShareButton} onClick={() => toggleShareDrawer(props.movie.id)} />
-                <span className="favorites-count">{props.movie.shared_movies_count}</span>
+              <div className="share_btn">
+                <Shares
+                  movie={props.movie}
+                  ip_address={props.ip_address}
+                  onToggle={toggleShareDrawer}
+                />
               </div>
             </div>
           </div>
@@ -268,6 +264,7 @@ const Movies = (props) => {
   return (
     <React.Fragment>
       <ThemeProvider theme={theme}>
+        <div className="main">
         <Box sx={{height: 50}}>
           <AppBar
             style={{
@@ -277,149 +274,95 @@ const Movies = (props) => {
             position="fixed"
           >
             <Toolbar>
-              <div className="tool-bar">
+              <div className="tool_bar">
                 <img src={LogoWhite} alt=""/>
-                <img
-                  alt=""
-                  className="menu-icon"
-                  src={isSideMenu ? SideImageBlack : SideImageWhite}
-                  onClick={() => openSideMenu(!isSideMenu)}
-                />
+                <img className="menu_icon" src={isSideMenu ? SideImageBlack : SideImageWhite} alt='menu' width={35} height={35} onClick={() => openSideMenu(!isSideMenu)} />
               </div>
             </Toolbar>
             <Tabs
               value={tabValue} // 0人気 1新着
               onChange={() => tabsChange}
-              TabIndicatorProps={{style: {background:'yellow'
+              TabIndicatorProps={{style: {background:'#EFE060', height: "2.8px", borderRadius: "8%"
             }}}
               centered
             >
-              <Tab label="人気" style={{color: "white", fontSize: '17px'}} onClick={() => tabsChange(0)} />
-              <Tab label="ジャンル別" style={{color: "white", fontSize: '17px'}} onClick={() => tabsChange(1)} />
-              <Tab label="おすすめ" style={{color: "white", fontSize: '17px'}} onClick={() => tabsChange(2)} />
-            </Tabs>
-            { tabValue === 1 ?
-                <>
-            <Tabs
-              value={categoryValue} // 0人気 1新着
-              onChange={() => categoriesChange}
-              variant='scrollable'
-              TabIndicatorProps={{style: {display: "none"}}}
-            >
-              <Tab label="巨乳" className={{'tab-color': categoryValue === 0}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(0,"巨乳")} />
-              <Tab label="素人" className={{'tab-color': categoryValue === 1}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(1, "素人")} />
-              <Tab label="ナンパ" className={{'tab-color': categoryValue === 2}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(2, "ナンパ")} />
-              <Tab label="ギャル" className={{'tab-color': categoryValue === 3}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(3, "ギャル")} />
-              <Tab label="OL" className={{'tab-color': categoryValue === 4}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(5, "OL")} />
-              <Tab label="人妻" className={{'tab-color': categoryValue === 5}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(7, "人妻")} />
-              <Tab label="ハメ撮り" className={{'tab-color': categoryValue === 6}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(9, "ハメ撮り")} />
-              <Tab label="スレンダー" className={{'tab-color': categoryValue === 7}} style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(12, "スレンダー")} />
-            </Tabs>
-              </>
-                :
-                <></>
-              }
-            {/* <ul className="wrapper-category">
-              { tabValue === 1 ?
-                <>
-                  {
-                    categories.map((category,index) => {
-                      return (
-                        <li className="category-list current" key={index} onClick={() => categoriesChange(index)}>{category}</li>
-                        // <Tab key={index} label={category} style={{color: "white"}} onClick={() => categoriesChange(index)} />
-                      )
-                    })
-                  }
-                </>
-                :
-                <></>
-              }
-            </ul> */}
-          </AppBar>
+              <Tab label="人気" style={{color: "#F0F0F0", fontSize: '17px', paddingLeft: "0px", paddingRight: "0px", marginLeft: "12px", marginRight: "12px", }} onClick={() => tabsChange(0, '人気')} />
+              <Tab label="ジャンル別" style={{color: "#F0F0F0", fontSize: '17px', paddingBottom: "2.5px", paddingLeft: "0px", paddingRight: "0px", marginLeft: "12px", marginRight: "12px"}} onClick={() => tabsChange(1, '巨乳')} />
+              <Tab label="おすすめ" style={{color: "#F0F0F0", fontSize: '17px', paddingBottom: "2.5px", paddingLeft: "0px", paddingRight: "0px", marginLeft: "12px", marginRight: "12px"}} onClick={() => tabsChange(16, 'おすすめ')} />
+              </Tabs>
+                { tabValue === 1 &&
+                    <Tabs
+                      value={tabValue} // 0人気 1新着
+                      onChange={() => tabsChange}
+                      variant='scrollable'
+                      TabIndicatorProps={{style: {display: "none"}}}
+                    >
+                      {/* {
+                        smallTabs.map((category, index) => {
+                          <Tab label={category} className={categoryValue === index && styles.tab_color} style={{color: "#606060", fontSize: '14px'}} onClick={() => tabsChange(index, category)}></Tab>
+                        }) } */}
+                      
+                      <Tab label="巨乳" className={categoryValue === 0 && "tab_color" } style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(1,"巨乳")} />
+                      <Tab label="素人" className={categoryValue === 1 && "tab_color" } style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(1, "素人")} />
+                      <Tab label="ナンパ" className={categoryValue === 2 && "tab_color" } style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(2, "ナンパ")} />
+                      <Tab label="ギャル" className={categoryValue === 3 && "tab_color" } style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(3, "ギャル")} />
+                      <Tab label="OL" className={categoryValue === 4 && "tab_color" } style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(5, "OL")} />
+                      <Tab label="人妻" className={categoryValue === 5 && "tab_color" } style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(7, "人妻")} />
+                      <Tab label="ハメ撮り" className={categoryValue === 6 && "tab_color" } style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(9, "ハメ撮り")} />
+                      <Tab label="スレンダー" className={categoryValue === 7 && "tab_color" } style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(12, "スレンダー")} />
+                    </Tabs>
+                }
+            </AppBar>
         </Box>
-        <div>
-          <SwipeableViews index={tabValueIndex} onChangeIndex={tabsChangeIndex}>
-            <div className="movies">
-              {
-                movies.map((movie, index) =>{
-                  return <div key={index} className={'movie-list'}>
-                    <MovieComponent
-                      index={index}
-                      movie={movie}
-                      title={movie.title}
-                      movieImage={movie.image}
-                      movieUrl={movie.movie_url}
-                      affiliateLink={movie.affiliate_link}
-                      ip_address={props.ip_address}
-                      />
-                  </div>
-                })
-              }
-            </div>
-            <div className="movies">
-              {
-                movies.map((movie, index) =>{
-                  return <div key={index} className={'movie-list'}>
-                    <MovieComponent
-                      index={index}
-                      movie={movie}
-                      title={movie.title}
-                      movieImage={movie.image}
-                      movieUrl={movie.movie_url}
-                      affiliateLink={movie.affiliate_link}
-                      ip_address={props.ip_address}
-                      />
-                  </div>
-                })
-              }
-            </div>
-            <div className="movies">
-              {
-                movies.map((movie, index) =>{
-                  return <div key={index} className={'movie-list'}>
-                    <MovieComponent
-                      index={index}
-                      movie={movie}
-                      title={movie.title}
-                      movieImage={movie.image}
-                      movieUrl={movie.movie_url}
-                      affiliateLink={movie.affiliate_link}
-                      ip_address={props.ip_address}
-                      />
-                  </div>
-                })
-              }
-            </div>
-          </SwipeableViews>
-        </div>
-        {/* シェア */}
-        <Drawer className="share-drawer-box" anchor='bottom' open={shareDrawer} onClick={() => setShareDrawer(!shareDrawer)} >
-          <p className="share-title">シェア：</p>
-          <div className="share-drawer">
-            <div className="share-icon">
+        <SwipeableViews index={tabValue} onChangeIndex={tabsChange}>
+          <div className="movies">
+            {
+              movies.map((movie, index) =>{
+                return <div key={index} className="movie_list">
+                  <MovieComponent
+                    index={index}
+                    movie={movie}
+                    title={movie.title}
+                    movieImage={movie.image}
+                    movieUrl={movie.movie_url}
+                    affiliateLink={movie.affiliate_link}
+                    ip_address={props.ip_address}
+                    />
+                </div>
+              })
+            }
+          </div>
+
+        </SwipeableViews>
+        <Drawer className="share_drawer_box" anchor='bottom' open={shareDrawer} onClick={() => setShareDrawer(!shareDrawer)} >
+          <p className="share_title">シェア：</p>
+          <div className="share_drawer">
+            <div className="share_icon">
               <img
-                className="copy-link"
+                className="copy_link"
                 alt=""
                 src={CopyLink}
                 onClick={() => postShare("copy")}
+                width={50}
+                height={50}
               />
-              <p className="share-text">リンクをコピー</p>
+              <p className="share_text">リンクをコピー</p>
             </div>
-            <div className="share-icon">
+            <div className="share_icon">
               <TwitterShareButton onClick={() => postShare("twitter")} url={"https://nuknuk-front-01.herokuapp.com?movie_id=" + shareMovieId}>
                   <TwitterIcon size={50} round />
               </TwitterShareButton>
-              <p className="share-text">Twitter</p>
+              <p className="share_text">Twitter</p>
             </div>
-            <div className="share-icon">
+            <div className="share_icon">
               <LineShareButton onClick={() => postShare("line")} url={"https://nuknuk-front-01.herokuapp.com?movie_id=" + shareMovieId}>
                 <LineIcon size={50} round />
               </LineShareButton>
-              <p className="share-text">LINE</p>
+              <p className="share_text">LINE</p>
             </div>
           </div>
-          <div className="share-footer">
-            <Button className="cancel-button" onClick={() => setShareDrawer(false)}>キャンセル</Button>
+          <div className="share_footer">
+            <Button className="cancel_button" onClick={() => setShareDrawer(false)}>キャンセル</Button>
           </div>
         </Drawer>
 
@@ -435,6 +378,7 @@ const Movies = (props) => {
 
         <footer className="footer">
         </footer>
+        </div>
       </ThemeProvider>
     </React.Fragment>
   );

@@ -50,9 +50,9 @@ const Likes = (props) => {
   }, [isLiked])
 
   return (
-    <div className="wrapper-favorites">
+    <div className="wrapper_favorites">
       <img onClick={(e) => postFavorites(props.movie, e)} alt="" width="35" height="35" src={isLiked ? AfterFavoriteImg : BeforeFavoriteImg}  />
-      <span className="favorites-count">{count}</span>
+      <span className="favorites_count">{1}</span>
     </div>
   )
 }

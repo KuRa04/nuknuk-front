@@ -18,9 +18,9 @@ const Purchases = (props) => {
     }
 
   return (
-    <a className="wrapper-purchases" href={props.affiliateLink} onClick={(e) => postPurchases(props.movie, e)}>
+    <a className="wrapper_purchases" href={props.affiliateLink} onClick={(e) => postPurchases(props.movie, e)}>
       つづきを見る
-      <img className="right-arrow" alt="" width="10" height="10" src={RightArrowImg}  />
+      <img className="right_arrow" alt="" width="10" height="10" src={RightArrowImg}  />
     </a>
   )
 }
