@@ -19,7 +19,7 @@ function App() {
   }, [])
   return (
     <>
-      <Movies ip_address={ip} dbUrl={process.env.REACT_APP_LOCAL_DB_URL} />
+      <Movies ip_address={ip} dbUrl={process.env.REACT_APP_HEROKU_DB_URL} />
     </>
   );
 }
