@@ -296,11 +296,35 @@ const Movies = (props) => {
     const { observe } = useInView({
       threshold: 1,
       onEnter: ({ observe, unobserve }) => {
+        let value = 0;
+        let largeTab = ''
         unobserve();
         console.log("onEnter")
         const movieId = divRef.current.id.split('video-player-')[1]
         const movie = movies.filter((movie) => movie.id === Number(movieId))[0]
         console.log(movie)
+        if (movie === movies.slice(-1)[0]) //movies.slice(-1)[0] 配列のlastの内容
+        {  
+          console.log("これで最後です！")
+          //pageの数値は可変に出来るようにする
+          //large,smallタブのどこにいるのかを代入する
+          if (tabValue === 0)
+            largeTab = 'popular'
+          else if (tabValue === 1)
+            largeTab = 'genre'
+          else if (tabValue === 13)
+            largeTab = 'new'   
+          console.log(largeTab)
+          let param = new RequestMovie(0, largeTab, null, 1, "")
+          axios.get(dbUrl + '/movies', {params: param}).then((res) => {
+            const array = res.data.movies;
+            console.log(array)
+            setMovie(movies.concat(array)) //arrayに入った動画が30未満だったら最後の動画を探すようにする 
+          }).catch((res) => {
+            console.log(res)
+          })
+        }
+//
         ReactDOM.render(<VideoComponent movie={movie} videoRef={videoRef}/>, document.getElementById("video-player-" + movieId));
         videoRef.current && videoRef.current.play();
         observe();
