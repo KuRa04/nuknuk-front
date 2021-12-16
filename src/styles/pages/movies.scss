@@ -266,3 +266,23 @@ body {
   width: 370px;
   height: 300px;
 }
+
+.wrapper_favorites {
+  position: relative;
+  height: 20px;
+  margin-bottom: 20px;
+  width: 35px;
+  display:flex;
+  justify-content: center;
+  flex-flow: column;
+  z-index: 2;
+}
+
+.favorites_count {
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #F0F0F0;
+  text-align: center;
+  vertical-align: bottom;
+}

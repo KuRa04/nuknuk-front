@@ -9,7 +9,9 @@ import CopyLink from '../images/clip.svg'
 import SideImageWhite from '../images/side_menu_white.svg'
 import SideImageBlack from '../images/side_menu_black.svg'
 import VideoStartIcon from '../images/video_start.svg'
-import Likes from '../components/like'
+import BeforeFavoriteImg from '../images/before_favorite.svg'
+import AfterFavoriteImg from '../images/after_favorite.svg'
+// import Likes from '../components/like'
 import Shares from '../components/share'
 import Purchases from '../components/purchase'
 import RequestMovie from './api/axios'
@@ -56,6 +58,49 @@ const Movies = (props) => {
   // const db_url = Rails.env === 'development' ? DB_LOCAL_URL : DB_PRODUCTION_URL
   const dbUrl = props.dbUrl
   let tapCount = 0;
+
+  const [count, setCount] = useState(props.movie_favorites_count)
+  const [isLiked, setLiked] = useState(props.isLiked)
+
+  const postFavorites = async (movie, e) => {
+    e.stopPropagation()
+    const favorites_db = dbUrl + '/favorites'
+    if (isLiked) {
+      console.log(props.ip_address)
+      const params = {movie_id: movie.id, ip_address: props.ip_address}
+      console.log(params)
+      axios.delete(favorites_db, {data: params}).then((res) => {
+        console.log(res.data)
+        const isBool = !isLiked
+        setLiked(isBool)
+        console.log(isLiked)
+        const new_count = res.data.movie_favorites_count
+        setCount(new_count)
+      }).catch((res) => {
+        console.log(res)
+      })
+    }else {
+      console.log(dbUrl)
+      axios.post(favorites_db, {movie_id: movie.id, ip_address: props.ip_address}).then((res) => {
+        console.log(favorites_db)
+        const isBool = !isLiked
+        setLiked(isBool)
+        const new_count = res.data.movie_favorites_count
+        setCount(new_count)
+        console.log(count)
+      }).catch((res) => {
+        console.log(res)
+      })
+    }
+  }
+
+  useEffect(() => {
+    setCount(count)
+  }, [count])
+
+  useEffect(() => {
+    setLiked(isLiked)
+  }, [isLiked])
 
   useEffect( () => {
     const searchUrl = window.location.search
@@ -242,6 +287,7 @@ const Movies = (props) => {
       }
       else { 
         e.preventDefault();
+        postFavorites(props.movie, e)
         console.log( "ダブルタップに成功しました!!" );
         tapCount = 0 ;
       }
@@ -290,10 +336,10 @@ const Movies = (props) => {
             />
             </div>
             <div className="video_btn">
-              <Likes
-                movie={props.movie}
-                ip_address={props.ip_address}
-              />
+            <div className="wrapper_favorites">
+              <img onClick={(e) => postFavorites(props.movie, e)} alt="" width="35" height="35" src={isLiked ? AfterFavoriteImg : BeforeFavoriteImg}  />
+              <span className="favorites_count">{1}</span>
+            </div>
               <div className="share_btn">
                 <Shares
                   movie={props.movie}
@@ -393,6 +439,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
@@ -410,6 +457,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
@@ -427,6 +475,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
@@ -444,6 +493,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
@@ -461,6 +511,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
@@ -478,6 +529,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
@@ -495,6 +547,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
@@ -512,6 +565,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
@@ -529,6 +583,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
@@ -546,6 +601,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
@@ -563,6 +619,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
@@ -580,6 +637,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
@@ -597,6 +655,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
@@ -614,6 +673,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
