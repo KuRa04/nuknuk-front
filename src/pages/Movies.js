@@ -145,12 +145,13 @@ const Movies = (props) => {
       case 0:
         setTabValue(value)
         setTabValueIndex(value)
+        categoriesChange(0,"人気")
         console.log("人気")
         break;
       case 1:
         setTabValue(value)
         setTabValueIndex(value)
-        // categoriesChange(1,"素人")
+        categoriesChange(1,"素人")
         console.log("ジャンル別")
         break;
       case 2:
@@ -229,7 +230,7 @@ const Movies = (props) => {
       if (value === 1)
         setTabValue(0)
       if (value === 12)
-        setTabValue(13) //smalltabが12のときにlargeタブを13にする　→出来た
+        setTabValue(13) 
       setCategoryValue(categories.indexOf(text))
     }).catch((res) => {
       console.log(res)
@@ -296,7 +297,6 @@ const Movies = (props) => {
     const { observe } = useInView({
       threshold: 1,
       onEnter: ({ observe, unobserve }) => {
-        let value = 0;
         let largeTab = ''
         unobserve();
         console.log("onEnter")
@@ -324,7 +324,6 @@ const Movies = (props) => {
             console.log(res)
           })
         }
-//
         ReactDOM.render(<VideoComponent movie={movie} videoRef={videoRef}/>, document.getElementById("video-player-" + movieId));
         videoRef.current && videoRef.current.play();
         observe();
