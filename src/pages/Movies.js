@@ -293,6 +293,7 @@ const Movies = (props) => {
               <Likes
                 movie={props.movie}
                 ip_address={props.ip_address}
+                dbUrl={props.dbUrl}
               />
               <div className="share_btn">
                 <Shares
@@ -393,6 +394,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
@@ -410,6 +412,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
@@ -427,6 +430,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
@@ -444,6 +448,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
@@ -461,6 +466,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
@@ -478,6 +484,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
@@ -495,6 +502,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
@@ -512,6 +520,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
@@ -529,6 +538,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
@@ -546,6 +556,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
@@ -563,6 +574,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
@@ -580,6 +592,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
@@ -597,6 +610,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })
@@ -614,6 +628,7 @@ const Movies = (props) => {
                     movieUrl={movie.movie_url}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
+                    dbUrl={props.dbUrl}
                     />
                 </div>
               })

@@ -8,11 +8,11 @@ const Likes = (props) => {
   const [count, setCount] = useState(props.movie_favorites_count)
   const [isLiked, setLiked] = useState(props.isLiked)
 
-  const db_url = props.db_url
+  const dbUrl = props.dbUrl
 
   const postFavorites = async (movie, e) => {
     e.stopPropagation()
-    const favorites_db = db_url + '/favorites'
+    const favorites_db = dbUrl + '/favorites'
     if (isLiked) {
       console.log(props.ip_address)
       const params = {movie_id: movie.id, ip_address: props.ip_address}
@@ -28,8 +28,9 @@ const Likes = (props) => {
         console.log(res)
       })
     }else {
-      console.log(props.ip_address)
+      console.log(dbUrl)
       axios.post(favorites_db, {movie_id: movie.id, ip_address: props.ip_address}).then((res) => {
+        console.log(favorites_db)
         const isBool = !isLiked
         setLiked(isBool)
         const new_count = res.data.movie_favorites_count
