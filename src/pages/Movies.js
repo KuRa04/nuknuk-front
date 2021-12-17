@@ -29,7 +29,7 @@ const Movies = (props) => {
   const [movies, setMovie] = useState([])
   const [isSideMenu, openSideMenu] = useState(false)
   const [tabValue, setTabValue] = useState(0)
-  const [tabValueIndex, setTabValueIndex] = useState(1)
+  const [tabValueIndex, setTabValueIndex] = useState(0)
   const [categoryValue, setCategoryValue] = useState(0)
   const [shareDrawer, setShareDrawer] = useState(false)
   const [shareMovieId, setShareMovieId] = useState(0)
@@ -110,7 +110,7 @@ const Movies = (props) => {
     let getDbUrl = dbUrl
     getDbUrl += searchUrl ? "/movies" + searchUrl : "/movies"
     console.log(getDbUrl)
-    const param = new RequestMovie(null, 'new', null, 1, "")
+    const param = new RequestMovie(-1, 'new', null, 1, "")
     axios.get(getDbUrl, {params: param}).then((res) => {
       const array = res.data.movies;
       console.log(array)

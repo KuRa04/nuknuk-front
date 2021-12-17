@@ -1,24 +1,22 @@
-import React, { ReactElement, useEffect }  from 'react'
-import Image from 'next/image'
-import StartUpImg from '../../public/images/startup.svg'
-import styles from "../../styles/pages/start_up.module.css";
-import useRouter from 'next/router'
+import React, { useEffect }  from 'react'
+// import { useHistroy } from 'react-router-dom';
+import StartUpImg from '../images/startup.svg'
+import  "../styles/pages/startup.scss";
 
 const StartUp = () => {
+  // const navigate = useHistroy();
 
   // 3秒後に年齢確認画面に遷移
   useEffect( () => {
     window.setTimeout(function(){
-      useRouter.push("/age_confirm")
+    //  navigate.push("/Movie")
     }, 1000);
   });
 
   return (
-    <>
-      <div className={styles.start_up_mapper}>
-        <Image src={StartUpImg} alt=""/>
+      <div className="start_up_mapper">
+        <img clasName="startup-img" src={StartUpImg} alt=""/>
       </div>
-    </>
   );
 };
 export default StartUp;
