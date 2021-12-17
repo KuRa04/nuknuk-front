@@ -11,7 +11,6 @@ import SideImageBlack from '../images/side_menu_black.svg'
 import VideoStartIcon from '../images/video_start.svg'
 import BeforeFavoriteImg from '../images/before_favorite.svg'
 import AfterFavoriteImg from '../images/after_favorite.svg'
-// import Likes from '../components/like'
 import Shares from '../components/share'
 import Purchases from '../components/purchase'
 import RequestMovie from './api/axios'
@@ -32,9 +31,11 @@ const Movies = (props) => {
   const [tabValue, setTabValue] = useState(0)
   const [tabValueIndex, setTabValueIndex] = useState(1)
   const [categoryValue, setCategoryValue] = useState(0)
-  // const [categoryValueIndex, setCategoryValueIndex] = useState(0)
   const [shareDrawer, setShareDrawer] = useState(false)
   const [shareMovieId, setShareMovieId] = useState(0)
+  const [count, setCount] = useState(props.movie_favorites_count)
+  const [isLiked, setLiked] = useState(props.isLiked)
+  const [pageCount, setPageCount] = useState(0)
   // const [shareCount, setShareCount] = useState(0)
 
   const categories = [
@@ -58,9 +59,6 @@ const Movies = (props) => {
   // const db_url = Rails.env === 'development' ? DB_LOCAL_URL : DB_PRODUCTION_URL
   const dbUrl = props.dbUrl
   let tapCount = 0;
-
-  const [count, setCount] = useState(props.movie_favorites_count)
-  const [isLiked, setLiked] = useState(props.isLiked)
 
   const postFavorites = async (movie, e) => {
     e.stopPropagation()
@@ -95,6 +93,11 @@ const Movies = (props) => {
   }
 
   useEffect(() => {
+    // 無限ループしない
+    setPageCount(n => n + 1);
+  }, [movies]);
+
+  useEffect(() => {
     setCount(count)
   }, [count])
 
@@ -119,6 +122,7 @@ const Movies = (props) => {
 
   // 0人気 1新着
   const tabsChange = (value, text) => {
+    setPageCount(1)
     let param = new RequestMovie(value, null, null, 1, "")
     if (value === 0)
       param.largeTab = 'popular'
@@ -141,16 +145,18 @@ const Movies = (props) => {
   }
 
   const tabsChangeIndex = (value) => {
+    setPageCount(1)
     switch(value) {
       case 0:
         setTabValue(value)
         setTabValueIndex(value)
+        categoriesChange(0,"人気")
         console.log("人気")
         break;
       case 1:
         setTabValue(value)
         setTabValueIndex(value)
-        // categoriesChange(1,"素人")
+        categoriesChange(1,"素人")
         console.log("ジャンル別")
         break;
       case 2:
@@ -220,16 +226,17 @@ const Movies = (props) => {
   }
 
   const categoriesChange = (value, text) => {
+    setPageCount(1)
     let param = new RequestMovie(value - 1, 'genre', null, 1, "")
     console.log(param)
     axios.get(dbUrl + '/movies', {params: param}).then((res) => {
       const array = res.data.movies;
       console.log(array)
       setMovie(array)
-      if (value === 1)
-        setTabValue(0)
+      // if (value === 1)
+        // setTabValue(0)
       if (value === 12)
-        setTabValue(13) //smalltabが12のときにlargeタブを13にする　→出来た
+        setTabValue(13) 
       setCategoryValue(categories.indexOf(text))
     }).catch((res) => {
       console.log(res)
@@ -251,11 +258,6 @@ const Movies = (props) => {
       console.log(data)
     })
   }
-
-  // const toggleFavorites = (movie_ip_address) => {
-  //   console.log(movie_ip_address.includes(props.ip_address))
-  //   return props.ip_address && movie_ip_address.includes(props.ip_address)
-  // }
 
   const toggleShareDrawer = (movie_id) => {
     setShareMovieId(movie_id)
@@ -296,11 +298,33 @@ const Movies = (props) => {
     const { observe } = useInView({
       threshold: 1,
       onEnter: ({ observe, unobserve }) => {
+        let largeTab = ''
         unobserve();
         console.log("onEnter")
         const movieId = divRef.current.id.split('video-player-')[1]
         const movie = movies.filter((movie) => movie.id === Number(movieId))[0]
         console.log(movie)
+        if (movie === movies.slice(-1)[0]) //movies.slice(-1)[0] 配列のlastの内容
+        {  
+          console.log("これで最後です！")
+          //pageの数値は可変に出来るようにする
+          //large,smallタブのどこにいるのかを代入する
+          if (tabValue === 0)
+            largeTab = 'popular'
+          else if (tabValue === 1)
+            largeTab = 'genre'
+          else if (tabValue === 13)
+            largeTab = 'new'   
+          console.log(pageCount)
+          let param = new RequestMovie(categoryValue, largeTab, null, pageCount, "")
+          axios.get(dbUrl + '/movies', {params: param}).then((res) => {
+            const array = res.data.movies;
+            console.log(array)
+            setMovie(movies.concat(array)) //arrayに入った動画が30未満だったら最後の動画を探すようにする 
+          }).catch((res) => {
+            console.log(res)
+          })
+        }
         ReactDOM.render(<VideoComponent movie={movie} videoRef={videoRef}/>, document.getElementById("video-player-" + movieId));
         videoRef.current && videoRef.current.play();
         observe();
