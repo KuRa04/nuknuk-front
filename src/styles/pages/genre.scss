@@ -1,0 +1,77 @@
+.page_title {
+  padding-top: 40px;
+  font-size: 18px;
+  color: #F0F0F0;
+  text-align: center;
+  position: relative;
+}
+
+.page_title::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -15px;/*線の上下位置*/
+  display: inline-block;
+  width: 60px;/*線の長さ*/
+  height: 5px;/*線の太さ*/
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);/*位置調整*/
+  background-color: yellow !important;/*線の色*/
+  border-radius: 2px;/*線の丸み*/
+}
+
+.sub_text {
+  padding-top: 50px;
+  font-size: 14px;
+  color: #F0F0F0;
+  text-align: center;
+}
+
+.genres_group {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  // padding-bottom: 70px !important;
+}
+
+.genre_select_button {
+  background-color: #F0F0F0 !important;
+  width: 40%;
+  height: 70px;
+  margin-top: 20px !important;
+  font-weight: bold !important;
+  position: relative !important;
+  display: flex;
+  border-radius: 5px;
+  border: none;
+}
+
+.genre_select_button:nth-child(odd) {
+  margin-right: 10px;
+}
+
+.jenre_title {
+  position: absolute;
+  left: 13px;
+  bottom: 0;
+  margin-bottom: 10px;
+}
+
+.footer_wrap {
+  width: 100%;
+  padding: 10px 20px 10px;
+  display: flex;
+  justify-content: center;
+  background-color: black !important;
+}
+
+
+
+.next_button {
+  width: 230px;
+  height: 40px;
+  background-color: #FBE416 !important;
+  border: none;
+  border-radius: 100px !important;
+}
