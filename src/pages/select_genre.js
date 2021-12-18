@@ -1,5 +1,4 @@
 import React, { useEffect, useState }  from 'react'
-import {Button} from '@material-ui/core'
 import "../styles/pages/genre.scss";
 import axios from 'axios';
 
@@ -25,8 +24,7 @@ const SelectGenre = () => {
 
   useEffect( () => {
     axios.get(dbUrl + "/selected_first_genres").then((res) => {
-      const genres = JSON.parse(res.data.selected_first_genres)
-      setGenres(genres)
+      setGenres(JSON.parse(res.data.selected_first_genres))
       console.log(genres)
     }).catch((res) => {
       console.log(res)
@@ -54,10 +52,10 @@ const SelectGenre = () => {
       <div className="page_title">こだわり条件</div>
       <div className="sub_text">興味関心は表示内容のカスタマイズに使用されます。</div>
       <div className="genres_group">
-        {categories.map((genre, index) => {
+        {genres.map((genre, index) => {
           return <button key={index} onClick={() => selectedGenres(genre)} variant="contained" className="genre_select_button">
             <p className="jenre_title">
-              {genre}
+              {genre.name}
             </p>
           </button>
         })}

@@ -356,6 +356,7 @@ const Movies = (props) => {
             <p className="movie_title">{props.movie.title}</p>
             <Purchases
               movie={props.movie}
+              // affiliateLink={props.affiliateLink}
               ip_address={props.ip_address}
             />
             </div>
