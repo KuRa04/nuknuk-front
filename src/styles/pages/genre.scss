@@ -1,6 +1,11 @@
+.wrap_select_genres {
+  background-color: black !important;
+}
+
 .page_title {
   padding-top: 40px;
   font-size: 18px;
+  font-weight: bold;
   color: #F0F0F0;
   text-align: center;
   position: relative;
@@ -22,6 +27,7 @@
 
 .sub_text {
   padding-top: 50px;
+  padding-bottom: 10px;
   font-size: 14px;
   color: #F0F0F0;
   text-align: center;
@@ -32,7 +38,8 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  // padding-bottom: 70px !important;
+  overflow-y: auto;
+  height: 500px;
 }
 
 .genre_select_button {
@@ -51,7 +58,7 @@
   margin-right: 10px;
 }
 
-.jenre_title {
+.genre_title {
   position: absolute;
   left: 13px;
   bottom: 0;
@@ -59,18 +66,18 @@
 }
 
 .footer_wrap {
-  width: 100%;
   padding: 10px 20px 10px;
   display: flex;
   justify-content: center;
   background-color: black !important;
 }
 
-
-
 .next_button {
   width: 230px;
   height: 40px;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 16px;
   background-color: #FBE416 !important;
   border: none;
   border-radius: 100px !important;

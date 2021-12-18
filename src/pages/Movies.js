@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import useInView from "react-cool-inview"
 import axios from 'axios';
 import SwipeableViews from 'react-swipeable-views';
-import {AppBar, Tabs, Tab, Toolbar, Drawer, Box, List, ListItem, createTheme, ThemeProvider, Button} from '@material-ui/core'
+import {AppBar, Tabs, Tab, Toolbar, Drawer, Box, List, ListItem, createTheme, ThemeProvider, Button, Modal} from '@material-ui/core'
 import LogoWhite from '../images/logo_white_2.svg'
 import CopyLink from '../images/clip.svg'
 import SideImageWhite from '../images/side_menu_white.svg'
@@ -15,7 +15,8 @@ import AfterFavoriteImg from '../images/after_favorite.svg'
 import Shares from '../components/share'
 import Purchases from '../components/purchase'
 import RequestMovie from './api/axios'
-import VideoComponent from '../components/video';
+import VideoComponent from '../components/video'
+import SelectGenre from './select_genre'
 import {
   LineShareButton,
   LineIcon,
@@ -29,6 +30,7 @@ const Movies = (props) => {
   // 状態変数
   const [movies, setMovie] = useState([])
   const [isSideMenu, openSideMenu] = useState(false)
+  const [isOpenSelectCategory, openSelectCategory] = useState(false)
   const [tabValue, setTabValue] = useState(0)
   const [tabValueIndex, setTabValueIndex] = useState(0)
   const [categoryValue, setCategoryValue] = useState(0)
@@ -192,7 +194,7 @@ const Movies = (props) => {
     useEffect(() => {
       setCount(count)
     }, [count])
-  
+
 
     const playVideo = (e) => {
       e.preventDefault();
@@ -353,6 +355,9 @@ const Movies = (props) => {
 
   return (
     <React.Fragment>
+      <Modal open={isOpenSelectCategory}>
+        <SelectGenre />
+      </Modal>
       <ThemeProvider theme={theme}>
         <div className="main">
         <Box sx={{height: 50}}>
@@ -366,7 +371,7 @@ const Movies = (props) => {
             <Toolbar>
               <div className="tool_bar">
                 <img src={LogoWhite} alt=""/>
-                <img src={SelectCategoryIcon} alt="" width={30} height={30} />
+                <img src={SelectCategoryIcon} alt="" width={30} height={30} onClick={() => openSelectCategory(!isOpenSelectCategory)} />
               </div>
             </Toolbar>
             <img className="menu_icon" src={isSideMenu ? SideImageBlack : SideImageWhite} alt='menu' width={35} height={35} onClick={() => openSideMenu(!isSideMenu)} />

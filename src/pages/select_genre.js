@@ -3,29 +3,14 @@ import "../styles/pages/genre.scss";
 import axios from 'axios';
 
 const SelectGenre = () => {
-  const dbUrl = process.env.REACT_APP_HEROKU_DB_URL;
+  // const dbUrl = process.env.REACT_APP_HEROKU_DB_URL;
+  const dbUrl = process.env.REACT_APP_LOCAL_DB_URL
 
   const [genres, setGenres] = useState([])
-
-  const categories = [
-    "素人",
-    "巨乳・美乳",
-    "制服（JK、ナース他）",
-    "人妻・若妻",
-    "ハメ撮り",
-    "スレンダー",
-    "美少女",
-    "お姉さん",
-    "複数人",
-    "ナンパ",
-    "女子大生",
-    "盗撮・のぞき",
-  ];
 
   useEffect( () => {
     axios.get(dbUrl + "/selected_first_genres").then((res) => {
       setGenres(JSON.parse(res.data.selected_first_genres))
-      console.log(genres)
     }).catch((res) => {
       console.log(res)
     })
@@ -48,22 +33,22 @@ const SelectGenre = () => {
   }
 
   return (
-    <>
+    <div className="wrap_select_genres">
       <div className="page_title">こだわり条件</div>
       <div className="sub_text">興味関心は表示内容のカスタマイズに使用されます。</div>
       <div className="genres_group">
         {genres.map((genre, index) => {
           return <button key={index} onClick={() => selectedGenres(genre)} variant="contained" className="genre_select_button">
-            <p className="jenre_title">
+            <p className="genre_title">
               {genre.name}
             </p>
           </button>
         })}
       </div>
       <div className="footer_wrap">
-        <button onClick={nextTransition} variant="contained" className="next_button" >次へ</button>
+        <button onClick={nextTransition} variant="contained" className="next_button" >条件を適用</button>
       </div>
-    </>
+    </div>
   );
 };
-export default SelectGenre;
+export default React.forwardRef(SelectGenre);
