@@ -125,7 +125,7 @@ body {
   justify-content: center;
 }
 
-.video_start_icon { 
+.video_start_icon {
   width: 100%;
   position: absolute;
   top: 15%;
@@ -258,8 +258,13 @@ body {
   font-weight: bold;
 }
 
-.tab_color {
+.select_small_tab {
   color: #F0F0F0 !important;
+}
+
+.un_select_small_tab {
+  color: #606060 !important;
+  font-size: 14px !important;
 }
 
 .empty_component {

@@ -3,18 +3,20 @@ import ReactDOM from 'react-dom'
 import useInView from "react-cool-inview"
 import axios from 'axios';
 import SwipeableViews from 'react-swipeable-views';
-import {AppBar, Tabs, Tab, Toolbar, Drawer, Box, List, ListItem, createTheme, ThemeProvider, Button} from '@material-ui/core'
+import {AppBar, Tabs, Tab, Toolbar, Drawer, Box, List, ListItem, createTheme, ThemeProvider, Button, Modal} from '@material-ui/core'
 import LogoWhite from '../images/logo_white_2.svg'
 import CopyLink from '../images/clip.svg'
 import SideImageWhite from '../images/side_menu_white.svg'
 import SideImageBlack from '../images/side_menu_black.svg'
 import VideoStartIcon from '../images/video_start.svg'
+import SelectCategoryIcon from '../images/select_category.svg'
 import BeforeFavoriteImg from '../images/before_favorite.svg'
 import AfterFavoriteImg from '../images/after_favorite.svg'
 import Shares from '../components/share'
 import Purchases from '../components/purchase'
 import RequestMovie from './api/axios'
-import VideoComponent from '../components/video';
+import VideoComponent from '../components/video'
+import SelectGenre from './select_genre'
 import {
   LineShareButton,
   LineIcon,
@@ -28,6 +30,7 @@ const Movies = (props) => {
   // 状態変数
   const [movies, setMovie] = useState([])
   const [isSideMenu, openSideMenu] = useState(false)
+  const [isOpenSelectCategory, openSelectCategory] = useState(false)
   const [tabValue, setTabValue] = useState(0)
   const [tabValueIndex, setTabValueIndex] = useState(0)
   const [categoryValue, setCategoryValue] = useState(0)
@@ -54,8 +57,8 @@ const Movies = (props) => {
   ];
 
   // dbのパス
-  const dbUrl = process.env.REACT_APP_HEROKU_DB_URL
-  // const dbUrl = process.env.REACT_APP_LOCAL_DB_URL
+  // const dbUrl = process.env.REACT_APP_HEROKU_DB_URL
+  const dbUrl = process.env.REACT_APP_LOCAL_DB_URL
   let tapCount = 0;
 
   useEffect(() => {
@@ -75,8 +78,8 @@ const Movies = (props) => {
     const searchUrl = window.location.search
     let getDbUrl = dbUrl
     getDbUrl += searchUrl ? "/movies" + searchUrl : "/movies"
-    console.log(getDbUrl)
     const param = new RequestMovie(-1, 'new', null, 1, "")
+    console.log(param)
     axios.get(getDbUrl, {params: param}).then((res) => {
       const array = res.data.movies;
       console.log(array)
@@ -112,6 +115,7 @@ const Movies = (props) => {
 
   const tabsChangeIndex = (value) => {
     setPageCount(1)
+    console.log(value)
     switch(value) {
       case 0:
         setTabValue(value)
@@ -125,69 +129,17 @@ const Movies = (props) => {
         categoriesChange(1,"素人")
         console.log("ジャンル別")
         break;
-      case 2:
-        setTabValueIndex(value)
-        // categoriesChange(2, "巨乳・美乳")
-        console.log("新着")
-        break;
-      case 3:
-        setTabValueIndex(value)
-        // categoriesChange(3, "制服（JK、ナース他）")
-        console.log("新着")
-        break;
-      case 4:
-        setTabValueIndex(value)
-        // categoriesChange(4, "人妻・若妻")
-        console.log("新着")
-        break;
-      case 5:
-        setTabValueIndex(value)
-        // categoriesChange(5, "ハメ撮り")
-        console.log("新着")
-        break;
-      case 6:
-        setTabValueIndex(value)
-        // categoriesChange(6, "スレンダー")
-        console.log("新着")
-        break;
-      case 7:
-        setTabValueIndex(value)
-        // categoriesChange(7, "美少女")
-        console.log("新着")
-        break;
-      case 8:
-        setTabValueIndex(value)
-        // categoriesChange(8, "お姉さん")
-        console.log("新着")
-        break;
-      case 9:
-        setTabValueIndex(value)
-        // categoriesChange(9, "複数人")
-        console.log("新着")
-        break;
-      case 10:
-        setTabValueIndex(value)
-        // categoriesChange(10, "ナンパ")
-        console.log("新着")
-        break;
-      case 11:
-        setTabValueIndex(value)
-        // categoriesChange(11, "女子大生")
-        console.log("新着")
-        break;
       case 12:
         setTabValue(1)
         setTabValueIndex(value)
-        // categoriesChange(12, "盗撮・のぞき")
-        console.log("新着")
         break;
       case 13:
         setTabValue(value)
         setTabValueIndex(value)
-        console.log("新着")
         break;
       default:
-        console.log("どれにも属していません")
+        setTabValueIndex(value)
+        break
     }
   }
 
@@ -242,7 +194,7 @@ const Movies = (props) => {
     useEffect(() => {
       setCount(count)
     }, [count])
-  
+
 
     const playVideo = (e) => {
       e.preventDefault();
@@ -399,8 +351,13 @@ const Movies = (props) => {
     },
   });
 
+  const smallTabs = categories.slice(1, categories.length -1)
+
   return (
     <React.Fragment>
+      <Modal open={isOpenSelectCategory}>
+        <SelectGenre ip_address={props.ip_address} closeSelectGenreMenu={() => openSelectCategory(!isOpenSelectCategory)} />
+      </Modal>
       <ThemeProvider theme={theme}>
         <div className="main">
         <Box sx={{height: 50}}>
@@ -414,9 +371,10 @@ const Movies = (props) => {
             <Toolbar>
               <div className="tool_bar">
                 <img src={LogoWhite} alt=""/>
-                <img className="menu_icon" src={isSideMenu ? SideImageBlack : SideImageWhite} alt='menu' width={35} height={35} onClick={() => openSideMenu(!isSideMenu)} />
+                <img src={SelectCategoryIcon} alt="" width={30} height={30} onClick={() => openSelectCategory(!isOpenSelectCategory)} />
               </div>
             </Toolbar>
+            <img className="menu_icon" src={isSideMenu ? SideImageBlack : SideImageWhite} alt='menu' width={35} height={35} onClick={() => openSideMenu(!isSideMenu)} />
             <Tabs
               value={tabValue} // 0人気 1新着
               onChange={() => tabsChange}
@@ -427,33 +385,26 @@ const Movies = (props) => {
               <Tab label="人気" style={{color: "#F0F0F0", fontSize: '17px', paddingLeft: "0px", paddingRight: "0px", marginLeft: "12px", marginRight: "12px", }} onClick={() => tabsChange(0, '人気')} />
               <Tab label="ジャンル別" style={{color: "#F0F0F0", fontSize: '17px', paddingBottom: "2.5px", paddingLeft: "0px", paddingRight: "0px", marginLeft: "12px", marginRight: "12px"}} onClick={() => tabsChange(1, '素人')} />
               <Tab label="おすすめ" style={{color: "#F0F0F0", fontSize: '17px', paddingBottom: "2.5px", paddingLeft: "0px", paddingRight: "0px", marginLeft: "12px", marginRight: "12px"}} value={13} onClick={() => tabsChange(13, 'おすすめ')}  />
-              </Tabs>
-                { tabValue === 1 &&
-                    <Tabs
-                      value={tabValue} // 0人気 1新着
-                      onChange={() => categoriesChange}
-                      variant='scrollable'
-                      TabIndicatorProps={{style: {display: "none"}}}
-                    >
-                      {/* {
-                        smallTabs.map((category, index) => {
-                          <Tab label={category} className={categoryValue === index && styles.tab_color} style={{color: "#606060", fontSize: '14px'}} onClick={() => tabsChange(index, category)}></Tab>
-                        }) } */}
-
-                      <Tab label="素人" className={categoryValue === 1 && "tab_color" } style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(1,"素人")} />
-                      <Tab label="巨乳・美乳" className={categoryValue === 2 && "tab_color" } style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(2, "巨乳・美乳")} />
-                      <Tab label="制服（JK、ナース他）" className={categoryValue === 3 && "tab_color" } style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(3, "制服（JK、ナース他）")} />
-                      <Tab label="人妻・若妻" className={categoryValue === 4 && "tab_color" } style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(4, "人妻・若妻")} />
-                      <Tab label="ハメ撮り" className={categoryValue === 5 && "tab_color" } style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(5, "ハメ撮り")} />
-                      <Tab label="スレンダー" className={categoryValue === 6 && "tab_color" } style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(6, "スレンダー")} />
-                      <Tab label="美少女" className={categoryValue === 7 && "tab_color" } style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(7, "美少女")} />
-                      <Tab label="お姉さん" className={categoryValue === 8 && "tab_color" } style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(8, "お姉さん")} />
-                      <Tab label="複数人" className={categoryValue === 9 && "tab_color" } style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(9, "複数人")} />
-                      <Tab label="ナンパ" className={categoryValue === 10 && "tab_color" } style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(10, "ナンパ")} />
-                      <Tab label="女子大生" className={categoryValue === 11 && "tab_color" } style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(11, "女子大生")} />
-                      <Tab label="盗撮・のぞき" className={categoryValue === 12 && "tab_color" } style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(12, "盗撮・のぞき")} />
-                    </Tabs>
-                }
+            </Tabs>
+              { tabValue === 1 &&
+                <Tabs
+                  value={categoryValue} // tabValue ⇨ categoryValueに変更
+                  onChange={() => categoriesChange}
+                  variant='scrollable'
+                  TabIndicatorProps={{style: {display: "none"}}}
+                >
+                  {
+                    smallTabs.map((category, index) => {
+                      return <Tab
+                        label={category}
+                        value={++index}
+                        key={'category-' + index}
+                        className={categoryValue === index ? "select_small_tab" : 'un_select_small_tab'}
+                        onClick={() => categoriesChange(index, category)}
+                      />
+                    }) }
+                </Tabs>
+              }
             </AppBar>
         </Box>
         <SwipeableViews index={tabValueIndex} onChangeIndex={tabsChangeIndex}>
