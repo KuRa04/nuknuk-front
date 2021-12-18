@@ -28,10 +28,10 @@ function App() {
   }, [ip]);
   return (
     <>
-    { !isOpen ? 
+    { !isOpen ?
       <StartUp />
     :
-      <Movies ip_address={ip} dbUrl={process.env.REACT_APP_HEROKU_DB_URL} />
+      <Movies ip_address={ip} />
     }
     </>
   );

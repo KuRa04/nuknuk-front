@@ -5,7 +5,7 @@ import  "../styles/pages/startup.scss";
 const StartUp = () => {
   return (
       <div className="start_up_mapper">
-        <img clasName="startup-img" src={StartUpImg} alt=""/>
+        <img className="startup_img" src={StartUpImg} alt=""/>
       </div>
   );
 };

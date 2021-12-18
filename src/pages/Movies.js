@@ -56,8 +56,8 @@ const Movies = (props) => {
   ];
 
   // dbのパス
-  // const db_url = Rails.env === 'development' ? DB_LOCAL_URL : DB_PRODUCTION_URL
-  const dbUrl = props.dbUrl
+  // const dbUrl = process.env.REACT_APP_HEROKU_DB_URL
+  const dbUrl = process.env.REACT_APP_LOCAL_DB_URL
   let tapCount = 0;
 
   const postFavorites = async (movie, e) => {
@@ -71,21 +71,21 @@ const Movies = (props) => {
         console.log(res.data)
         const isBool = !isLiked
         setLiked(isBool)
-        console.log(isLiked)
         const new_count = res.data.movie_favorites_count
         setCount(new_count)
+        console.log(new_count)
       }).catch((res) => {
         console.log(res)
       })
     }else {
       console.log(dbUrl)
       axios.post(favorites_db, {movie_id: movie.id, ip_address: props.ip_address}).then((res) => {
-        console.log(favorites_db)
+        console.log(res.data)
         const isBool = !isLiked
         setLiked(isBool)
         const new_count = res.data.movie_favorites_count
         setCount(new_count)
-        console.log(count)
+        console.log(new_count)
       }).catch((res) => {
         console.log(res)
       })
@@ -132,7 +132,7 @@ const Movies = (props) => {
       setCategoryValue(categories.indexOf(text))
     }
     else if (value === 13)
-      param.largeTab = 'new'    
+      param.largeTab = 'new'
     axios.get(dbUrl + '/movies', {params: param}).then((res) => {
     console.log(res.data.movies)
     const array = res.data.movies;
@@ -236,7 +236,7 @@ const Movies = (props) => {
       // if (value === 1)
         // setTabValue(0)
       if (value === 12)
-        setTabValue(13) 
+        setTabValue(13)
       setCategoryValue(categories.indexOf(text))
     }).catch((res) => {
       console.log(res)
@@ -271,7 +271,7 @@ const Movies = (props) => {
 
     const playVideo = (e) => {
       if(!tapCount) {
-        ++tapCount;  
+        ++tapCount;
         console.log( "シングルタップに成功しました!!" );
         setTimeout(() => {
           if (tapCount === 1)
@@ -287,7 +287,7 @@ const Movies = (props) => {
           tapCount = 0;
         }, 500)
       }
-      else { 
+      else {
         e.preventDefault();
         postFavorites(props.movie, e)
         console.log( "ダブルタップに成功しました!!" );
@@ -305,7 +305,7 @@ const Movies = (props) => {
         const movie = movies.filter((movie) => movie.id === Number(movieId))[0]
         console.log(movie)
         if (movie === movies.slice(-1)[0]) //movies.slice(-1)[0] 配列のlastの内容
-        {  
+        {
           console.log("これで最後です！")
           //pageの数値は可変に出来るようにする
           //large,smallタブのどこにいるのかを代入する
@@ -314,13 +314,13 @@ const Movies = (props) => {
           else if (tabValue === 1)
             largeTab = 'genre'
           else if (tabValue === 13)
-            largeTab = 'new'   
+            largeTab = 'new'
           console.log(pageCount)
           let param = new RequestMovie(categoryValue, largeTab, null, pageCount, "")
           axios.get(dbUrl + '/movies', {params: param}).then((res) => {
             const array = res.data.movies;
             console.log(array)
-            setMovie(movies.concat(array)) //arrayに入った動画が30未満だったら最後の動画を探すようにする 
+            setMovie(movies.concat(array)) //arrayに入った動画が30未満だったら最後の動画を探すようにする
           }).catch((res) => {
             console.log(res)
           })
@@ -433,7 +433,7 @@ const Movies = (props) => {
                         smallTabs.map((category, index) => {
                           <Tab label={category} className={categoryValue === index && styles.tab_color} style={{color: "#606060", fontSize: '14px'}} onClick={() => tabsChange(index, category)}></Tab>
                         }) } */}
-                      
+
                       <Tab label="素人" className={categoryValue === 1 && "tab_color" } style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(1,"素人")} />
                       <Tab label="巨乳・美乳" className={categoryValue === 2 && "tab_color" } style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(2, "巨乳・美乳")} />
                       <Tab label="制服（JK、ナース他）" className={categoryValue === 3 && "tab_color" } style={{color: "#606060", fontSize: '14px'}} onClick={() => categoriesChange(3, "制服（JK、ナース他）")} />
