@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios'
 import Movies from './pages/Movies.js';
 import StartUp from './pages/startup.js';
+import SelectGenre from './pages/select_genre';
 import './App.css';
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
       <StartUp />
     :
       <Movies ip_address={ip} dbUrl={process.env.REACT_APP_HEROKU_DB_URL} />
+      // <SelectGenre />
     }
     </>
   );
