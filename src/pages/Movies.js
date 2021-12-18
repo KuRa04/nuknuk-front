@@ -56,8 +56,8 @@ const Movies = (props) => {
   ];
 
   // dbのパス
-  // const dbUrl = process.env.REACT_APP_HEROKU_DB_URL
-  const dbUrl = process.env.REACT_APP_LOCAL_DB_URL
+  const dbUrl = process.env.REACT_APP_HEROKU_DB_URL
+  // const dbUrl = process.env.REACT_APP_LOCAL_DB_URL
   let tapCount = 0;
 
   const postFavorites = async (movie, e) => {
