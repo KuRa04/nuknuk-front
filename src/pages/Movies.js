@@ -356,7 +356,7 @@ const Movies = (props) => {
   return (
     <React.Fragment>
       <Modal open={isOpenSelectCategory}>
-        <SelectGenre closeSelectGenreMenu={() => openSelectCategory(!isOpenSelectCategory)} />
+        <SelectGenre ip_address={props.ip_address} closeSelectGenreMenu={() => openSelectCategory(!isOpenSelectCategory)} />
       </Modal>
       <ThemeProvider theme={theme}>
         <div className="main">

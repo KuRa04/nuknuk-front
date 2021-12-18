@@ -2,6 +2,7 @@ import React, { useEffect, useState }  from 'react'
 import "../styles/pages/genre.scss";
 import axios from 'axios';
 import CloseIcon from '@material-ui/icons/Close';
+import genresController from '../controller/select_genres_controller';
 
 const SelectGenre = (props) => {
   // const dbUrl = process.env.REACT_APP_HEROKU_DB_URL;
@@ -49,13 +50,6 @@ const SelectGenre = (props) => {
     props.closeSelectGenreMenu()
   }
 
-  /**
-   * 条件を適用を押したときに発火
-   */
-  const nextTransition = () => {
-    console.log(selectedGenres)
-  }
-
   return (
     <div className="wrap_select_genres">
       <div className="page_title">こだわり条件</div>
@@ -81,7 +75,11 @@ const SelectGenre = (props) => {
         })}
       </div>
       <div className="footer_wrap">
-        <button onClick={nextTransition} variant="contained" className="next_button" >条件を適用</button>
+        <button
+          onClick={() => genresController.postSelectedGenres(selectedGenres, props.ip_address)}
+          variant="contained"
+          className="next_button"
+        >条件を適用</button>
       </div>
     </div>
   );
