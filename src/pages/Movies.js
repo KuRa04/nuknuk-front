@@ -34,8 +34,6 @@ const Movies = (props) => {
   const [categoryValue, setCategoryValue] = useState(0)
   const [shareDrawer, setShareDrawer] = useState(false)
   const [shareMovieId, setShareMovieId] = useState(0)
-  const [count, setCount] = useState(props.movie_favorites_count)
-  const [isLiked, setLiked] = useState(props.isLiked)
   const [pageCount, setPageCount] = useState(0)
   // const [shareCount, setShareCount] = useState(0)
 
@@ -61,50 +59,18 @@ const Movies = (props) => {
   const dbUrl = process.env.REACT_APP_LOCAL_DB_URL
   let tapCount = 0;
 
-  const postFavorites = async (movie, e) => {
-    e.stopPropagation()
-    const favorites_db = dbUrl + '/favorites'
-    if (isLiked) {
-      console.log(props.ip_address)
-      const params = {movie_id: movie.id, ip_address: props.ip_address}
-      console.log(params)
-      axios.delete(favorites_db, {data: params}).then((res) => {
-        console.log(res.data)
-        const isBool = !isLiked
-        setLiked(isBool)
-        const new_count = res.data.movie_favorites_count
-        setCount(new_count)
-        console.log(new_count)
-      }).catch((res) => {
-        console.log(res)
-      })
-    }else {
-      console.log(dbUrl)
-      axios.post(favorites_db, {movie_id: movie.id, ip_address: props.ip_address}).then((res) => {
-        console.log(res.data)
-        const isBool = !isLiked
-        setLiked(isBool)
-        const new_count = res.data.movie_favorites_count
-        setCount(new_count)
-        console.log(new_count)
-      }).catch((res) => {
-        console.log(res)
-      })
-    }
-  }
-
   useEffect(() => {
     // 無限ループしない
     setPageCount(n => n + 1);
   }, [movies]);
 
-  useEffect(() => {
-    setCount(count)
-  }, [count])
+  // useEffect(() => {
+  //   setCount(count)
+  // }, [count])
 
-  useEffect(() => {
-    setLiked(isLiked)
-  }, [isLiked])
+  // useEffect(() => {
+  //   setLiked(isLiked)
+  // }, [isLiked])
 
   useEffect( () => {
     const searchUrl = window.location.search
@@ -215,11 +181,21 @@ const Movies = (props) => {
   }
 
   const MovieComponent = (props) => {
-    const [isPlaying, setIsPlaying] = useState(false)
+    const [isPlaying, setIsPlaying] = useState(true)
+    const [isLiked, setLiked] = useState(props.isLiked)
+    const [count, setCount] = useState(props.favorites_count)
+
+
     const videoRef = useRef();
     const divRef = useRef();
 
+    useEffect(() => {
+      setCount(count)
+    }, [count])
+  
+
     const playVideo = (e) => {
+      e.preventDefault();
       if(!tapCount) {
         ++tapCount;
         console.log( "シングルタップに成功しました!!" );
@@ -238,10 +214,42 @@ const Movies = (props) => {
         }, 500)
       }
       else {
-        e.preventDefault();
+        // e.preventDefault();
         postFavorites(props.movie, e)
         console.log( "ダブルタップに成功しました!!" );
         tapCount = 0 ;
+      }
+    }
+
+    const postFavorites = async (movie, e) => {
+      e.stopPropagation()
+      const favorites_db = dbUrl + '/favorites'
+      if (isLiked) {
+        console.log(props.ip_address)
+        const params = {movie_id: movie.id, ip_address: props.ip_address}
+        console.log(params)
+        axios.delete(favorites_db, {data: params}).then((res) => {
+          console.log(res.data)
+          const isBool = !isLiked
+          setLiked(isBool)
+          const new_count = res.data.movie_favorites_count
+          setCount(new_count)
+          console.log(new_count)
+        }).catch((res) => {
+          console.log(res)
+        })
+      }else {
+        console.log(dbUrl)
+        axios.post(favorites_db, {movie_id: movie.id, ip_address: props.ip_address}).then((res) => {
+          console.log(res.data)
+          const isBool = !isLiked
+          setLiked(isBool)
+          const new_count = res.data.movie_favorites_count
+          setCount(new_count)
+          console.log(new_count)
+        }).catch((res) => {
+          console.log(res)
+        })
       }
     }
 
@@ -256,9 +264,6 @@ const Movies = (props) => {
         console.log(movie)
         if (movie === movies.slice(-1)[0]) //movies.slice(-1)[0] 配列のlastの内容
         {
-          console.log("これで最後です！")
-          //pageの数値は可変に出来るようにする
-          //large,smallタブのどこにいるのかを代入する
           if (tabValue === 0)
             largeTab = 'popular'
           else if (tabValue === 1)
@@ -293,7 +298,7 @@ const Movies = (props) => {
     return (
       <div className="wrapper_movie" id={"movie-url-" + props.movie.id} onTouchStart={(e) => playVideo(e)}>
         {
-          isPlaying &&
+          !isPlaying &&
           <div className="video_start_icon">
             <img src={VideoStartIcon} alt="" width={48} height={59}/>
           </div>
@@ -306,13 +311,14 @@ const Movies = (props) => {
             <p className="movie_title">{props.movie.title}</p>
             <Purchases
               movie={props.movie}
+              affiliateLink={props.affiliateLink}
               ip_address={props.ip_address}
             />
             </div>
             <div className="video_btn">
             <div className="wrapper_favorites">
               <img onClick={(e) => postFavorites(props.movie, e)} alt="" width="35" height="35" src={isLiked ? AfterFavoriteImg : BeforeFavoriteImg}  />
-              <span className="favorites_count">{1}</span>
+              <span className="favorites_count">{count}</span>
             </div>
               <div className="share_btn">
                 <Shares
@@ -407,6 +413,7 @@ const Movies = (props) => {
                     title={movie.title}
                     movieImage={movie.image}
                     movieUrl={movie.movie_url}
+                    favorites_count={movie.favorites_count}
                     affiliateLink={movie.affiliate_link}
                     ip_address={props.ip_address}
                     dbUrl={props.dbUrl}
