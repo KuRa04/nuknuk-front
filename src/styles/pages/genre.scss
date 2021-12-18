@@ -1,5 +1,6 @@
 .wrap_select_genres {
   background-color: black !important;
+  position: relative;
 }
 
 .page_title {
@@ -23,6 +24,12 @@
   transform: translateX(-50%);/*位置調整*/
   background-color: yellow !important;/*線の色*/
   border-radius: 2px;/*線の丸み*/
+}
+
+.close_icon {
+  position: absolute;
+  top: 40px;
+  right: 15px;
 }
 
 .sub_text {

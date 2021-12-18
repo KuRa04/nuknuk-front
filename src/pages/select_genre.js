@@ -1,8 +1,9 @@
 import React, { useEffect, useState }  from 'react'
 import "../styles/pages/genre.scss";
 import axios from 'axios';
+import CloseIcon from '@material-ui/icons/Close';
 
-const SelectGenre = () => {
+const SelectGenre = (props) => {
   // const dbUrl = process.env.REACT_APP_HEROKU_DB_URL;
   const dbUrl = process.env.REACT_APP_LOCAL_DB_URL
 
@@ -25,6 +26,10 @@ const SelectGenre = () => {
     console.log(genre)
   }
 
+  const closeSelectGenreMenu = () => {
+    props.closeSelectGenreMenu()
+  }
+
   /**
    * 次へを押したときに発火
    */
@@ -35,6 +40,12 @@ const SelectGenre = () => {
   return (
     <div className="wrap_select_genres">
       <div className="page_title">こだわり条件</div>
+      <CloseIcon
+        className="close_icon"
+        fontSize="large"
+        style={{ color: 'white' }}
+        onClick={() => closeSelectGenreMenu()}
+      />
       <div className="sub_text">興味関心は表示内容のカスタマイズに使用されます。</div>
       <div className="genres_group">
         {genres.map((genre, index) => {
