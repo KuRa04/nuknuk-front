@@ -49,8 +49,15 @@
   height: 500px;
 }
 
-.genre_select_button {
+.selected_genre_button {
+  background-color: #FBE416 !important;
+}
+
+.un_selected_genre_button {
   background-color: #F0F0F0 !important;
+}
+
+.genre_select_button {
   width: 40%;
   height: 70px;
   margin-top: 20px !important;

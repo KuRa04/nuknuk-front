@@ -8,6 +8,7 @@ const SelectGenre = (props) => {
   const dbUrl = process.env.REACT_APP_LOCAL_DB_URL
 
   const [genres, setGenres] = useState([])
+  const [selectedGenres, setSelectedGenres] = useState([])
 
   useEffect( () => {
     axios.get(dbUrl + "/selected_first_genres").then((res) => {
@@ -19,22 +20,40 @@ const SelectGenre = (props) => {
 
   /**
    * 選択したジャンルのオン・オフ切り替え
+   * 選択した値を状態変数に代入
+   * 選択された値のis_selectedを変更
    * @param {number} index
    */
-  const selectedGenres = (genre) => {
-    // ここでgenresのselectedを切り替えたい
-    console.log(genre)
+  const addSelectedGenres = (genre) => {
+    let selectGenres = selectedGenres
+    const alreadySelected = selectGenres.includes(genre.name)
+    if (alreadySelected) {
+      selectGenres = selectGenres.filter((name) => !name.match(genre.name))
+    }else {
+      selectGenres.push(genre.name)
+    }
+    setSelectedGenres(selectGenres)
+    const toggleSelectedGenres = genres.map((item) => {
+      return {
+        ...item,
+        is_selected: item.id === genre.id ? !genre.is_selected : item.is_selected
+      }
+    })
+    setGenres(toggleSelectedGenres)
   }
 
+  /**
+   * emitでメニューを閉じる
+   */
   const closeSelectGenreMenu = () => {
     props.closeSelectGenreMenu()
   }
 
   /**
-   * 次へを押したときに発火
+   * 条件を適用を押したときに発火
    */
   const nextTransition = () => {
-    console.log("次へ")
+    console.log(selectedGenres)
   }
 
   return (
@@ -49,7 +68,12 @@ const SelectGenre = (props) => {
       <div className="sub_text">興味関心は表示内容のカスタマイズに使用されます。</div>
       <div className="genres_group">
         {genres.map((genre, index) => {
-          return <button key={index} onClick={() => selectedGenres(genre)} variant="contained" className="genre_select_button">
+          return <button
+            key={index}
+            onClick={() => addSelectedGenres(genre)}
+            variant="contained"
+            className={genre.is_selected ? 'selected_genre_button genre_select_button' : 'un_selected_genre_button genre_select_button'}
+          >
             <p className="genre_title">
               {genre.name}
             </p>
