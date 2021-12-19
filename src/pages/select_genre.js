@@ -14,14 +14,24 @@ const SelectGenre = (props) => {
 
   const [genres, setGenres] = useState([])
   const [selectedGenres, setSelectedGenres] = useState([])
+  const ip_address = props.ip_address
 
   useEffect( () => {
-    axios.get(dbUrl + "/selected_first_genres").then((res) => {
-      setGenres(JSON.parse(res.data.selected_first_genres))
+    const param = {ip_address: ip_address}
+    axios.get(dbUrl + "/selected_first_genres", {params: param}).then((res) => {
+      const genresObj = JSON.parse(res.data.selected_first_genres)
+      setGenres(genresObj)
+      const alreadySelected = []
+      genresObj.forEach((item) => {
+        if (item.is_selected){
+          alreadySelected.push(item.name)
+        }
+      })
+      setSelectedGenres(alreadySelected)
     }).catch((res) => {
       console.log(res)
     })
-  }, [dbUrl]);
+  }, [dbUrl, ip_address])
 
   /**
    * 選択したジャンルのオン・オフ切り替え
