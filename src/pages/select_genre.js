@@ -4,6 +4,10 @@ import axios from 'axios';
 import CloseIcon from '@material-ui/icons/Close';
 import genresController from '../controller/select_genres_controller';
 
+/**
+ * @param {*} props
+ * ip_address closeSelectGenreMenu()
+ */
 const SelectGenre = (props) => {
   // const dbUrl = process.env.REACT_APP_HEROKU_DB_URL;
   const dbUrl = process.env.REACT_APP_LOCAL_DB_URL
@@ -50,6 +54,11 @@ const SelectGenre = (props) => {
     props.closeSelectGenreMenu()
   }
 
+  const postSelectGenre = async () => {
+    await genresController.postSelectedGenres(selectedGenres, props.ip_address)
+    closeSelectGenreMenu()
+  }
+
   return (
     <div className="wrap_select_genres">
       <div className="page_title">こだわり条件</div>
@@ -76,7 +85,7 @@ const SelectGenre = (props) => {
       </div>
       <div className="footer_wrap">
         <button
-          onClick={() => genresController.postSelectedGenres(selectedGenres, props.ip_address)}
+          onClick={() => postSelectGenre()}
           variant="contained"
           className="next_button"
         >条件を適用</button>
