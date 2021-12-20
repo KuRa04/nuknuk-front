@@ -24,6 +24,7 @@ import {
   TwitterIcon
 } from 'react-share'
 import "../styles/pages/movies.scss";
+import {categories} from '../constant/categories'
 
 
 const Movies = (props) => {
@@ -38,23 +39,6 @@ const Movies = (props) => {
   const [shareMovieId, setShareMovieId] = useState(0)
   const [pageCount, setPageCount] = useState(0)
   // const [shareCount, setShareCount] = useState(0)
-
-  const categories = [
-    "人気",
-    "素人",
-    "巨乳・美乳",
-    "制服（JK、ナース他）",
-    "人妻・若妻",
-    "ハメ撮り",
-    "スレンダー",
-    "美少女",
-    "お姉さん",
-    "複数人",
-    "ナンパ",
-    "女子大生",
-    "盗撮・のぞき",
-    "おすすめ"
-  ];
 
   // dbのパス
   const dbUrl = process.env.REACT_APP_HEROKU_DB_URL
@@ -120,7 +104,6 @@ const Movies = (props) => {
 
   const tabsChangeIndex = (value) => {
     setPageCount(1)
-    console.log(value)
     switch(value) {
       case 0:
         setTabValue(value)
@@ -153,11 +136,9 @@ const Movies = (props) => {
 
   const categoriesChange = (value, text) => {
     setPageCount(1)
-    let param = new RequestMovie(value - 1, 'genre', null, 1, "")
-    console.log(param)
+    const param = new RequestMovie(value - 1, 'genre', null, 1, "")
     axios.get(dbUrl + '/movies', {params: param}).then((res) => {
       const array = res.data.movies;
-      console.log(array)
       setMovie(array)
       // if (value === 1)
         // setTabValue(0)
