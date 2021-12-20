@@ -96,7 +96,6 @@ const Movies = (props) => {
     if (value === 0)　
     {
       param.largeTab = 'popular'
-      ReactDOM.render(<GenreMovies ip_address={props.ip_address}/>, document.getElementById("junre-movie-" + value)); //ここにGenrecomponentをrenderさせたい
     }
     else if (value === 1)
     {
@@ -104,7 +103,9 @@ const Movies = (props) => {
       setCategoryValue(categories.indexOf(text))
     }
     else if (value === 13)
+    {
       param.largeTab = 'new'
+    }
     axios.get(dbUrl + '/movies', {params: param}).then((res) => {
     console.log(res.data.movies)
     const array = res.data.movies;
@@ -358,7 +359,7 @@ const Movies = (props) => {
     },
   });
 
-  const GenreMovies = (props) => {
+  const GenreComponent = (props) => {
     return   <div className="movies">
     {
       movies.map((movie, index) =>{
@@ -441,72 +442,72 @@ const Movies = (props) => {
         <SwipeableViews index={tabValueIndex} onChangeIndex={tabsChangeIndex}>
           <div id= {"junre-movie-0"}>
             {tabValueIndex === 0 &&
-              <GenreMovies ip_address = {props.ip_address} />
+              <GenreComponent ip_address = {props.ip_address} />
             }
           </div>
           <div id= {"junre-movie-1"}>
             { tabValueIndex === 1 &&
-              <GenreMovies ip_address = {props.ip_address} />
+              <GenreComponent ip_address = {props.ip_address} />
             }
           </div>
           <div id= {"junre-movie-2"}>
             { tabValueIndex === 2 &&
-              <GenreMovies ip_address = {props.ip_address} />
+              <GenreComponent ip_address = {props.ip_address} />
             }
           </div>
           <div id= {"junre-movie-3"}>
             { tabValueIndex === 3 &&
-              <GenreMovies ip_address = {props.ip_address} />
+              <GenreComponent ip_address = {props.ip_address} />
             }
           </div>
           <div id= {"junre-movie-4"}>
             { tabValueIndex === 4 &&
-              <GenreMovies ip_address = {props.ip_address} />
+              <GenreComponent ip_address = {props.ip_address} />
             }
           </div>
           <div id= {"junre-movie-5"}>
             { tabValueIndex === 5 &&
-              <GenreMovies ip_address = {props.ip_address} />
+              <GenreComponent ip_address = {props.ip_address} />
             }
           </div>
           <div id= {"junre-movie-6"}>
             { tabValueIndex === 6 &&
-              <GenreMovies ip_address = {props.ip_address} />
+              <GenreComponent ip_address = {props.ip_address} />
             }
           </div>
           <div id= {"junre-movie-7"}>
             { tabValueIndex === 7 &&
-              <GenreMovies ip_address = {props.ip_address} />
+              <GenreComponent ip_address = {props.ip_address} />
             }
           </div>
           <div id= {"junre-movie-8"}>
             { tabValueIndex === 8 &&
-            <GenreMovies ip_address = {props.ip_address} />
+              <GenreComponent ip_address = {props.ip_address} />
             }
           </div>
           <div id= {"junre-movie-9"}>
             { tabValueIndex === 9 &&
-              <GenreMovies ip_address = {props.ip_address} />
+              <GenreComponent ip_address = {props.ip_address} />
             }
           </div>
           <div id= {"junre-movie-10"}>
             { tabValueIndex === 10 &&
-              <GenreMovies ip_address = {props.ip_address} />
+              <GenreComponent ip_address = {props.ip_address} />
             }
           </div>
           <div id= {"junre-movie-11"}>
             { tabValueIndex === 11 &&
-              <GenreMovies ip_address = {props.ip_address} />
+              <GenreComponent ip_address = {props.ip_address} />
             }
           </div>
           <div id= {"junre-movie-12"}>
             { tabValueIndex === 12 &&
-              <GenreMovies ip_address = {props.ip_address} />
+              <GenreComponent ip_address = {props.ip_address} />
             }
           </div>
           <div id= {"junre-movie-13"}>
             {tabValueIndex === 13 &&
-              <GenreMovies ip_address = {props.ip_address} />
+              <GenreComponent ip_address = {props.ip_address} />
             }
           </div>
         </SwipeableViews>
