@@ -93,8 +93,11 @@ const Movies = (props) => {
   const tabsChange = (value, text) => {
     setPageCount(1)
     let param = new RequestMovie(value, null, null, 1, "")
-    if (value === 0)
+    if (value === 0)　
+    {
       param.largeTab = 'popular'
+      ReactDOM.render(<GenreMovies ip_address={props.ip_address}/>, document.getElementById("junre-movie-" + value)); //ここにGenrecomponentをrenderさせたい
+    }
     else if (value === 1)
     {
       param.largeTab = 'genre'
@@ -107,6 +110,7 @@ const Movies = (props) => {
     const array = res.data.movies;
     setMovie(array)
     setTabValue(value)
+    setTabValueIndex(value)
     console.log(value)
     }).catch((res) => {
       console.log(res)
@@ -120,18 +124,20 @@ const Movies = (props) => {
       case 0:
         setTabValue(value)
         setTabValueIndex(value)
-        categoriesChange(0,"人気")
+        categoriesChange(value,categories[value])
+
         console.log("人気")
         break;
       case 1:
         setTabValue(value)
         setTabValueIndex(value)
-        categoriesChange(1,"素人")
+        categoriesChange(value,categories[value])
         console.log("ジャンル別")
         break;
       case 12:
         setTabValue(1)
         setTabValueIndex(value)
+        categoriesChange(value,categories[value])
         break;
       case 13:
         setTabValue(value)
@@ -139,6 +145,7 @@ const Movies = (props) => {
         break;
       default:
         setTabValueIndex(value)
+        categoriesChange(value,categories[value])
         break
     }
   }
@@ -351,6 +358,30 @@ const Movies = (props) => {
     },
   });
 
+  const GenreMovies = (props) => {
+    return   <div className="movies">
+    {
+      movies.map((movie, index) =>{
+        return <div key={index} className="movie_list">
+          <MovieComponent
+            index={index}
+            movie={movie}
+            title={movie.title}
+            movieImage={movie.image}
+            movieUrl={movie.movie_url}
+            favorites_count={movie.favorites_count}
+            affiliateLink={movie.affiliate_link}
+            ip_address={props.ip_address}
+            dbUrl={dbUrl}
+            />
+        </div>
+      })
+    }
+  </div>
+  }
+
+  
+
   const smallTabs = categories.slice(1, categories.length -1)
 
   return (
@@ -397,10 +428,10 @@ const Movies = (props) => {
                     smallTabs.map((category, index) => {
                       return <Tab
                         label={category}
-                        value={++index}
-                        key={'category-' + index}
-                        className={categoryValue === index ? "select_small_tab" : 'un_select_small_tab'}
-                        onClick={() => categoriesChange(index, category)}
+                        value={index + 1}
+                        key={'category-' + index + 1}
+                        className={categoryValue === index + 1 ? "select_small_tab" : 'un_select_small_tab'}
+                        onClick={() => categoriesChange(index + 1, category)}
                       />
                     }) }
                 </Tabs>
@@ -408,257 +439,74 @@ const Movies = (props) => {
             </AppBar>
         </Box>
         <SwipeableViews index={tabValueIndex} onChangeIndex={tabsChangeIndex}>
-          <div className="movies">
-            {
-              movies.map((movie, index) =>{
-                return <div key={index} className="movie_list">
-                  <MovieComponent
-                    index={index}
-                    movie={movie}
-                    title={movie.title}
-                    movieImage={movie.image}
-                    movieUrl={movie.movie_url}
-                    favorites_count={movie.favorites_count}
-                    affiliateLink={movie.affiliate_link}
-                    ip_address={props.ip_address}
-                    dbUrl={props.dbUrl}
-                    />
-                </div>
-              })
+          <div id= {"junre-movie-0"}>
+            {tabValueIndex === 0 &&
+              <GenreMovies ip_address = {props.ip_address} />
             }
           </div>
-          <div className="movies">
-            {
-              movies.map((movie, index) =>{
-                return <div key={index} className="movie_list">
-                  <MovieComponent
-                    index={index}
-                    movie={movie}
-                    title={movie.title}
-                    movieImage={movie.image}
-                    movieUrl={movie.movie_url}
-                    affiliateLink={movie.affiliate_link}
-                    ip_address={props.ip_address}
-                    dbUrl={props.dbUrl}
-                    />
-                </div>
-              })
+          <div id= {"junre-movie-1"}>
+            { tabValueIndex === 1 &&
+              <GenreMovies ip_address = {props.ip_address} />
             }
           </div>
-          <div className="movies">
-            {
-              movies.map((movie, index) =>{
-                return <div key={index} className="movie_list">
-                  <MovieComponent
-                    index={index}
-                    movie={movie}
-                    title={movie.title}
-                    movieImage={movie.image}
-                    movieUrl={movie.movie_url}
-                    affiliateLink={movie.affiliate_link}
-                    ip_address={props.ip_address}
-                    dbUrl={props.dbUrl}
-                    />
-                </div>
-              })
+          <div id= {"junre-movie-2"}>
+            { tabValueIndex === 2 &&
+              <GenreMovies ip_address = {props.ip_address} />
             }
           </div>
-          <div className="movies">
-            {
-              movies.map((movie, index) =>{
-                return <div key={index} className="movie_list">
-                  <MovieComponent
-                    index={index}
-                    movie={movie}
-                    title={movie.title}
-                    movieImage={movie.image}
-                    movieUrl={movie.movie_url}
-                    affiliateLink={movie.affiliate_link}
-                    ip_address={props.ip_address}
-                    dbUrl={props.dbUrl}
-                    />
-                </div>
-              })
+          <div id= {"junre-movie-3"}>
+            { tabValueIndex === 3 &&
+              <GenreMovies ip_address = {props.ip_address} />
             }
           </div>
-          <div className="movies">
-            {
-              movies.map((movie, index) =>{
-                return <div key={index} className="movie_list">
-                  <MovieComponent
-                    index={index}
-                    movie={movie}
-                    title={movie.title}
-                    movieImage={movie.image}
-                    movieUrl={movie.movie_url}
-                    affiliateLink={movie.affiliate_link}
-                    ip_address={props.ip_address}
-                    dbUrl={props.dbUrl}
-                    />
-                </div>
-              })
+          <div id= {"junre-movie-4"}>
+            { tabValueIndex === 4 &&
+              <GenreMovies ip_address = {props.ip_address} />
             }
           </div>
-          <div className="movies">
-            {
-              movies.map((movie, index) =>{
-                return <div key={index} className="movie_list">
-                  <MovieComponent
-                    index={index}
-                    movie={movie}
-                    title={movie.title}
-                    movieImage={movie.image}
-                    movieUrl={movie.movie_url}
-                    affiliateLink={movie.affiliate_link}
-                    ip_address={props.ip_address}
-                    dbUrl={props.dbUrl}
-                    />
-                </div>
-              })
+          <div id= {"junre-movie-5"}>
+            { tabValueIndex === 5 &&
+              <GenreMovies ip_address = {props.ip_address} />
             }
           </div>
-          <div className="movies">
-            {
-              movies.map((movie, index) =>{
-                return <div key={index} className="movie_list">
-                  <MovieComponent
-                    index={index}
-                    movie={movie}
-                    title={movie.title}
-                    movieImage={movie.image}
-                    movieUrl={movie.movie_url}
-                    affiliateLink={movie.affiliate_link}
-                    ip_address={props.ip_address}
-                    dbUrl={props.dbUrl}
-                    />
-                </div>
-              })
+          <div id= {"junre-movie-6"}>
+            { tabValueIndex === 6 &&
+              <GenreMovies ip_address = {props.ip_address} />
             }
           </div>
-          <div className="movies">
-            {
-              movies.map((movie, index) =>{
-                return <div key={index} className="movie_list">
-                  <MovieComponent
-                    index={index}
-                    movie={movie}
-                    title={movie.title}
-                    movieImage={movie.image}
-                    movieUrl={movie.movie_url}
-                    affiliateLink={movie.affiliate_link}
-                    ip_address={props.ip_address}
-                    dbUrl={props.dbUrl}
-                    />
-                </div>
-              })
+          <div id= {"junre-movie-7"}>
+            { tabValueIndex === 7 &&
+              <GenreMovies ip_address = {props.ip_address} />
             }
           </div>
-          <div className="movies">
-            {
-              movies.map((movie, index) =>{
-                return <div key={index} className="movie_list">
-                  <MovieComponent
-                    index={index}
-                    movie={movie}
-                    title={movie.title}
-                    movieImage={movie.image}
-                    movieUrl={movie.movie_url}
-                    affiliateLink={movie.affiliate_link}
-                    ip_address={props.ip_address}
-                    dbUrl={props.dbUrl}
-                    />
-                </div>
-              })
+          <div id= {"junre-movie-8"}>
+            { tabValueIndex === 8 &&
+            <GenreMovies ip_address = {props.ip_address} />
             }
           </div>
-          <div className="movies">
-            {
-              movies.map((movie, index) =>{
-                return <div key={index} className="movie_list">
-                  <MovieComponent
-                    index={index}
-                    movie={movie}
-                    title={movie.title}
-                    movieImage={movie.image}
-                    movieUrl={movie.movie_url}
-                    affiliateLink={movie.affiliate_link}
-                    ip_address={props.ip_address}
-                    dbUrl={props.dbUrl}
-                    />
-                </div>
-              })
+          <div id= {"junre-movie-9"}>
+            { tabValueIndex === 9 &&
+              <GenreMovies ip_address = {props.ip_address} />
             }
           </div>
-          <div className="movies">
-            {
-              movies.map((movie, index) =>{
-                return <div key={index} className="movie_list">
-                  <MovieComponent
-                    index={index}
-                    movie={movie}
-                    title={movie.title}
-                    movieImage={movie.image}
-                    movieUrl={movie.movie_url}
-                    affiliateLink={movie.affiliate_link}
-                    ip_address={props.ip_address}
-                    dbUrl={props.dbUrl}
-                    />
-                </div>
-              })
+          <div id= {"junre-movie-10"}>
+            { tabValueIndex === 10 &&
+              <GenreMovies ip_address = {props.ip_address} />
             }
           </div>
-          <div className="movies">
-            {
-              movies.map((movie, index) =>{
-                return <div key={index} className="movie_list">
-                  <MovieComponent
-                    index={index}
-                    movie={movie}
-                    title={movie.title}
-                    movieImage={movie.image}
-                    movieUrl={movie.movie_url}
-                    affiliateLink={movie.affiliate_link}
-                    ip_address={props.ip_address}
-                    dbUrl={props.dbUrl}
-                    />
-                </div>
-              })
+          <div id= {"junre-movie-11"}>
+            { tabValueIndex === 11 &&
+              <GenreMovies ip_address = {props.ip_address} />
             }
           </div>
-          <div className="movies">
-            {
-              movies.map((movie, index) =>{
-                return <div key={index} className="movie_list">
-                  <MovieComponent
-                    index={index}
-                    movie={movie}
-                    title={movie.title}
-                    movieImage={movie.image}
-                    movieUrl={movie.movie_url}
-                    affiliateLink={movie.affiliate_link}
-                    ip_address={props.ip_address}
-                    dbUrl={props.dbUrl}
-                    />
-                </div>
-              })
+          <div id= {"junre-movie-12"}>
+            { tabValueIndex === 12 &&
+              <GenreMovies ip_address = {props.ip_address} />
             }
           </div>
-          <div className="movies">
-            {
-              movies.map((movie, index) =>{
-                return <div key={index} className="movie_list">
-                  <MovieComponent
-                    index={index}
-                    movie={movie}
-                    title={movie.title}
-                    movieImage={movie.image}
-                    movieUrl={movie.movie_url}
-                    affiliateLink={movie.affiliate_link}
-                    ip_address={props.ip_address}
-                    dbUrl={props.dbUrl}
-                    />
-                </div>
-              })
+          <div id= {"junre-movie-13"}>
+            {tabValueIndex === 13 &&
+              <GenreMovies ip_address = {props.ip_address} />
             }
           </div>
         </SwipeableViews>
