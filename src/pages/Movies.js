@@ -298,14 +298,12 @@ const Movies = (props) => {
             <div className="empty_component" id={"video-player-" + props.movie.id} ref={divRef}></div>
           </div>
         <div className="movie_object">
-          <div className="wrapper_title">
-            <p className="movie_title">{props.movie.title}</p>
-            <Purchases
-              movie={props.movie}
-              affiliateLink={props.affiliateLink}
-              ip_address={props.ip_address}
-            />
-          </div>
+          <Purchases
+            movie={props.movie}
+            title={props.title}
+            affiliateLink={props.affiliateLink}
+            ip_address={props.ip_address}
+          />
           <div className="video_btn">
             <div className="wrapper_favorites">
               <img onClick={(e) => postFavorites(props.movie, e)} alt="" width="35" height="35" src={isLiked ? AfterFavoriteImg : BeforeFavoriteImg}  />

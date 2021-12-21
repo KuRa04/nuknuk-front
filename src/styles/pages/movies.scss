@@ -149,30 +149,6 @@ body {
   z-index: 0;
 }
 
-.wrapper_title {
-  margin: 40px 0 0 25px;
-  // padding: 20px 0;
-  width: 280px;
-  height: 120px;
-  text-align: center;
-  background-color: #F0F0F0;
-  box-shadow: 8px 10px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 20px;
-  z-index: 10;
-  margin-bottom: 3px;
-}
-
-.movie_title {
-  width: 240px;
-  font-size: 12px;
-  margin: 20px auto 15px;
-  color: #000;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-weight: bold;
-}
-
 .video_btn {
   width: 60px;
   display:flex;
