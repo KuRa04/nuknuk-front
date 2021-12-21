@@ -266,7 +266,7 @@ const Movies = (props) => {
           axios.get(dbUrl + '/movies', {params: param}).then((res) => {
             const array = res.data.movies;
             console.log(array)
-            setMovie(movies.concat(array)) //arrayに入った動画が30未満だったら最後の動画を探すようにする
+            setMovie(array) //arrayに入った動画が30未満だったら最後の動画を探すようにする
           }).catch((res) => {
             console.log(res)
           })
