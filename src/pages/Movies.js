@@ -12,6 +12,7 @@ import VideoStartIcon from '../images/video_start.svg'
 import SelectCategoryIcon from '../images/select_category.svg'
 import BeforeFavoriteImg from '../images/before_favorite.svg'
 import AfterFavoriteImg from '../images/after_favorite.svg'
+import banImg from '../images/ban.svg'
 import Shares from '../components/share'
 import Purchases from '../components/purchase'
 import RequestMovie from './api/axios'
@@ -521,10 +522,16 @@ const Movies = (props) => {
 
         {/* サイドバー */}
         <Drawer anchor= 'left' open={isSideMenu} onClick={() => openSideMenu(!isSideMenu)} >
-          <Box className="sidebar" width="150px">
-            <List>
-              <ListItem>サイトポリシー</ListItem>
+          <Box className="sidebar" width="215px">
+            <List style={{fontSize: "12px", fontWeight: "bold", fontFamily: "Hiragino Sans"}}>
+              <ListItem style={{height: "98px"}}></ListItem>
+              <img className="menu_icon" src={SideImageBlack} alt=""/>
+              <ListItem>当サイトについて</ListItem>
+              <ListItem>プライバシーポリシー</ListItem>
+              <ListItem>免責事項</ListItem>
+              <ListItem>安心安全の理由</ListItem>
               <ListItem>お問い合わせ</ListItem>
+              <img src={banImg} width={200} height={130} alt=""/>
             </List>
           </Box>
         </Drawer>
