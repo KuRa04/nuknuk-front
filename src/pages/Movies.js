@@ -266,7 +266,7 @@ const Movies = (props) => {
           axios.get(dbUrl + '/movies', {params: param}).then((res) => {
             const array = res.data.movies;
             console.log(array)
-            setMovie(movies.concat(array)) //arrayに入った動画が30未満だったら最後の動画を探すようにする
+            setMovie(array) //arrayに入った動画が30未満だったら最後の動画を探すようにする
           }).catch((res) => {
             console.log(res)
           })
@@ -298,29 +298,29 @@ const Movies = (props) => {
             <div className="empty_component" id={"video-player-" + props.movie.id} ref={divRef}></div>
           </div>
         <div className="movie_object">
-          <div className="styles.wrapper_title">
+          <div className="wrapper_title">
             <p className="movie_title">{props.movie.title}</p>
             <Purchases
               movie={props.movie}
               affiliateLink={props.affiliateLink}
               ip_address={props.ip_address}
             />
-            </div>
-            <div className="video_btn">
+          </div>
+          <div className="video_btn">
             <div className="wrapper_favorites">
               <img onClick={(e) => postFavorites(props.movie, e)} alt="" width="35" height="35" src={isLiked ? AfterFavoriteImg : BeforeFavoriteImg}  />
               <span className="favorites_count">{count}</span>
             </div>
-              <div className="share_btn">
-                <Shares
-                  movie={props.movie}
-                  ip_address={props.ip_address}
-                  onToggle={toggleShareDrawer}
-                />
-              </div>
+            <div className="share_btn">
+              <Shares
+                movie={props.movie}
+                ip_address={props.ip_address}
+                onToggle={toggleShareDrawer}
+              />
             </div>
           </div>
         </div>
+      </div>
     )
   }
 
@@ -361,8 +361,6 @@ const Movies = (props) => {
     }
   </div>
   }
-
-  
 
   const smallTabs = categories.slice(1, categories.length -1)
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import "../styles/components/video.scss"
 
 const VideoComponent = (props) => {
  return (
@@ -13,6 +14,7 @@ const VideoComponent = (props) => {
     id={'movie-list-' + props.movie.id}
     preload="metadata"
     ref={props.videoRef}
+    className="video-wrapper"
   >
   </video>
  )
