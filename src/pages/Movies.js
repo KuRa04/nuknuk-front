@@ -491,7 +491,7 @@ const Movies = (props) => {
           </div>
         </SwipeableViews>
         <Drawer className="share_drawer_box" anchor='bottom' open={shareDrawer} onClick={() => setShareDrawer(!shareDrawer)} >
-          <p className="share_title">シェア：</p>
+          <p className="share_title">この動画をシェアする</p>
           <div className="share_drawer">
             <div className="share_icon">
               <img

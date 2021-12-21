@@ -210,16 +210,18 @@ body {
 .share_drawer_box {
   height: 210px;
   width: 375px;
+  background-color: #F0F0F0;
   margin-bottom: 40px;
 }
 
 .share_title {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: bold;
   text-align: center;
   margin: 0;
-  padding: 10px 0 20px 0;
-  background-color: lightgrey;
+  padding: 20px 0;
+  background-color: #F0F0F0;
+
   border: 0;
 }
 
@@ -228,8 +230,8 @@ body {
   height: 100px;
   display: flex;
   justify-content: space-around;
-  background-color: lightgrey;
-  border-top: 2px solid lightgray;
+  background-color: #F0F0F0;
+  border-top: 1px solid lightgray;
 
 }
 
@@ -291,9 +293,9 @@ body {
 
 .wrapper_favorites {
   position: relative;
-  height: 20px;
-  margin-bottom: 20px;
   width: 35px;
+  height: 40px;
+  margin-bottom: 20px;
   display:flex;
   justify-content: center;
   flex-flow: column;
