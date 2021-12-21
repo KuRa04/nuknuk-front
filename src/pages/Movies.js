@@ -32,6 +32,7 @@ const Movies = (props) => {
   const [movies, setMovie] = useState([])
   const [isSideMenu, openSideMenu] = useState(false)
   const [isOpenSelectCategory, openSelectCategory] = useState(false)
+  // const [isOpenAfterMovie, openAfterMovie] = useState(false)
   const [tabValue, setTabValue] = useState(0)
   const [tabValueIndex, setTabValueIndex] = useState(0)
   const [categoryValue, setCategoryValue] = useState(0)
@@ -271,7 +272,7 @@ const Movies = (props) => {
             console.log(res)
           })
         }
-        ReactDOM.render(<VideoComponent movie={movie} videoRef={videoRef}/>, document.getElementById("video-player-" + movieId));
+        ReactDOM.render(<VideoComponent movie={movie} videoRef={videoRef} />, document.getElementById("video-player-" + movieId));
         videoRef.current && videoRef.current.play();
         observe();
       },
@@ -286,8 +287,9 @@ const Movies = (props) => {
         observe();
       },
     });
+
     return (
-      <div className="wrapper_movie" id={"movie-url-" + props.movie.id} onTouchStart={(e) => playVideo(e)}>
+      <div className="wrapper_movie" id={"movie-url-" + props.movie.id}>
         {
           !isPlaying &&
           <div className="video_start_icon">
@@ -295,17 +297,15 @@ const Movies = (props) => {
           </div>
         }
           <div ref={observe}>
-            <div className="empty_component" id={"video-player-" + props.movie.id} ref={divRef}></div>
+            <div className="empty_component" id={"video-player-" + props.movie.id} ref={divRef} onTouchStart={(e) => playVideo(e)}></div>
           </div>
         <div className="movie_object">
-          <div className="wrapper_title">
-            <p className="movie_title">{props.movie.title}</p>
-            <Purchases
-              movie={props.movie}
-              affiliateLink={props.affiliateLink}
-              ip_address={props.ip_address}
-            />
-          </div>
+          <Purchases
+            movie={props.movie}
+            title={props.title}
+            affiliateLink={props.affiliateLink}
+            ip_address={props.ip_address}
+          />
           <div className="video_btn">
             <div className="wrapper_favorites">
               <img onClick={(e) => postFavorites(props.movie, e)} alt="" width="35" height="35" src={isLiked ? AfterFavoriteImg : BeforeFavoriteImg}  />
@@ -366,9 +366,6 @@ const Movies = (props) => {
 
   return (
     <React.Fragment>
-      <Modal open={isOpenSelectCategory}>
-        <SelectGenre ip_address={props.ip_address} closeSelectGenreMenu={() => openSelectCategory(!isOpenSelectCategory)} />
-      </Modal>
       <ThemeProvider theme={theme}>
         <div className="main">
         <Box sx={{height: 50}}>
@@ -491,7 +488,7 @@ const Movies = (props) => {
           </div>
         </SwipeableViews>
         <Drawer className="share_drawer_box" anchor='bottom' open={shareDrawer} onClick={() => setShareDrawer(!shareDrawer)} >
-          <p className="share_title">シェア：</p>
+          <p className="share_title">この動画をシェアする</p>
           <div className="share_drawer">
             <div className="share_icon">
               <img
@@ -536,6 +533,17 @@ const Movies = (props) => {
         </footer>
         </div>
       </ThemeProvider>
+      <Modal open={isOpenSelectCategory}>
+        <SelectGenre ip_address={props.ip_address} closeSelectGenreMenu={() => openSelectCategory(!isOpenSelectCategory)} />
+      </Modal>
+      {/* <Modal open={isOpenAfterMovie}>
+      <Purchases
+        movie={props.movie}
+        title={props.title}
+        affiliateLink={props.affiliateLink}
+        ip_address={props.ip_address}
+      />
+      </Modal> */}
     </React.Fragment>
   );
 }
