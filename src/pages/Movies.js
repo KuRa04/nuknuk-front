@@ -32,6 +32,7 @@ const Movies = (props) => {
   const [movies, setMovie] = useState([])
   const [isSideMenu, openSideMenu] = useState(false)
   const [isOpenSelectCategory, openSelectCategory] = useState(false)
+  // const [isOpenAfterMovie, openAfterMovie] = useState(false)
   const [tabValue, setTabValue] = useState(0)
   const [tabValueIndex, setTabValueIndex] = useState(0)
   const [categoryValue, setCategoryValue] = useState(0)
@@ -271,7 +272,7 @@ const Movies = (props) => {
             console.log(res)
           })
         }
-        ReactDOM.render(<VideoComponent movie={movie} videoRef={videoRef}/>, document.getElementById("video-player-" + movieId));
+        ReactDOM.render(<VideoComponent movie={movie} videoRef={videoRef} />, document.getElementById("video-player-" + movieId));
         videoRef.current && videoRef.current.play();
         observe();
       },
@@ -286,8 +287,9 @@ const Movies = (props) => {
         observe();
       },
     });
+
     return (
-      <div className="wrapper_movie" id={"movie-url-" + props.movie.id} onTouchStart={(e) => playVideo(e)}>
+      <div className="wrapper_movie" id={"movie-url-" + props.movie.id}>
         {
           !isPlaying &&
           <div className="video_start_icon">
@@ -295,7 +297,7 @@ const Movies = (props) => {
           </div>
         }
           <div ref={observe}>
-            <div className="empty_component" id={"video-player-" + props.movie.id} ref={divRef}></div>
+            <div className="empty_component" id={"video-player-" + props.movie.id} ref={divRef} onTouchStart={(e) => playVideo(e)}></div>
           </div>
         <div className="movie_object">
           <Purchases
@@ -364,9 +366,6 @@ const Movies = (props) => {
 
   return (
     <React.Fragment>
-      <Modal open={isOpenSelectCategory}>
-        <SelectGenre ip_address={props.ip_address} closeSelectGenreMenu={() => openSelectCategory(!isOpenSelectCategory)} />
-      </Modal>
       <ThemeProvider theme={theme}>
         <div className="main">
         <Box sx={{height: 50}}>
@@ -534,6 +533,17 @@ const Movies = (props) => {
         </footer>
         </div>
       </ThemeProvider>
+      <Modal open={isOpenSelectCategory}>
+        <SelectGenre ip_address={props.ip_address} closeSelectGenreMenu={() => openSelectCategory(!isOpenSelectCategory)} />
+      </Modal>
+      {/* <Modal open={isOpenAfterMovie}>
+      <Purchases
+        movie={props.movie}
+        title={props.title}
+        affiliateLink={props.affiliateLink}
+        ip_address={props.ip_address}
+      />
+      </Modal> */}
     </React.Fragment>
   );
 }
