@@ -21,7 +21,7 @@ const Purchases = (props) => {
 
   return (
     <a className="wrapper_purchases" href={props.affiliateLink} onClick={(e) => postPurchases(props.movie, e)}>
-      つづきを見る
+      詳細を見てみる！
       <img className="right_arrow" alt="" width="10" height="10" src={RightArrowImg}  />
     </a>
   )
