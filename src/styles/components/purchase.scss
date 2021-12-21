@@ -1,9 +1,10 @@
 .wrapper_purchases {
   margin: 0 auto;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 230px;
   height: 40px;
-  text-align: center;
   line-height: 40px;
   background-color: #FC3B50;
   color: #F0F0F0;
@@ -12,6 +13,12 @@
   z-index: 2;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 30px;
+  font-size: 14px;
+}
+
+.detail-text {
+  margin: 0;
+  font-weight: bold;
 }
 
 .right_arrow {
