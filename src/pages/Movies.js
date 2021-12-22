@@ -52,7 +52,6 @@ const Movies = (props) => {
     setPageCount(n => n + 1);
   }, [movies]);
 
- 
 
   useEffect( () => {
     const searchUrl = window.location.search
@@ -173,17 +172,17 @@ const Movies = (props) => {
    * @param {*} movie //動画一覧
    *
    */
-  const postViewList = (movie) => {
-      const viewlists_db = dbUrl + '/viewlists'
-        console.log(props.ip_address)
-        const params = {movie_id: movie.id, ip_address: props.ip_address}
-        console.log(params)
-        axios.post(viewlists_db, {data: params}).then((res) => {
-          console.log(res.data)
-        }).catch((res) => {
-          console.log(res)
-        })
-    }
+  // const postViewList = (movie) => {
+  //     const viewlists_db = dbUrl + '/viewlists'
+  //       console.log(props.ip_address)
+  //       const params = {movie_id: movie.id, ip_address: props.ip_address}
+  //       console.log(params)
+  //       axios.post(viewlists_db, {data: params}).then((res) => {
+  //         console.log(res.data)
+  //       }).catch((res) => {
+  //         console.log(res)
+  //       })
+  //   }
 
   const MovieComponent = (props) => {
     const [isPlaying, setIsPlaying] = useState(true)
@@ -287,12 +286,12 @@ const Movies = (props) => {
           axios.get(dbUrl + '/movies', {params: param}).then((res) => {
             const array = res.data.movies;
             console.log(array)
-            setMovie(array) //arrayに入った動画が30未満だったら最後の動画を探すようにする
+            setMovie(movie.concat(array)) //arrayに入った動画が30未満だったら最後の動画を探すようにする
           }).catch((res) => {
             console.log(res)
           })
         }
-        postViewList(props.movie)
+        // postViewList(props.movie)
         ReactDOM.render(<VideoComponent movie={movie} videoRef={videoRef} onEnded={() => openAfterMovie(!isOpenAfterMovie)}/>, document.getElementById("video-player-" + movieId));
         videoRef.current && videoRef.current.play();
         observe();
