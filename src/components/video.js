@@ -14,6 +14,7 @@ const VideoComponent = (props) => {
     id={'movie-list-' + props.movie.id}
     preload="metadata"
     ref={props.videoRef}
+    onEnded={props.onEnded}
     className="video-wrapper"
   >
   </video>

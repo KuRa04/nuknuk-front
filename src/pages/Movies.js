@@ -189,6 +189,7 @@ const Movies = (props) => {
     const [isPlaying, setIsPlaying] = useState(true)
     const [isLiked, setLiked] = useState(props.isLiked)
     const [count, setCount] = useState(props.favorites_count)
+    const [isOpenAfterMovie, openAfterMovie] = useState(false)
     const videoRef = useRef();
     const divRef = useRef();
   
@@ -283,7 +284,7 @@ const Movies = (props) => {
           })
         }
         postViewList(props.movie)
-        ReactDOM.render(<VideoComponent movie={movie} videoRef={videoRef} />, document.getElementById("video-player-" + movieId));
+        ReactDOM.render(<VideoComponent movie={movie} videoRef={videoRef} onEnded={() => openAfterMovie(!isOpenAfterMovie)}/>, document.getElementById("video-player-" + movieId));
         videoRef.current && videoRef.current.play();
         observe();
       },
@@ -300,38 +301,48 @@ const Movies = (props) => {
     });
 
     return (
-      <div className="wrapper_movie" id={"movie-url-" + props.movie.id}>
-        {
-          !isPlaying &&
-          <div className="video_start_icon">
-            <img src={VideoStartIcon} alt="" width={48} height={59}/>
+      <>
+        <div className="wrapper_movie" id={"movie-url-" + props.movie.id}>
+          {
+            !isPlaying &&
+            <div className="video_start_icon">
+              <img src={VideoStartIcon} alt="" width={48} height={59}/>
+            </div>
+          }
+            <div ref={observe}>
+              <div className="empty_component" id={"video-player-" + props.movie.id} ref={divRef} onTouchStart={(e) => playVideo(e)}></div>
+            </div>
+          <div className="movie_object">
+            <Purchases
+              movie={props.movie}
+              title={props.title}
+              affiliateLink={props.affiliateLink}
+              ip_address={props.ip_address}
+            />
+            <div className="video_btn">
+              <div className="wrapper_favorites">
+                <img onClick={(e) => postFavorites(props.movie, e)} alt="" width="35" height="35" src={isLiked ? AfterFavoriteImg : BeforeFavoriteImg}  />
+                <span className="favorites_count">{count}</span>
+              </div>
+              <div className="share_btn">
+                <Shares
+                  movie={props.movie}
+                  ip_address={props.ip_address}
+                  onToggle={toggleShareDrawer}
+                />
+              </div>
+            </div>
           </div>
-        }
-          <div ref={observe}>
-            <div className="empty_component" id={"video-player-" + props.movie.id} ref={divRef} onTouchStart={(e) => playVideo(e)}></div>
-          </div>
-        <div className="movie_object">
+        </div>
+        <Modal open={isOpenAfterMovie}>
           <Purchases
             movie={props.movie}
             title={props.title}
             affiliateLink={props.affiliateLink}
             ip_address={props.ip_address}
           />
-          <div className="video_btn">
-            <div className="wrapper_favorites">
-              <img onClick={(e) => postFavorites(props.movie, e)} alt="" width="35" height="35" src={isLiked ? AfterFavoriteImg : BeforeFavoriteImg}  />
-              <span className="favorites_count">{count}</span>
-            </div>
-            <div className="share_btn">
-              <Shares
-                movie={props.movie}
-                ip_address={props.ip_address}
-                onToggle={toggleShareDrawer}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+        </Modal>
+      </>
     )
   }
 
@@ -553,14 +564,6 @@ const Movies = (props) => {
       <Modal open={isOpenSelectCategory}>
         <SelectGenre ip_address={props.ip_address} closeSelectGenreMenu={() => openSelectCategory(!isOpenSelectCategory)} />
       </Modal>
-      {/* <Modal open={isOpenAfterMovie}>
-      <Purchases
-        movie={props.movie}
-        title={props.title}
-        affiliateLink={props.affiliateLink}
-        ip_address={props.ip_address}
-      />
-      </Modal> */}
     </React.Fragment>
   );
 }
