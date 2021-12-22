@@ -64,7 +64,7 @@ const Movies = (props) => {
     const searchUrl = window.location.search
     let getDbUrl = dbUrl
     getDbUrl += searchUrl ? "/movies" + searchUrl : "/movies"
-    const param = new RequestMovie(-1, 'new', null, 1, "")
+    const param = new RequestMovie(-1, 'popular', null, 1, "")
     console.log(param)
     axios.get(getDbUrl, {params: param}).then((res) => {
       const array = res.data.movies;
