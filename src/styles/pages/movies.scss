@@ -136,12 +136,13 @@ body {
 .video_start_icon {
   width: 100%;
   position: absolute;
-  top: 15%;
+  top: 17%;
   display: flex;
   justify-content: center;
 }
 
-.movie_object {
+.btn_object {
+  margin: 40px 0 0 25px;
   width: 100%;
   display: flex;
   position: relative;
@@ -150,13 +151,30 @@ body {
 }
 
 .video_btn {
-  width: 60px;
+  width: 50px;
   display:flex;
   justify-content: center;
   flex-flow: column;
   align-items: flex-end;
   cursor: pointer;
   z-index: 10;
+}
+
+.after_movie_modal {
+  display: flex;
+  flex-direction:column;
+  text-align: center;
+}
+
+.replay_text {
+  margin-top: 40px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 16px;
+  color: #606060;
+  text-align: center;
 }
 
 .footer {

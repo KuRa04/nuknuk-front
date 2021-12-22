@@ -43,8 +43,8 @@ const Movies = (props) => {
   // const [shareCount, setShareCount] = useState(0)
 
   // dbのパス
-  const dbUrl = process.env.REACT_APP_HEROKU_DB_URL
-  // const dbUrl = process.env.REACT_APP_LOCAL_DB_URL
+  // const dbUrl = process.env.REACT_APP_HEROKU_DB_URL
+  const dbUrl = process.env.REACT_APP_LOCAL_DB_URL
   let tapCount = 0;
 
   useEffect(() => {
@@ -52,19 +52,13 @@ const Movies = (props) => {
     setPageCount(n => n + 1);
   }, [movies]);
 
-  // useEffect(() => {
-  //   setCount(count)
-  // }, [count])
-
-  // useEffect(() => {
-  //   setLiked(isLiked)
-  // }, [isLiked])
+ 
 
   useEffect( () => {
     const searchUrl = window.location.search
     let getDbUrl = dbUrl
     getDbUrl += searchUrl ? "/movies" + searchUrl : "/movies"
-    const param = new RequestMovie(-1, 'new', null, 1, "")
+    const param = new RequestMovie(-1, 'popular', null, 1, "")
     console.log(param)
     axios.get(getDbUrl, {params: param}).then((res) => {
       const array = res.data.movies;
@@ -173,46 +167,39 @@ const Movies = (props) => {
     setShareDrawer(!shareDrawer)
   }
 
+  /**
+   *
+   *
+   * @param {*} movie //動画一覧
+   *
+   */
+  const postViewList = (movie) => {
+      const viewlists_db = dbUrl + '/viewlists'
+        console.log(props.ip_address)
+        const params = {movie_id: movie.id, ip_address: props.ip_address}
+        console.log(params)
+        axios.post(viewlists_db, {data: params}).then((res) => {
+          console.log(res.data)
+        }).catch((res) => {
+          console.log(res)
+        })
+    }
+
   const MovieComponent = (props) => {
     const [isPlaying, setIsPlaying] = useState(true)
     const [isLiked, setLiked] = useState(props.isLiked)
     const [count, setCount] = useState(props.favorites_count)
-
-
+    const [isOpenAfterMovie, openAfterMovie] = useState(false)
     const videoRef = useRef();
     const divRef = useRef();
+  
+    useEffect(() => {
+      setLiked(isLiked)
+    }, [isLiked])
 
     useEffect(() => {
       setCount(count)
     }, [count])
-
-
-    const playVideo = (e) => {
-      e.preventDefault();
-      if(!tapCount) {
-        ++tapCount;
-        console.log( "シングルタップに成功しました!!" );
-        setTimeout(() => {
-          if (tapCount === 1)
-          {
-            if(!isPlaying) {
-              videoRef.current && videoRef.current.play();
-              setIsPlaying(true);
-            } else {
-              videoRef.current && videoRef.current.pause();
-              setIsPlaying(false);
-            }
-          }
-          tapCount = 0;
-        }, 500)
-      }
-      else {
-        // e.preventDefault();
-        postFavorites(props.movie, e)
-        console.log( "ダブルタップに成功しました!!" );
-        tapCount = 0 ;
-      }
-    }
 
     const postFavorites = async (movie, e) => {
       e.stopPropagation()
@@ -231,7 +218,7 @@ const Movies = (props) => {
         }).catch((res) => {
           console.log(res)
         })
-      }else {
+      } else {
         console.log(dbUrl)
         axios.post(favorites_db, {movie_id: movie.id, ip_address: props.ip_address}).then((res) => {
           console.log(res.data)
@@ -244,6 +231,35 @@ const Movies = (props) => {
           console.log(res)
         })
       }
+    }
+
+    const playVideo = (e) => {
+      e.preventDefault();
+      if (!tapCount) {
+        ++tapCount;
+        setTimeout(() => {
+          if (tapCount === 1)
+          {
+            if (!isPlaying) {
+              videoRef.current && videoRef.current.play();
+              setIsPlaying(true);
+            } else {
+              videoRef.current && videoRef.current.pause();
+              setIsPlaying(false);
+            }
+          }
+          tapCount = 0;
+        }, 500)
+      } else {
+        postFavorites(props.movie, e)
+        tapCount = 0 ;
+      }
+    }
+
+    const replayVideo = () => {
+      openAfterMovie(!isOpenAfterMovie);
+      videoRef.current && videoRef.current.play();
+      setIsPlaying(true);
     }
 
     const { observe } = useInView({
@@ -273,7 +289,8 @@ const Movies = (props) => {
             console.log(res)
           })
         }
-        ReactDOM.render(<VideoComponent movie={movie} videoRef={videoRef} />, document.getElementById("video-player-" + movieId));
+        postViewList(props.movie)
+        ReactDOM.render(<VideoComponent movie={movie} videoRef={videoRef} onEnded={() => openAfterMovie(!isOpenAfterMovie)}/>, document.getElementById("video-player-" + movieId));
         videoRef.current && videoRef.current.play();
         observe();
       },
@@ -290,38 +307,52 @@ const Movies = (props) => {
     });
 
     return (
-      <div className="wrapper_movie" id={"movie-url-" + props.movie.id}>
-        {
-          !isPlaying &&
-          <div className="video_start_icon">
-            <img src={VideoStartIcon} alt="" width={48} height={59}/>
-          </div>
-        }
+        <div className="wrapper_movie" id={"movie-url-" + props.movie.id}>
+          {
+            !isPlaying &&
+            <div className="video_start_icon">
+              <img src={VideoStartIcon} alt="" width={48} height={59}/>
+            </div>
+          }
           <div ref={observe}>
             <div className="empty_component" id={"video-player-" + props.movie.id} ref={divRef} onTouchStart={(e) => playVideo(e)}></div>
           </div>
-        <div className="movie_object">
-          <Purchases
-            movie={props.movie}
-            title={props.title}
-            affiliateLink={props.affiliateLink}
-            ip_address={props.ip_address}
-          />
-          <div className="video_btn">
-            <div className="wrapper_favorites">
-              <img onClick={(e) => postFavorites(props.movie, e)} alt="" width="35" height="35" src={isLiked ? AfterFavoriteImg : BeforeFavoriteImg}  />
-              <span className="favorites_count">{count}</span>
-            </div>
-            <div className="share_btn">
-              <Shares
+          {
+            !isOpenAfterMovie &&
+            <div className="btn_object">
+              <Purchases
                 movie={props.movie}
+                title={props.title}
+                affiliateLink={props.affiliateLink}
                 ip_address={props.ip_address}
-                onToggle={toggleShareDrawer}
               />
+              <div className="video_btn">
+                <div className="wrapper_favorites">
+                  <img onClick={(e) => postFavorites(props.movie, e)} alt="" width="35" height="35" src={isLiked ? AfterFavoriteImg : BeforeFavoriteImg}  />
+                  <span className="favorites_count">{count}</span>
+                </div>
+                <div className="share_btn">
+                  <Shares
+                    movie={props.movie}
+                    ip_address={props.ip_address}
+                    onToggle={toggleShareDrawer}
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
+          }
+          <Modal open={isOpenAfterMovie} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+            <div className="after_movie_modal">
+              <Purchases
+                movie={props.movie}
+                title={props.title}
+                affiliateLink={props.affiliateLink}
+                ip_address={props.ip_address}
+              />
+              <div className="replay_text" onTouchStart={() => replayVideo()}>リプレイ</div>
+            </div>
+          </Modal>
+         </div>
     )
   }
 
@@ -543,14 +574,6 @@ const Movies = (props) => {
       <Modal open={isOpenSelectCategory}>
         <SelectGenre ip_address={props.ip_address} closeSelectGenreMenu={() => openSelectCategory(!isOpenSelectCategory)} />
       </Modal>
-      {/* <Modal open={isOpenAfterMovie}>
-      <Purchases
-        movie={props.movie}
-        title={props.title}
-        affiliateLink={props.affiliateLink}
-        ip_address={props.ip_address}
-      />
-      </Modal> */}
     </React.Fragment>
   );
 }
