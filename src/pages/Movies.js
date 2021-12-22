@@ -301,7 +301,6 @@ const Movies = (props) => {
     });
 
     return (
-      <>
         <div className="wrapper_movie" id={"movie-url-" + props.movie.id}>
           {
             !isPlaying &&
@@ -312,7 +311,7 @@ const Movies = (props) => {
             <div ref={observe}>
               <div className="empty_component" id={"video-player-" + props.movie.id} ref={divRef} onTouchStart={(e) => playVideo(e)}></div>
             </div>
-          <div className="movie_object">
+          <div className="btn_object">
             <Purchases
               movie={props.movie}
               title={props.title}
@@ -333,16 +332,18 @@ const Movies = (props) => {
               </div>
             </div>
           </div>
-        </div>
-        <Modal open={isOpenAfterMovie}>
-          <Purchases
-            movie={props.movie}
-            title={props.title}
-            affiliateLink={props.affiliateLink}
-            ip_address={props.ip_address}
-          />
-        </Modal>
-      </>
+          <Modal open={isOpenAfterMovie} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+            <div className="after_movie_modal">
+              <Purchases
+                movie={props.movie}
+                title={props.title}
+                affiliateLink={props.affiliateLink}
+                ip_address={props.ip_address}
+              />
+              <div className="replay_text" onTouchStart={(e) => playVideo(e)}>リプレイ</div>
+            </div>
+          </Modal>
+         </div>
     )
   }
 
