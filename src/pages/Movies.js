@@ -262,10 +262,20 @@ const Movies = (props) => {
       setIsPlaying(true);
     }
 
+    const chooseBigTab = (tabValue) => {
+      let largeTab = ''
+      if (tabValue === 0)
+        largeTab = 'popular'
+      else if (tabValue === 1)
+        largeTab = 'genre'
+      else if (tabValue === 13)
+        largeTab = 'new'
+      return largeTab;
+    }
+
     const { observe } = useInView({
       threshold: 1,
       onEnter: ({ observe, unobserve }) => {
-        let largeTab = ''
         unobserve();
         console.log("onEnter")
         const movieId = divRef.current.id.split('video-player-')[1]
@@ -273,14 +283,7 @@ const Movies = (props) => {
         console.log(movie)
         if (movie === movies.slice(-1)[0]) //movies.slice(-1)[0] 配列のlastの内容
         {
-          if (tabValue === 0)
-            largeTab = 'popular'
-          else if (tabValue === 1)
-            largeTab = 'genre'
-          else if (tabValue === 13)
-            largeTab = 'new'
-          console.log(pageCount)
-          let param = new RequestMovie(categoryValue, largeTab, null, pageCount, "")
+          let param = new RequestMovie(categoryValue, chooseBigTab(tabValue), null, pageCount, "")
           axios.get(dbUrl + '/movies', {params: param}).then((res) => {
             const array = res.data.movies;
             console.log(array)
