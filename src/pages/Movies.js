@@ -43,8 +43,8 @@ const Movies = (props) => {
   // const [shareCount, setShareCount] = useState(0)
 
   // dbのパス
-  const dbUrl = process.env.REACT_APP_HEROKU_DB_URL
-  // const dbUrl = process.env.REACT_APP_LOCAL_DB_URL
+  // const dbUrl = process.env.REACT_APP_HEROKU_DB_URL
+  const dbUrl = process.env.REACT_APP_LOCAL_DB_URL
   let tapCount = 0;
 
   useEffect(() => {
@@ -173,6 +173,24 @@ const Movies = (props) => {
     setShareDrawer(!shareDrawer)
   }
 
+  /**
+   *
+   *
+   * @param {*} movie //動画一覧
+   *
+   */
+  const postViewList = (movie) => {
+      const viewlists_db = dbUrl + '/viewlists'
+        console.log(props.ip_address)
+        const params = {movie_id: movie.id, ip_address: props.ip_address}
+        console.log(params)
+        axios.post(viewlists_db, {data: params}).then((res) => {
+          console.log(res.data)
+        }).catch((res) => {
+          console.log(res)
+        })
+    }
+
   const MovieComponent = (props) => {
     const [isPlaying, setIsPlaying] = useState(true)
     const [isLiked, setLiked] = useState(props.isLiked)
@@ -273,6 +291,7 @@ const Movies = (props) => {
             console.log(res)
           })
         }
+        postViewList(props.movie)
         ReactDOM.render(<VideoComponent movie={movie} videoRef={videoRef} />, document.getElementById("video-player-" + movieId));
         videoRef.current && videoRef.current.play();
         observe();
