@@ -71,8 +71,8 @@ const Movies = (props) => {
   // 0人気 1新着
   const tabsChange = (value, text) => {
     setPageCount(1)
-    let param = new RequestMovie(value, null, null, 1, "")
-    if (value === 0)　
+    let param = new RequestMovie(value - 1, null, null, 1, "")
+    if (value === 0)
     {
       param.largeTab = 'popular'
     }
@@ -104,28 +104,31 @@ const Movies = (props) => {
         setTabValue(value)
         setTabValueIndex(value)
         categoriesChange(value,categories[value])
-
-        console.log("人気")
+        console.log(value)
         break;
       case 1:
-        setTabValue(value)
+        setTabValue(1)
         setTabValueIndex(value)
         categoriesChange(value,categories[value])
-        console.log("ジャンル別")
+        console.log(value)
         break;
       case 12:
         setTabValue(1)
         setTabValueIndex(value)
         categoriesChange(value,categories[value])
+        console.log(value)
         break;
       case 13:
         setTabValue(value)
         setTabValueIndex(value)
+        console.log(value)
         break;
       default:
         setTabValueIndex(value)
         categoriesChange(value,categories[value])
-        break
+        console.log(value)
+
+        break;
     }
   }
 
@@ -435,6 +438,7 @@ const Movies = (props) => {
                   variant='scrollable'
                   TabIndicatorProps={{style: {display: "none"}}}
                 >
+                  {/* <Tab value={0} /> */}
                   {
                     smallTabs.map((category, index) => {
                       return <Tab
