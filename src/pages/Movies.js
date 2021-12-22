@@ -52,7 +52,6 @@ const Movies = (props) => {
     setPageCount(n => n + 1);
   }, [movies]);
 
- 
 
   useEffect( () => {
     const searchUrl = window.location.search
@@ -72,8 +71,8 @@ const Movies = (props) => {
   // 0人気 1新着
   const tabsChange = (value, text) => {
     setPageCount(1)
-    let param = new RequestMovie(value, null, null, 1, "")
-    if (value === 0)　
+    let param = new RequestMovie(value - 1, null, null, 1, "")
+    if (value === 0)
     {
       param.largeTab = 'popular'
     }
@@ -105,28 +104,31 @@ const Movies = (props) => {
         setTabValue(value)
         setTabValueIndex(value)
         categoriesChange(value,categories[value])
-
-        console.log("人気")
+        console.log(value)
         break;
       case 1:
-        setTabValue(value)
+        setTabValue(1)
         setTabValueIndex(value)
         categoriesChange(value,categories[value])
-        console.log("ジャンル別")
+        console.log(value)
         break;
       case 12:
         setTabValue(1)
         setTabValueIndex(value)
         categoriesChange(value,categories[value])
+        console.log(value)
         break;
       case 13:
         setTabValue(value)
         setTabValueIndex(value)
+        console.log(value)
         break;
       default:
         setTabValueIndex(value)
         categoriesChange(value,categories[value])
-        break
+        console.log(value)
+
+        break;
     }
   }
 
@@ -173,17 +175,17 @@ const Movies = (props) => {
    * @param {*} movie //動画一覧
    *
    */
-  const postViewList = (movie) => {
-      const viewlists_db = dbUrl + '/viewlists'
-        console.log(props.ip_address)
-        const params = {movie_id: movie.id, ip_address: props.ip_address}
-        console.log(params)
-        axios.post(viewlists_db, {data: params}).then((res) => {
-          console.log(res.data)
-        }).catch((res) => {
-          console.log(res)
-        })
-    }
+  // const postViewList = (movie) => {
+  //     const viewlists_db = dbUrl + '/viewlists'
+  //       console.log(props.ip_address)
+  //       const params = {movie_id: movie.id, ip_address: props.ip_address}
+  //       console.log(params)
+  //       axios.post(viewlists_db, {data: params}).then((res) => {
+  //         console.log(res.data)
+  //       }).catch((res) => {
+  //         console.log(res)
+  //       })
+  //   }
 
   const MovieComponent = (props) => {
     const [isPlaying, setIsPlaying] = useState(true)
@@ -262,10 +264,20 @@ const Movies = (props) => {
       setIsPlaying(true);
     }
 
+    const chooseBigTab = (tabValue) => {
+      let largeTab = ''
+      if (tabValue === 0)
+        largeTab = 'popular'
+      else if (tabValue === 1)
+        largeTab = 'genre'
+      else if (tabValue === 13)
+        largeTab = 'new'
+      return largeTab;
+    }
+
     const { observe } = useInView({
       threshold: 1,
       onEnter: ({ observe, unobserve }) => {
-        let largeTab = ''
         unobserve();
         console.log("onEnter")
         const movieId = divRef.current.id.split('video-player-')[1]
@@ -273,23 +285,16 @@ const Movies = (props) => {
         console.log(movie)
         if (movie === movies.slice(-1)[0]) //movies.slice(-1)[0] 配列のlastの内容
         {
-          if (tabValue === 0)
-            largeTab = 'popular'
-          else if (tabValue === 1)
-            largeTab = 'genre'
-          else if (tabValue === 13)
-            largeTab = 'new'
-          console.log(pageCount)
-          let param = new RequestMovie(categoryValue, largeTab, null, pageCount, "")
+          let param = new RequestMovie(categoryValue, chooseBigTab(tabValue), null, pageCount, "")
           axios.get(dbUrl + '/movies', {params: param}).then((res) => {
             const array = res.data.movies;
             console.log(array)
-            setMovie(array) //arrayに入った動画が30未満だったら最後の動画を探すようにする
+            setMovie(movies.concat(array)) //arrayに入った動画が30未満だったら最後の動画を探すようにする
           }).catch((res) => {
             console.log(res)
           })
         }
-        postViewList(props.movie)
+        // postViewList(props.movie)
         ReactDOM.render(<VideoComponent movie={movie} videoRef={videoRef} onEnded={() => openAfterMovie(!isOpenAfterMovie)}/>, document.getElementById("video-player-" + movieId));
         videoRef.current && videoRef.current.play();
         observe();
@@ -433,6 +438,7 @@ const Movies = (props) => {
                   variant='scrollable'
                   TabIndicatorProps={{style: {display: "none"}}}
                 >
+                  {/* <Tab value={0} /> */}
                   {
                     smallTabs.map((category, index) => {
                       return <Tab

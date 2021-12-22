@@ -142,7 +142,8 @@ body {
 }
 
 .btn_object {
-  margin: 40px 0 0 25px;
+  box-sizing: border-box;
+  padding: 40px 0 0 25px;
   width: 100%;
   display: flex;
   position: relative;
