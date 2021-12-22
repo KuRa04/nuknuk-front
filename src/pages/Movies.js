@@ -52,13 +52,7 @@ const Movies = (props) => {
     setPageCount(n => n + 1);
   }, [movies]);
 
-  // useEffect(() => {
-  //   setCount(count)
-  // }, [count])
-
-  // useEffect(() => {
-  //   setLiked(isLiked)
-  // }, [isLiked])
+ 
 
   useEffect( () => {
     const searchUrl = window.location.search
@@ -195,42 +189,16 @@ const Movies = (props) => {
     const [isPlaying, setIsPlaying] = useState(true)
     const [isLiked, setLiked] = useState(props.isLiked)
     const [count, setCount] = useState(props.favorites_count)
-
-
     const videoRef = useRef();
     const divRef = useRef();
+  
+    useEffect(() => {
+      setLiked(isLiked)
+    }, [isLiked])
 
     useEffect(() => {
       setCount(count)
     }, [count])
-
-
-    const playVideo = (e) => {
-      e.preventDefault();
-      if(!tapCount) {
-        ++tapCount;
-        console.log( "シングルタップに成功しました!!" );
-        setTimeout(() => {
-          if (tapCount === 1)
-          {
-            if(!isPlaying) {
-              videoRef.current && videoRef.current.play();
-              setIsPlaying(true);
-            } else {
-              videoRef.current && videoRef.current.pause();
-              setIsPlaying(false);
-            }
-          }
-          tapCount = 0;
-        }, 500)
-      }
-      else {
-        // e.preventDefault();
-        postFavorites(props.movie, e)
-        console.log( "ダブルタップに成功しました!!" );
-        tapCount = 0 ;
-      }
-    }
 
     const postFavorites = async (movie, e) => {
       e.stopPropagation()
@@ -249,7 +217,7 @@ const Movies = (props) => {
         }).catch((res) => {
           console.log(res)
         })
-      }else {
+      } else {
         console.log(dbUrl)
         axios.post(favorites_db, {movie_id: movie.id, ip_address: props.ip_address}).then((res) => {
           console.log(res.data)
@@ -261,6 +229,29 @@ const Movies = (props) => {
         }).catch((res) => {
           console.log(res)
         })
+      }
+    }
+
+    const playVideo = (e) => {
+      e.preventDefault();
+      if (!tapCount) {
+        ++tapCount;
+        setTimeout(() => {
+          if (tapCount === 1)
+          {
+            if (!isPlaying) {
+              videoRef.current && videoRef.current.play();
+              setIsPlaying(true);
+            } else {
+              videoRef.current && videoRef.current.pause();
+              setIsPlaying(false);
+            }
+          }
+          tapCount = 0;
+        }, 500)
+      } else {
+        postFavorites(props.movie, e)
+        tapCount = 0 ;
       }
     }
 
