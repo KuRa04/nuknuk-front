@@ -256,6 +256,12 @@ const Movies = (props) => {
       }
     }
 
+    const replayVideo = () => {
+      openAfterMovie(!isOpenAfterMovie);
+      videoRef.current && videoRef.current.play();
+      setIsPlaying(true);
+    }
+
     const { observe } = useInView({
       threshold: 1,
       onEnter: ({ observe, unobserve }) => {
@@ -308,30 +314,33 @@ const Movies = (props) => {
               <img src={VideoStartIcon} alt="" width={48} height={59}/>
             </div>
           }
-            <div ref={observe}>
-              <div className="empty_component" id={"video-player-" + props.movie.id} ref={divRef} onTouchStart={(e) => playVideo(e)}></div>
-            </div>
-          <div className="btn_object">
-            <Purchases
-              movie={props.movie}
-              title={props.title}
-              affiliateLink={props.affiliateLink}
-              ip_address={props.ip_address}
-            />
-            <div className="video_btn">
-              <div className="wrapper_favorites">
-                <img onClick={(e) => postFavorites(props.movie, e)} alt="" width="35" height="35" src={isLiked ? AfterFavoriteImg : BeforeFavoriteImg}  />
-                <span className="favorites_count">{count}</span>
-              </div>
-              <div className="share_btn">
-                <Shares
-                  movie={props.movie}
-                  ip_address={props.ip_address}
-                  onToggle={toggleShareDrawer}
-                />
-              </div>
-            </div>
+          <div ref={observe}>
+            <div className="empty_component" id={"video-player-" + props.movie.id} ref={divRef} onTouchStart={(e) => playVideo(e)}></div>
           </div>
+          {
+            !isOpenAfterMovie &&
+            <div className="btn_object">
+              <Purchases
+                movie={props.movie}
+                title={props.title}
+                affiliateLink={props.affiliateLink}
+                ip_address={props.ip_address}
+              />
+              <div className="video_btn">
+                <div className="wrapper_favorites">
+                  <img onClick={(e) => postFavorites(props.movie, e)} alt="" width="35" height="35" src={isLiked ? AfterFavoriteImg : BeforeFavoriteImg}  />
+                  <span className="favorites_count">{count}</span>
+                </div>
+                <div className="share_btn">
+                  <Shares
+                    movie={props.movie}
+                    ip_address={props.ip_address}
+                    onToggle={toggleShareDrawer}
+                  />
+                </div>
+              </div>
+            </div>
+          }
           <Modal open={isOpenAfterMovie} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
             <div className="after_movie_modal">
               <Purchases
@@ -340,7 +349,7 @@ const Movies = (props) => {
                 affiliateLink={props.affiliateLink}
                 ip_address={props.ip_address}
               />
-              <div className="replay_text" onTouchStart={(e) => playVideo(e)}>リプレイ</div>
+              <div className="replay_text" onTouchStart={() => replayVideo()}>リプレイ</div>
             </div>
           </Modal>
          </div>
