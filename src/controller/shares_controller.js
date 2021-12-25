@@ -1,7 +1,5 @@
-import axios from 'axios';
-
-// const dbUrl = process.env.REACT_APP_HEROKU_DB_URL;
-const dbUrl = process.env.REACT_APP_LOCAL_DB_URL
+import axios from 'axios'
+import {dbUrl} from '../constant/db_url'
 
 /**
  * @param {*} channelName シェアするチャネル名
