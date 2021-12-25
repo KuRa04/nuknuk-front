@@ -47,12 +47,6 @@ const Movies = (props) => {
   const dbUrl = process.env.REACT_APP_LOCAL_DB_URL
   let tapCount = 0;
 
-  useEffect(() => {
-    // 無限ループしない
-    setPageCount(n => n + 1);
-  }, [movies]);
-
-
   useEffect( () => {
     const searchUrl = window.location.search
     let getDbUrl = dbUrl
@@ -67,6 +61,11 @@ const Movies = (props) => {
       console.log(res)
     })
   }, [dbUrl]);
+
+  useEffect(() => {
+    // 無限ループしない
+    setPageCount(n => n + 1);
+  }, [movies]);
 
   // 0人気 1新着
   const tabsChange = (value, text) => {
@@ -175,17 +174,17 @@ const Movies = (props) => {
    * @param {*} movie //動画一覧
    *
    */
-  // const postViewList = (movie) => {
-  //     const viewlists_db = dbUrl + '/viewlists'
-  //       console.log(props.ip_address)
-  //       const params = {movie_id: movie.id, ip_address: props.ip_address}
-  //       console.log(params)
-  //       axios.post(viewlists_db, {data: params}).then((res) => {
-  //         console.log(res.data)
-  //       }).catch((res) => {
-  //         console.log(res)
-  //       })
-  //   }
+  const postViewList = (movie) => {
+      const viewlists_db = dbUrl + '/viewlists'
+        console.log(props.ip_address)
+        const params = {movie_id: movie.id, ip_address: props.ip_address}
+        console.log(params)
+        axios.post(viewlists_db, {data: params}).then((res) => {
+          console.log(res.data)
+        }).catch((res) => {
+          console.log(res)
+        })
+    }
 
   const MovieComponent = (props) => {
     const [isPlaying, setIsPlaying] = useState(true)
@@ -294,7 +293,8 @@ const Movies = (props) => {
             console.log(res)
           })
         }
-        // postViewList(props.movie)
+        postViewList(props.movie)
+
         ReactDOM.render(<VideoComponent movie={movie} videoRef={videoRef} onEnded={() => openAfterMovie(!isOpenAfterMovie)}/>, document.getElementById("video-player-" + movieId));
         videoRef.current && videoRef.current.play();
         observe();
@@ -302,6 +302,8 @@ const Movies = (props) => {
       onLeave: ({ observe, unobserve }) => {
         unobserve();
         console.log("onLeave")
+        videoRef.current && videoRef.current.pause();
+        setIsPlaying(false);
         videoRef.current.currentTime = 0
         const movieId = divRef.current.id.split('video-player-')[1]
         let movie = document.getElementById("video-player-" + movieId).replaceChildren;
