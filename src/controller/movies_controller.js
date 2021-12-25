@@ -1,13 +1,13 @@
 import axios from 'axios';
+import {dbUrl} from '../constant/db_url'
 
-// const dbUrl = process.env.REACT_APP_HEROKU_DB_URL + '/movies'
-const dbUrl = process.env.REACT_APP_LOCAL_DB_URL + '/movies'
+const endpoint = dbUrl + '/movies'
 
 /**
  * @param {*} channelName シェアするチャネル名
  */
 async function getMovieLists(small_tab, large_tab, movie_id, page, ip_address, shareMovieUrl) {
-  const getMovieUrl = shareMovieUrl ? dbUrl + shareMovieUrl : dbUrl
+  const getMovieUrl = shareMovieUrl ? endpoint + shareMovieUrl : endpoint
   let movies = []
   const param = {
     small_tab: small_tab,
