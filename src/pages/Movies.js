@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom'
 import useInView from "react-cool-inview"
-import axios from 'axios';
 import SwipeableViews from 'react-swipeable-views';
 import {AppBar, Tabs, Tab, Toolbar, Drawer, Box, List, ListItem, createTheme, ThemeProvider, Button, Modal} from '@material-ui/core'
 import LogoWhite from '../images/logo_white_2.svg'
@@ -15,7 +14,6 @@ import AfterFavoriteImg from '../images/after_favorite.svg'
 import banImg from '../images/ban.svg'
 import Shares from '../components/share'
 import Purchases from '../components/purchase'
-import RequestMovie from './api/axios'
 import VideoComponent from '../components/video'
 import SelectGenre from './select_genre'
 import {
@@ -26,6 +24,10 @@ import {
 } from 'react-share'
 import "../styles/pages/movies.scss";
 import {categories} from '../constant/categories'
+import sharesController from '../controller/shares_controller'
+import favoritesController from '../controller/favorites_controller'
+import viewListsController from '../controller/view_lists_controller'
+import moviesController from '../controller/movies_controller'
 
 
 const Movies = (props) => {
@@ -44,46 +46,41 @@ const Movies = (props) => {
   // const dbUrl = process.env.REACT_APP_HEROKU_DB_URL
   const dbUrl = process.env.REACT_APP_LOCAL_DB_URL
 
-  useEffect( () => {
+  //TODO useEffectにpropsの値を含める方法を調査
+  useEffect(() => {
     const searchUrl = window.location.search
-    let getDbUrl = dbUrl
-    getDbUrl += searchUrl ? "/movies" + searchUrl : "/movies"
-    const param = new RequestMovie(-1, 'popular', null, 1, "")
-    console.log(param)
-    axios.get(getDbUrl, {params: param}).then((res) => {
-      const array = res.data.movies;
-      console.log(array)
+    const getMovies = async () => {
+      const array = await moviesController.getMovieLists(-1, 'popular', null, 1, '', searchUrl)
       setMovieLists(array)
-    }).catch((res) => {
-      console.log(res)
-    })
-  }, [dbUrl]);
+    }
+    getMovies()
+  }, [dbUrl])
 
   useEffect(() => {
     // 無限ループしない
     setPageCount(n => n + 1);
   }, [movieLists]);
 
-  // 0人気 1新着
-  const tabsChange = (value, text) => {
+  /**
+   * @param {*} value smallTabの値
+   * @param {*} text smallTabの名称
+   */
+  const tabsChange = async (value, text) => {
     setPageCount(1)
-    let param = new RequestMovie(value - 1, null, null, 1, "")
+    let largeTab = ''
+    console.log(value)
     if (value === 0) {
-      param.largeTab = 'popular'
+      largeTab = 'popular'
     } else if (value === 1) {
-      param.largeTab = 'genre'
+      largeTab = 'genre'
       setCategoryValue(categories.indexOf(text))
     } else if (value === 13) {
-      param.largeTab = 'new'
+      largeTab = 'new'
     }
-    axios.get(dbUrl + '/movies', {params: param}).then((res) => {
-      const array = res.data.movies;
-      setMovieLists(array)
-      setTabValue(value)
-      setTabValueIndex(value)
-    }).catch((res) => {
-      console.log(res)
-    })
+    const array = await moviesController.getMovieLists(value - 1, largeTab, null, 1, props.ip_address, null)
+    setMovieLists(array)
+    setTabValue(value)
+    setTabValueIndex(value)
   }
 
   const tabsChangeIndex = (value) => {
@@ -115,39 +112,27 @@ const Movies = (props) => {
     }
   }
 
-  const categoriesChange = (value, text) => {
+  const categoriesChange = async (value, text) => {
     setPageCount(1)
-    const param = new RequestMovie(value - 1, 'genre', null, 1, "")
-    axios.get(dbUrl + '/movies', {params: param}).then((res) => {
-      const array = res.data.movies;
-      setMovieLists(array)
-      if (value === 12) {
-        setTabValue(13)
-      }
-      setCategoryValue(categories.indexOf(text))
-    }).catch((res) => {
-      console.log(res)
-    })
+    const array = await moviesController.getMovieLists(value - 1, 'genre', null, 1, props.ip_address, null)
+    setMovieLists(array)
+    if (value === 12) {
+      setTabValue(13)
+    }
+    setCategoryValue(categories.indexOf(text))
   }
 
   
   /**
    * @param {*} channelName シェアするチャネル名
    */
-  const postShare = (channelName) => {
+  const postShare = async (channelName) => {
     const movieId = shareMovieId
     if (channelName === 'copy') {
       // httpsでしか動かない
       navigator.clipboard.writeText(window.location.href + "?movie_id=" + movieId)
     }
-    axios.post(dbUrl + '/shares', {
-      channel: channelName,
-      movie_id: movieId,
-    }).then((res) => {
-      console.log(res.data)
-    }).catch((data) => {
-      console.log(data)
-    })
+    await sharesController.postShare(channelName, movieId)
   }
 
   /**
@@ -161,14 +146,8 @@ const Movies = (props) => {
   /**
    * @param {*} movie //動画一覧
    */
-  const postViewList = (movie) => {
-    const viewlists_db = dbUrl + '/viewlists'
-    const params = {movie_id: movie.id, ip_address: props.ip_address}
-    axios.post(viewlists_db, {data: params}).then((res) => {
-      console.log(res.data)
-    }).catch((res) => {
-      console.log(res)
-    })
+  const postViewList = async (movie) => {
+    await viewListsController.postViewList(movie.id, props.ip_address)
   }
 
   /**
@@ -199,25 +178,14 @@ const Movies = (props) => {
      */
     const postFavorites = async (movie, e) => {
       e.stopPropagation()
-      const favorites_db = dbUrl + '/favorites'
+      let newCount = 0
       if (isFavorited) {
-        const params = {movie_id: movie.id, ip_address: props.ip_address}
-        axios.delete(favorites_db, {data: params}).then((res) => {
-          const newCount = res.data.movie_favoritesCount
-          setFavorited(!isFavorited)
-          setFavoriteCount(newCount)
-        }).catch((res) => {
-          console.log(res)
-        })
+        newCount = await favoritesController.deleteFavorite(movie.id, props.ip_address)
       } else {
-        axios.post(favorites_db, {movie_id: movie.id, ip_address: props.ip_address}).then((res) => {
-          const newCount = res.data.movie_favoritesCount
-          setFavorited(!isFavorited)
-          setFavoriteCount(newCount)
-        }).catch((res) => {
-          console.log(res)
-        })
+        newCount = await favoritesController.createFavorite(movie.id, props.ip_address)
       }
+      setFavorited(!isFavorited)
+      setFavoriteCount(newCount)
     }
 
     let tapCount = 0 //TODO useStateで書き換える
@@ -265,21 +233,21 @@ const Movies = (props) => {
       return largeTab;
     }
 
+    const getNextMovieLists = async () => {
+      const array = await moviesController.getMovieLists(categoryValue, chooseBigTab(tabValue), null, pageCount, "", null)
+      console.log(array)
+      setMovieLists(movieLists.concat(array))  
+    }
+
     const { observe } = useInView({
       threshold: 1,
-      onEnter: ({ observe, unobserve }) => {
+      onEnter: async ({ observe, unobserve }) => {
         unobserve()
         setPlaying(true)
         const movieId = wrapVideoRef.current.id.split('video-player-')[1]
-        const movie = movieLists.filter((movie) => movie.id === Number(movieId))[0]
+        const movie = movieLists.filter((movie) => movie.id === Number(movieId))[0] 
         if (movie === movieLists.slice(-1)[0]) {
-          let param = new RequestMovie(categoryValue, chooseBigTab(tabValue), null, pageCount, "")
-          axios.get(dbUrl + '/movies', {params: param}).then((res) => {
-            const array = res.data.movies
-            setMovieLists(movieLists.concat(array)) //arrayに入った動画が30未満だったら最後の動画を探すようにする
-          }).catch((res) => {
-            console.log(res)
-          })
+          getNextMovieLists()
         }
         postViewList(props.movie)
         ReactDOM.render(
