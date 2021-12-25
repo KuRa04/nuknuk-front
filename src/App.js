@@ -20,18 +20,24 @@ function App() {
 
   }, [])
 
-  useEffect( () => {
-    window.setTimeout(function(){
-    //  navigate.push("/Movie")
-    setOpen(true)
-    }, 1000);
-  }, [ip]);
+  useEffect(() => {
+    window.setTimeout(() => {
+      setOpen(true)
+    }, 1000)
+  }, [ip])
+
+  const displayLottie = () => {
+    setOpen(false)
+    window.setTimeout(() => {
+      setOpen(true)
+    }, 1000)
+  }
   return (
     <>
     { !isOpen ?
       <StartUp />
     :
-      <Movies ip_address={ip} />
+      <Movies ip_address={ip} displayLottie={() => displayLottie()} />
     }
     </>
   );

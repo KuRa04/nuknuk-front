@@ -1,12 +1,22 @@
 import React from 'react'
-import StartUpImg from '../images/startup.svg'
 import  "../styles/pages/startup.scss";
+import Lottie from "react-lottie";
+import logoLottie from '../images/logo_lottie.json'
 
 const StartUp = () => {
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: logoLottie,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice"
+    }
+  }
+
   return (
       <div className="start_up_mapper">
-        <img className="startup_img" src={StartUpImg} alt=""/>
+        <Lottie options={defaultOptions} height={28} width={56} />
       </div>
-  );
-};
+  )
+}
 export default StartUp;

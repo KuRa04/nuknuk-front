@@ -29,7 +29,6 @@ import favoritesController from '../controller/favorites_controller'
 import viewListsController from '../controller/view_lists_controller'
 import moviesController from '../controller/movies_controller'
 
-
 const Movies = (props) => {
   // 状態変数
   const [movieLists, setMovieLists] = useState([])
@@ -534,7 +533,7 @@ const Movies = (props) => {
       </div>
       </ThemeProvider>
       <Modal open={isSelectCategoryMenu}>
-        <SelectGenre ip_address={props.ip_address} closeSelectGenreMenu={() => openSelectCategoryMenu(!isSelectCategoryMenu)} />
+        <SelectGenre ip_address={props.ip_address} closeSelectGenreMenu={() => props.displayLottie()} />
       </Modal>
     </React.Fragment>
   );
