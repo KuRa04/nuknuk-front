@@ -9,8 +9,8 @@ import genresController from '../controller/select_genres_controller';
  * ip_address closeSelectGenreMenu()
  */
 const SelectGenre = (props) => {
-  const dbUrl = process.env.REACT_APP_HEROKU_DB_URL;
-  // const dbUrl = process.env.REACT_APP_LOCAL_DB_URL
+  // const dbUrl = process.env.REACT_APP_HEROKU_DB_URL;
+  const dbUrl = process.env.REACT_APP_LOCAL_DB_URL
 
   const [genres, setGenres] = useState([])
   const [selectedGenres, setSelectedGenres] = useState([])
