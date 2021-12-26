@@ -1,8 +1,7 @@
 import axios from 'axios';
+import {dbUrl} from '../constant/db_url'
 
-// const dbUrl = process.env.REACT_APP_HEROKU_DB_URL + '/favorites'
-const dbUrl = process.env.REACT_APP_LOCAL_DB_URL + '/favorites'
-
+const endpoint = dbUrl + '/favorites'
 
 /**
  * @param {*} movieId いいねする動画のID
@@ -11,8 +10,8 @@ const dbUrl = process.env.REACT_APP_LOCAL_DB_URL + '/favorites'
  */
 async function createFavorite(movieId, ip_address) {
   let newCount = 0
-  await axios.post(dbUrl, {
-    movie_id: movieId, 
+  await axios.post(endpoint, {
+    movie_id: movieId,
     ip_address: ip_address
   }).then((res) => {
     console.log(res.data)
@@ -31,7 +30,7 @@ async function createFavorite(movieId, ip_address) {
 async function deleteFavorite(movieId, ip_address) {
   let newCount = 0
   const params = { movie_id: movieId, ip_address: ip_address }
-  await axios.delete(dbUrl, { data: params}).then((res) => {
+  await axios.delete(endpoint, { data: params}).then((res) => {
     console.log(res.data)
     newCount = res.data.movie_favoritesCount
   }).catch((data) => {

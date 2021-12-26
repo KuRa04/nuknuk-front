@@ -29,7 +29,6 @@ import favoritesController from '../controller/favorites_controller'
 import viewListsController from '../controller/view_lists_controller'
 import moviesController from '../controller/movies_controller'
 
-
 const Movies = (props) => {
   // 状態変数
   const [movieLists, setMovieLists] = useState([])
@@ -42,10 +41,6 @@ const Movies = (props) => {
   const [shareMovieId, setShareMovieId] = useState(0)
   const [pageCount, setPageCount] = useState(0)
 
-  // dbのパス
-  // const dbUrl = process.env.REACT_APP_HEROKU_DB_URL
-  const dbUrl = process.env.REACT_APP_LOCAL_DB_URL
-
   //TODO useEffectにpropsの値を含める方法を調査
   useEffect(() => {
     const searchUrl = window.location.search
@@ -54,7 +49,7 @@ const Movies = (props) => {
       setMovieLists(array)
     }
     getMovies()
-  }, [dbUrl])
+  }, [])
 
   useEffect(() => {
     // 無限ループしない
@@ -121,7 +116,7 @@ const Movies = (props) => {
     setSmallTabValue(categories.indexOf(text))
   }
 
-  
+
   /**
    * @param {*} channelName シェアするチャネル名
    */
@@ -150,8 +145,8 @@ const Movies = (props) => {
   }
 
   /**
-   * @param {*} props movie title movieImage movieUrl favoritesCount affiliateLink ip_address 
-   * @return {*} 
+   * @param {*} props movie title movieImage movieUrl favoritesCount affiliateLink ip_address
+   * @return {*}
    */
   const SingleMovieView = (props) => {
     const [isPlaying, setPlaying] = useState(true)
@@ -160,7 +155,7 @@ const Movies = (props) => {
     const [isModalAfterViewing, openModalAfterViewing] = useState(false)
     const videoRef = useRef();
     const wrapVideoRef = useRef();
-  
+
     //TODO 一つにまとめたい
     useEffect(() => {
       setFavorited(isFavorited)
@@ -235,7 +230,7 @@ const Movies = (props) => {
     const getNextMovieLists = async () => {
       const array = await moviesController.getMovieLists(smallTabValue, chooseBigTab(bigTabValue), null, pageCount, "", null)
       console.log(array)
-      setMovieLists(movieLists.concat(array))  
+      setMovieLists(movieLists.concat(array))
     }
 
     const { observe } = useInView({
@@ -244,17 +239,17 @@ const Movies = (props) => {
         unobserve()
         setPlaying(true)
         const movieId = wrapVideoRef.current.id.split('video-player-')[1]
-        const movie = movieLists.filter((movie) => movie.id === Number(movieId))[0] 
+        const movie = movieLists.filter((movie) => movie.id === Number(movieId))[0]
         if (movie === movieLists.slice(-1)[0]) {
           getNextMovieLists()
         }
         postViewList(props.movie)
         ReactDOM.render(
-          <VideoComponent 
-            movie={movie} 
-            videoRef={videoRef} 
+          <VideoComponent
+            movie={movie}
+            videoRef={videoRef}
             onEnded={() => openModalAfterViewing(!isModalAfterViewing)}
-          />, 
+          />,
           document.getElementById("video-player-" + movieId)
         )
         videoRef.current && videoRef.current.play()
@@ -267,6 +262,7 @@ const Movies = (props) => {
         const movieId = wrapVideoRef.current.id.split('video-player-')[1]
         let movie = document.getElementById("video-player-" + movieId).replaceChildren
         movie = null
+        console.log(movie)
         observe()
       },
     })
@@ -536,7 +532,7 @@ const Movies = (props) => {
       </div>
       </ThemeProvider>
       <Modal open={isSelectCategoryMenu}>
-        <SelectGenre ip_address={props.ip_address} closeSelectGenreMenu={() => openSelectCategoryMenu(!isSelectCategoryMenu)} />
+        <SelectGenre ip_address={props.ip_address} closeSelectGenreMenu={() => props.displayLottie()} />
       </Modal>
     </React.Fragment>
   );

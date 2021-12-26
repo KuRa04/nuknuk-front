@@ -3,15 +3,13 @@ import "../styles/pages/genre.scss";
 import axios from 'axios';
 import CloseIcon from '@material-ui/icons/Close';
 import genresController from '../controller/select_genres_controller';
+import {dbUrl} from '../constant/db_url'
 
 /**
  * @param {*} props
  * ip_address closeSelectGenreMenu()
  */
 const SelectGenre = (props) => {
-  // const dbUrl = process.env.REACT_APP_HEROKU_DB_URL;
-  const dbUrl = process.env.REACT_APP_LOCAL_DB_URL
-
   const [genres, setGenres] = useState([])
   const [selectedGenres, setSelectedGenres] = useState([])
   const ip_address = props.ip_address
@@ -31,7 +29,7 @@ const SelectGenre = (props) => {
     }).catch((res) => {
       console.log(res)
     })
-  }, [dbUrl, ip_address])
+  }, [ip_address])
 
   /**
    * 選択したジャンルのオン・オフ切り替え
