@@ -23,7 +23,7 @@ import {
   TwitterIcon
 } from 'react-share'
 import "../styles/pages/movies.scss";
-import {categories} from '../constant/categories'
+import {addingBigAndSmallTabs, smallTabs, largeTabsMapping} from '../constant/tabs'
 import sharesController from '../controller/shares_controller'
 import favoritesController from '../controller/favorites_controller'
 import viewListsController from '../controller/view_lists_controller'
@@ -57,65 +57,59 @@ const Movies = (props) => {
   }, [movieLists]);
 
   /**
-   * @param {*} value smallTabの値
-   * @param {*} text smallTabの名称
+   * bigTabの切替
+   * スワイプとクリックの両方で呼び出される
+   * @param {*} value bigTabの値 0, 1, 13
+   * @param {*} text bigTabの名称 人気, ジャンル別, おすすめ
    */
   const changeBigTabValue = async (value, text) => {
-    setPageCount(1)
-    let largeTab = ''
-    if (value === 0) {
-      largeTab = 'popular'
-    } else if (value === 1) {
-      largeTab = 'genre'
-      setSmallTabValue(categories.indexOf(text))
-    } else if (value === 13) {
-      largeTab = 'new'
-    }
-    const array = await moviesController.getMovieLists(value - 1, largeTab, null, 1, props.ip_address, null)
+    const largeTab = largeTabsMapping[text]
+    value === 1 && setSmallTabValue(smallTabs.indexOf(text))
+    const array = await moviesController.getMovieLists(value, largeTab, null, 1, props.ip_address, null)
     setMovieLists(array)
+    setPageCount(1)
     setBigTabValue(value)
     setHorizontalSwipeValue(value)
   }
 
+  /**
+   * スワイプしたときのタブの切替
+   * horizontalSwipeValueとsmallTabValueの値を両方切り替える必要がある
+   * @param {*} value horizontalSwipeValueの値
+   */
   const changeHorizontalSwipeValue = (value) => {
     setPageCount(1)
     switch (value) {
       case 0:
-        setBigTabValue(value)
-        setHorizontalSwipeValue(value)
-        changeSmallTabValue(value,categories[value])
+      case 13:
+        changeBigTabValue(value, addingBigAndSmallTabs[value])
         break;
       case 1:
-        setBigTabValue(1)
-        setHorizontalSwipeValue(value)
-        changeSmallTabValue(value,categories[value])
-        break;
       case 12:
         setBigTabValue(1)
-        setHorizontalSwipeValue(value)
-        changeSmallTabValue(value,categories[value])
-        break;
-      case 13:
-        setBigTabValue(value)
-        setHorizontalSwipeValue(value)
+        console.log(value)
+        --value //smallTabsでは人気、おすすめが含まれていないため、-1する
+        changeSmallTabValue(value, smallTabs[value])
         break;
       default:
-        setHorizontalSwipeValue(value)
-        changeSmallTabValue(value,categories[value])
+        changeSmallTabValue(value,addingBigAndSmallTabs[value])
         break;
     }
   }
 
+  /**
+   * smallTabの切替
+   * スワイプとクリックの両方で呼び出される
+   * @param {*} value smallTabの値（constantを参照）
+   * @param {*} text smallTabの名称（constantを参照）
+   */
   const changeSmallTabValue = async (value, text) => {
-    setPageCount(1)
-    const array = await moviesController.getMovieLists(value - 1, 'genre', null, 1, props.ip_address, null)
+    const array = await moviesController.getMovieLists(value, 'genre', null, 1, props.ip_address, null)
     setMovieLists(array)
-    if (value === 12) {
-      setBigTabValue(13)
-    }
-    setSmallTabValue(categories.indexOf(text))
+    setPageCount(1)
+    setHorizontalSwipeValue(value)
+    setSmallTabValue(smallTabs.indexOf(text))
   }
-
 
   /**
    * @param {*} channelName シェアするチャネル名
@@ -353,8 +347,6 @@ const Movies = (props) => {
     </div>
   }
 
-  const smallTabs = categories.slice(1, categories.length - 1)
-
   return (
     <React.Fragment>
       <ThemeProvider theme={theme}>
@@ -397,10 +389,10 @@ const Movies = (props) => {
                       smallTabs.map((category, index) => {
                         return <Tab
                           label={category}
-                          value={index + 1}
-                          key={'category-' + index + 1}
-                          className={smallTabValue === index + 1 ? "select_small_tab" : 'un_select_small_tab'}
-                          onClick={() => changeSmallTabValue(index + 1, category)}
+                          value={index}
+                          key={'category-' + index}
+                          className={smallTabValue === index ? "select_small_tab" : 'un_select_small_tab'}
+                          onClick={() => changeSmallTabValue(index, category)}
                         />
                       }) }
                   </Tabs>
