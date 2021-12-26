@@ -35,9 +35,9 @@ const Movies = (props) => {
   const [movieLists, setMovieLists] = useState([])
   const [isSideMenu, openSideMenu] = useState(false)
   const [isSelectCategoryMenu, openSelectCategoryMenu] = useState(false)
-  const [tabValue, setTabValue] = useState(0)
-  const [tabValueIndex, setTabValueIndex] = useState(0)
-  const [categoryValue, setCategoryValue] = useState(0)
+  const [bigTabValue, setBigTabValue] = useState(0)
+  const [horizontalSwipeValue, setHorizontalSwipeValue] = useState(0)
+  const [smallTabValue, setSmallTabValue] = useState(0)
   const [isShareDrawer, openShareDrawer] = useState(false)
   const [shareMovieId, setShareMovieId] = useState(0)
   const [pageCount, setPageCount] = useState(0)
@@ -65,61 +65,60 @@ const Movies = (props) => {
    * @param {*} value smallTabの値
    * @param {*} text smallTabの名称
    */
-  const tabsChange = async (value, text) => {
+  const changeBigTabValue = async (value, text) => {
     setPageCount(1)
     let largeTab = ''
-    console.log(value)
     if (value === 0) {
       largeTab = 'popular'
     } else if (value === 1) {
       largeTab = 'genre'
-      setCategoryValue(categories.indexOf(text))
+      setSmallTabValue(categories.indexOf(text))
     } else if (value === 13) {
       largeTab = 'new'
     }
     const array = await moviesController.getMovieLists(value - 1, largeTab, null, 1, props.ip_address, null)
     setMovieLists(array)
-    setTabValue(value)
-    setTabValueIndex(value)
+    setBigTabValue(value)
+    setHorizontalSwipeValue(value)
   }
 
-  const tabsChangeIndex = (value) => {
+  const changeHorizontalSwipeValue = (value) => {
     setPageCount(1)
     switch (value) {
       case 0:
-        setTabValue(value)
-        setTabValueIndex(value)
-        categoriesChange(value,categories[value])
+        setBigTabValue(value)
+        setHorizontalSwipeValue(value)
+        changeSmallTabValue(value,categories[value])
         break;
       case 1:
-        setTabValue(1)
-        setTabValueIndex(value)
-        categoriesChange(value,categories[value])
+        setBigTabValue(1)
+        setHorizontalSwipeValue(value)
+        changeSmallTabValue(value,categories[value])
         break;
       case 12:
-        setTabValue(1)
-        setTabValueIndex(value)
-        categoriesChange(value,categories[value])
+        setBigTabValue(1)
+        setHorizontalSwipeValue(value)
+        changeSmallTabValue(value,categories[value])
         break;
       case 13:
-        setTabValue(value)
-        setTabValueIndex(value)
+        setBigTabValue(value)
+        setHorizontalSwipeValue(value)
         break;
       default:
-        setTabValueIndex(value)
-        categoriesChange(value,categories[value])
+        setHorizontalSwipeValue(value)
+        changeSmallTabValue(value,categories[value])
         break;
     }
   }
 
-  const categoriesChange = async (value, text) => {
+  const changeSmallTabValue = async (value, text) => {
     setPageCount(1)
     const array = await moviesController.getMovieLists(value - 1, 'genre', null, 1, props.ip_address, null)
     setMovieLists(array)
     if (value === 12) {
-      setTabValue(13)
+      setBigTabValue(13)
     }
-    setCategoryValue(categories.indexOf(text))
+    setSmallTabValue(categories.indexOf(text))
   }
 
   
@@ -222,19 +221,19 @@ const Movies = (props) => {
       setPlaying(true);
     }
 
-    const chooseBigTab = (tabValue) => {
+    const chooseBigTab = (bigTabValue) => {
       let largeTab = ''
-      if (tabValue === 0)
+      if (bigTabValue === 0)
         largeTab = 'popular'
-      else if (tabValue === 1)
+      else if (bigTabValue === 1)
         largeTab = 'genre'
-      else if (tabValue === 13)
+      else if (bigTabValue === 13)
         largeTab = 'new'
       return largeTab;
     }
 
     const getNextMovieLists = async () => {
-      const array = await moviesController.getMovieLists(categoryValue, chooseBigTab(tabValue), null, pageCount, "", null)
+      const array = await moviesController.getMovieLists(smallTabValue, chooseBigTab(bigTabValue), null, pageCount, "", null)
       console.log(array)
       setMovieLists(movieLists.concat(array))  
     }
@@ -380,20 +379,20 @@ const Movies = (props) => {
               </Toolbar>
               <img className="menu_icon" src={isSideMenu ? SideImageBlack : SideImageWhite} alt='menu' width={35} height={35} onClick={() => openSideMenu(!isSideMenu)} />
               <Tabs
-                value={tabValue} // 0人気 1新着
-                onChange={() => tabsChange}
+                value={bigTabValue} // 0人気 1新着
+                onChange={() => changeBigTabValue}
                 TabIndicatorProps={{style: {background:'#EFE060', height: "2.8px", borderRadius: "8%"
               }}}
                 centered
               >
-                <Tab label="人気" style={{color: "#F0F0F0", fontSize: '17px', paddingLeft: "0px", paddingRight: "0px", marginLeft: "12px", marginRight: "12px", }} onClick={() => tabsChange(0, '人気')} />
-                <Tab label="ジャンル別" style={{color: "#F0F0F0", fontSize: '17px', paddingBottom: "2.5px", paddingLeft: "0px", paddingRight: "0px", marginLeft: "12px", marginRight: "12px"}} onClick={() => tabsChange(1, '素人')} />
-                <Tab label="おすすめ" style={{color: "#F0F0F0", fontSize: '17px', paddingBottom: "2.5px", paddingLeft: "0px", paddingRight: "0px", marginLeft: "12px", marginRight: "12px"}} value={13} onClick={() => tabsChange(13, 'おすすめ')}  />
+                <Tab label="人気" style={{color: "#F0F0F0", fontSize: '17px', paddingLeft: "0px", paddingRight: "0px", marginLeft: "12px", marginRight: "12px", }} onClick={() => changeBigTabValue(0, '人気')} />
+                <Tab label="ジャンル別" style={{color: "#F0F0F0", fontSize: '17px', paddingBottom: "2.5px", paddingLeft: "0px", paddingRight: "0px", marginLeft: "12px", marginRight: "12px"}} onClick={() => changeBigTabValue(1, '素人')} />
+                <Tab label="おすすめ" style={{color: "#F0F0F0", fontSize: '17px', paddingBottom: "2.5px", paddingLeft: "0px", paddingRight: "0px", marginLeft: "12px", marginRight: "12px"}} value={13} onClick={() => changeBigTabValue(13, 'おすすめ')}  />
               </Tabs>
-                { tabValue === 1 &&
+                { bigTabValue === 1 &&
                   <Tabs
-                    value={categoryValue} // tabValue ⇨ categoryValueに変更
-                    onChange={() => categoriesChange}
+                    value={smallTabValue} // bigTabValue ⇨ smallTabValueに変更
+                    onChange={() => changeSmallTabValue}
                     variant='scrollable'
                     TabIndicatorProps={{style: {display: "none"}}}
                   >
@@ -404,82 +403,82 @@ const Movies = (props) => {
                           label={category}
                           value={index + 1}
                           key={'category-' + index + 1}
-                          className={categoryValue === index + 1 ? "select_small_tab" : 'un_select_small_tab'}
-                          onClick={() => categoriesChange(index + 1, category)}
+                          className={smallTabValue === index + 1 ? "select_small_tab" : 'un_select_small_tab'}
+                          onClick={() => changeSmallTabValue(index + 1, category)}
                         />
                       }) }
                   </Tabs>
                 }
               </AppBar>
           </Box>
-          <SwipeableViews index={tabValueIndex} onChangeIndex={tabsChangeIndex}>
+          <SwipeableViews index={horizontalSwipeValue} onChangeIndex={changeHorizontalSwipeValue}>
             <div id= {"junre-movie-0"}>
-              {tabValueIndex === 0 &&
+              {horizontalSwipeValue === 0 &&
                 <VerticalMovieLists ip_address = {props.ip_address} />
               }
             </div>
             <div id= {"junre-movie-1"}>
-              { tabValueIndex === 1 &&
+              { horizontalSwipeValue === 1 &&
                 <VerticalMovieLists ip_address = {props.ip_address} />
               }
             </div>
             <div id= {"junre-movie-2"}>
-              { tabValueIndex === 2 &&
+              { horizontalSwipeValue === 2 &&
                 <VerticalMovieLists ip_address = {props.ip_address} />
               }
             </div>
             <div id= {"junre-movie-3"}>
-              { tabValueIndex === 3 &&
+              { horizontalSwipeValue === 3 &&
                 <VerticalMovieLists ip_address = {props.ip_address} />
               }
             </div>
             <div id= {"junre-movie-4"}>
-              { tabValueIndex === 4 &&
+              { horizontalSwipeValue === 4 &&
                 <VerticalMovieLists ip_address = {props.ip_address} />
               }
             </div>
             <div id= {"junre-movie-5"}>
-              { tabValueIndex === 5 &&
+              { horizontalSwipeValue === 5 &&
                 <VerticalMovieLists ip_address = {props.ip_address} />
               }
             </div>
             <div id= {"junre-movie-6"}>
-              { tabValueIndex === 6 &&
+              { horizontalSwipeValue === 6 &&
                 <VerticalMovieLists ip_address = {props.ip_address} />
               }
             </div>
             <div id= {"junre-movie-7"}>
-              { tabValueIndex === 7 &&
+              { horizontalSwipeValue === 7 &&
                 <VerticalMovieLists ip_address = {props.ip_address} />
               }
             </div>
             <div id= {"junre-movie-8"}>
-              { tabValueIndex === 8 &&
+              { horizontalSwipeValue === 8 &&
                 <VerticalMovieLists ip_address = {props.ip_address} />
               }
             </div>
             <div id= {"junre-movie-9"}>
-              { tabValueIndex === 9 &&
+              { horizontalSwipeValue === 9 &&
                 <VerticalMovieLists ip_address = {props.ip_address} />
               }
             </div>
             <div id= {"junre-movie-10"}>
-              { tabValueIndex === 10 &&
+              { horizontalSwipeValue === 10 &&
                 <VerticalMovieLists ip_address = {props.ip_address} />
               }
             </div>
             <div id= {"junre-movie-11"}>
-              { tabValueIndex === 11 &&
+              { horizontalSwipeValue === 11 &&
                 <VerticalMovieLists ip_address = {props.ip_address} />
               }
             </div>
             <div id= {"junre-movie-12"}>
-              { tabValueIndex === 12 &&
+              { horizontalSwipeValue === 12 &&
                 <VerticalMovieLists ip_address = {props.ip_address} />
               }
             </div>
             <div id= {"junre-movie-13"}>
-              {tabValueIndex === 13 &&
+              {horizontalSwipeValue === 13 &&
                 <VerticalMovieLists ip_address = {props.ip_address} />
               }
             </div>
