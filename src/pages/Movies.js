@@ -95,7 +95,7 @@ const Movies = (props) => {
             <AppBar
               style={{
                 background: 'transparent', // AppBarの背景色を透明にする
-                boxShadow: 'none'　// ボックスシャドウを削除
+                boxShadow: 'none' // ボックスシャドウを削除
               }}
               position="fixed"
             >
@@ -119,12 +119,11 @@ const Movies = (props) => {
               </Tabs>
               { bigTabValue === 1 &&
                 <Tabs
-                  value={smallTabValue} // bigTabValue ⇨ smallTabValueに変更
+                  value={smallTabValue}
                   onChange={() => changeSmallTabValue}
                   variant='scrollable'
                   TabIndicatorProps={{style: {display: "none"}}}
                 >
-                  {/* <Tab value={0} /> */}
                   {
                     smallTabs.map((category, index) => {
                       return <Tab
@@ -143,14 +142,14 @@ const Movies = (props) => {
             { addingBigAndSmallTabs.map((_, index) => {
               return (
                 <div key={"genre-movie-" + index}>
-                  { horizontalSwipeValue === index ? 
+                  { 0 === index ?
                     <VerticalMovieLists
                       smallTabValue={smallTabValue}
                       bigTabValue={bigTabValue}
                       isSelectCategoryMenu={isSelectCategoryMenu}
                       ip_address = {props.ip_address}
-                    /> 
-                    : <EntityEmptyVideo /> 
+                    />
+                    : <EntityEmptyVideo />
                   }
                 </div>
               )
