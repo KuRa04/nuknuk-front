@@ -71,12 +71,13 @@ const VerticalMovieLists = (props) => {
                 title={movie.title}
                 movieImage={movie.image}
                 movieUrl={movie.movie_url}
-                favoritesCount={movie.favorites_count}
                 affiliateLink={movie.affiliate_link}
                 ip_address={props.ip_address}
                 toggleShareDrawer={toggleShareDrawer}
                 getNextMovieLists={getNextMovieLists}
                 isLastVideo={movie.is_last_video}
+                isFavorited={movie.isFavorited}
+                favoritesCount={movie.favorites_count}
                 isSelectCategoryMenu={props.isSelectCategoryMenu}
                 />
             </div>

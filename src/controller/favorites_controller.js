@@ -6,20 +6,20 @@ const endpoint = dbUrl + '/favorites'
 /**
  * @param {*} movieId いいねする動画のID
  * @param {*} ip_address ユーザーのIPアドレス
- * @return {*} newCount いいねした後のいいね数
+ * @return {*} newFavorites いいねした後のいいね数
  */
 async function createFavorite(movieId, ip_address) {
-  let newCount = 0
+  let newFavorites = null
   await axios.post(endpoint, {
     movie_id: movieId,
     ip_address: ip_address
   }).then((res) => {
     console.log(res.data)
-    newCount = res.data.movie_favoritesCount
+    newFavorites = res.data
   }).catch((data) => {
     console.log(data)
   })
-  return newCount
+  return newFavorites
 }
 
 /**
@@ -28,15 +28,15 @@ async function createFavorite(movieId, ip_address) {
  * @return {*}  いいね削除後のいいね数
  */
 async function deleteFavorite(movieId, ip_address) {
-  let newCount = 0
+  let newFavorites = 0
   const params = { movie_id: movieId, ip_address: ip_address }
   await axios.delete(endpoint, { data: params}).then((res) => {
     console.log(res.data)
-    newCount = res.data.movie_favoritesCount
+    newFavorites = res.data
   }).catch((data) => {
     console.log(data)
   })
-  return newCount
+  return newFavorites
 }
 
 const favoritesController = {

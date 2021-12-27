@@ -3,11 +3,10 @@ import ReactDOM from 'react-dom'
 import useInView from "react-cool-inview"
 import { Modal } from '@material-ui/core'
 import VideoStartIcon from '../images/video_start.svg'
-import BeforeFavoriteImg from '../images/before_favorite.svg'
-import AfterFavoriteImg from '../images/after_favorite.svg'
 import favoritesController from '../controller/favorites_controller'
 import viewListsController from '../controller/view_lists_controller'
 import Shares from './share'
+import Favorites from './favorite'
 import Purchases from './purchase'
 import VideoComponent from './video'
 import "../styles/components/single_movie_view.scss"
@@ -18,20 +17,10 @@ import "../styles/components/single_movie_view.scss"
    */
 const SingleMovieView = (props) => {
   const [isPlaying, setPlaying] = useState(true)
-  const [isFavorited, setFavorited] = useState(props.isFavorited) //TODO propsではなくmovieの中から渡す
-  const [favoriteCount, setFavoriteCount] = useState(props.favoritesCount)
+  const [getMovie, setMovie] = useState(props.movie)
   const [isModalAfterViewing, openModalAfterViewing] = useState(false)
   const videoRef = useRef();
   const wrapVideoRef = useRef();
-
-  //TODO 一つにまとめたい
-  useEffect(() => {
-    setFavorited(isFavorited)
-  }, [isFavorited])
-
-  useEffect(() => {
-    setFavoriteCount(favoriteCount)
-  }, [favoriteCount])
 
   useEffect(() => {
     if (props.isSelectCategoryMenu) {
@@ -44,28 +33,33 @@ const SingleMovieView = (props) => {
   }, [props.isSelectCategoryMenu])
 
   /**
-   *
-   * @param {*} movie いいねしたい動画
-   * @param {*} e イベントハンドラ
-   */
-  const postFavorites = async (movie, e) => {
-    e.stopPropagation()
-    let newCount = 0
-    if (isFavorited) {
-      newCount = await favoritesController.deleteFavorite(movie.id, props.ip_address)
-    } else {
-      newCount = await favoritesController.createFavorite(movie.id, props.ip_address)
-    }
-    setFavorited(!isFavorited)
-    setFavoriteCount(newCount)
-  }
-
-  /**
    * @param {*} movie //動画一覧
    */
   const postViewList = async (movie) => {
     await viewListsController.postViewList(movie.id, props.ip_address)
   }
+
+  /**
+   *
+   * @param {*} movie いいねしたい動画
+   * @param {*} e イベントハンドラ
+   */
+     const postFavorites = async (e) => {
+      e.stopPropagation()
+      let newFavorites = null
+      if (getMovie.is_favorited) {
+        newFavorites = await favoritesController.deleteFavorite(props.movie.id, props.ip_address)
+      } else {
+        newFavorites = await favoritesController.createFavorite(props.movie.id, props.ip_address)
+      }
+      const beforeMovie = getMovie
+      const movie = {
+        ...beforeMovie, 
+        ...{is_favorited: newFavorites.is_favorited, 
+        favorites_count: newFavorites.favorites_count
+      }}
+      setMovie(movie)
+    }
 
   let tapCount = 0 //TODO useStateで書き換える
 
@@ -88,7 +82,7 @@ const SingleMovieView = (props) => {
         tapCount = 0
       }, 500)
     } else {
-      postFavorites(props.movie, e)
+      postFavorites(e)
       tapCount = 0
     }
   }
@@ -153,15 +147,16 @@ const SingleMovieView = (props) => {
             ip_address={props.ip_address}
           />
           <div className="wrapper_video_options_btn">
-            <div className="wrapper_favorites_btn">
-              <img onClick={(e) => postFavorites(props.movie, e)} alt="" width="35" height="35" src={isFavorited ? AfterFavoriteImg : BeforeFavoriteImg} />
-              <span className="video_favorites_count">{favoriteCount}</span>
-            </div>
+            <Favorites 
+              movie={getMovie}
+              postFavorites={(e) => postFavorites(e)}
+              ip_address={props.ip_address}
+            />
             <div className="wrapper_share_btn">
               <Shares
                 movie={props.movie}
-                ip_address={props.ip_address}
                 onToggle={props.toggleShareDrawer}
+                ip_address={props.ip_address}
               />
             </div>
           </div>
