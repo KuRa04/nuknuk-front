@@ -32,6 +32,16 @@ const SingleMovieView = (props) => {
     }
   }, [props.isSelectCategoryMenu])
 
+  useEffect(() => {
+    if (props.isSideMenu) {
+      setPlaying(false)
+      videoRef.current && videoRef.current.pause()
+      } else {
+      setPlaying(true)
+      videoRef.current && videoRef.current.play()
+    }
+  }, [props.isSideMenu])
+
   /**
    * @param {*} movie //動画一覧
    */

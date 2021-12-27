@@ -147,6 +147,7 @@ const Movies = (props) => {
                       smallTabValue={smallTabValue}
                       bigTabValue={bigTabValue}
                       isSelectCategoryMenu={isSelectCategoryMenu}
+                      isSideMenu={isSideMenu}
                       ip_address = {props.ip_address}
                     />
                     : <EntityEmptyVideo />

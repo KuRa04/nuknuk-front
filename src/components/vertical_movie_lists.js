@@ -79,6 +79,7 @@ const VerticalMovieLists = (props) => {
                 isFavorited={movie.isFavorited}
                 favoritesCount={movie.favorites_count}
                 isSelectCategoryMenu={props.isSelectCategoryMenu}
+                isSideMenu={props.isSideMenu}
                 />
             </div>
           })
