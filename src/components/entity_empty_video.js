@@ -2,10 +2,12 @@ import React from 'react';
 import BeforeFavoriteImg from '../images/before_favorite.svg'
 import RightArrowImg from '../images/right_arrow.svg'
 import ShareButton from '../images/share.svg'
+import "../styles/components/entity_empty_video.scss";
 
 const EntityEmptyVideo  = () => {
   return (
     <div className="wrapper_movie">
+      <div className="empty_component"></div>
       <div className="btn_object">
         <div className="wrapper_title">
           <p className="movie_title"></p>
@@ -25,7 +27,6 @@ const EntityEmptyVideo  = () => {
       </div>
     </div>
   )
-  
 }
 
 export default EntityEmptyVideo

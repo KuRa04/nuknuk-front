@@ -16,7 +16,7 @@ import VideoComponent from './video'
    * @param {*} props movie title movieImage movieUrl favoritesCount affiliateLink ip_address
    * @return {*}
    */
- const SingleMovieView = (props) => {
+const SingleMovieView = (props) => {
   const [isPlaying, setPlaying] = useState(true)
   const [isFavorited, setFavorited] = useState(props.isFavorited) //TODO propsではなくmovieの中から渡す
   const [favoriteCount, setFavoriteCount] = useState(props.favoritesCount)
@@ -49,7 +49,7 @@ import VideoComponent from './video'
     setFavorited(!isFavorited)
     setFavoriteCount(newCount)
   }
-  
+
   /**
    * @param {*} movie //動画一覧
    */
@@ -58,7 +58,7 @@ import VideoComponent from './video'
   }
 
   let tapCount = 0 //TODO useStateで書き換える
-  
+
   /**
    *
    * @param {*} e イベントハンドラ
@@ -99,9 +99,9 @@ import VideoComponent from './video'
       setPlaying(true)
       // const movieId = wrapVideoRef.current.id.split('video-player-')[1]
       // const movie = movieListCopy.filter((movie) => movie.id === Number(movieId))[0]
-      
+
        props.isLastVideo && props.getNextMovieLists()
-  
+
       postViewList(props.movie)
       ReactDOM.render(
         <VideoComponent

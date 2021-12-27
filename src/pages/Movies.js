@@ -9,7 +9,7 @@ import banImg from '../images/ban.svg'
 import SelectGenre from './select_genre'
 import "../styles/pages/movies.scss";
 import { addingBigAndSmallTabs, smallTabs } from '../constant/tabs'
-import VerticalMovieLists from '../components/vertical_movie_lists'
+// import VerticalMovieLists from '../components/vertical_movie_lists'
 import EntityEmptyVideo from '../components/entity_empty_video'
 
 const Movies = (props) => {
@@ -142,20 +142,20 @@ const Movies = (props) => {
           <SwipeableViews index={horizontalSwipeValue} onChangeIndex={changeHorizontalSwipeValue}>
             { addingBigAndSmallTabs.map((_, index) => {
               return (
-                <div key={"genre-movie-" + index}>
-                  {/* { horizontalSwipeValue === index ? 
+                <div className="wrapper_movie_lists" key={"genre-movie-" + index}>
+                  {/* { horizontalSwipeValue === index ?
                     <VerticalMovieLists
                       smallTabValue={smallTabValue}
                       bigTabValue={bigTabValue}
                       ip_address = {props.ip_address}
-                    /> 
-                    : <EntityEmptyVideo /> 
+                    />
+                    : <EntityEmptyVideo />
                   } */}
                   <EntityEmptyVideo />
                 </div>
               )
             })}
-            
+
             {/* <div id= {"genre-movie-1"}>
               { horizontalSwipeValue === 1 &&
                 <VerticalMovieLists ip_address = {props.ip_address} />
