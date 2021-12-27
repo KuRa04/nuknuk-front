@@ -33,6 +33,16 @@ const SingleMovieView = (props) => {
     setFavoriteCount(favoriteCount)
   }, [favoriteCount])
 
+  useEffect(() => {
+    if (props.isSelectCategoryMenu) {
+      setPlaying(false)
+      videoRef.current && videoRef.current.pause()
+      } else {
+      setPlaying(true)
+      videoRef.current && videoRef.current.play()
+    }
+  }, [props.isSelectCategoryMenu])
+
   /**
    *
    * @param {*} movie いいねしたい動画
@@ -97,11 +107,7 @@ const SingleMovieView = (props) => {
     onEnter: async ({ observe, unobserve }) => {
       unobserve()
       setPlaying(true)
-      // const movieId = wrapVideoRef.current.id.split('video-player-')[1]
-      // const movie = movieListCopy.filter((movie) => movie.id === Number(movieId))[0]
-
       props.isLastVideo && props.getNextMovieLists()
-
       postViewList(props.movie)
       ReactDOM.render(
         <VideoComponent

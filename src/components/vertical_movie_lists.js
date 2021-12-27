@@ -77,6 +77,7 @@ const VerticalMovieLists = (props) => {
                 toggleShareDrawer={toggleShareDrawer}
                 getNextMovieLists={getNextMovieLists}
                 isLastVideo={movie.is_last_video}
+                isSelectCategoryMenu={props.isSelectCategoryMenu}
                 />
             </div>
           })
@@ -113,6 +114,7 @@ const VerticalMovieLists = (props) => {
           <Button className="cancel_button" onClick={() => openShareDrawer(false)}>キャンセル</Button>
         </div>
       </Drawer>
+      {console.log(props.isSelectCategoryMenu)}
     </>
   )
 }
