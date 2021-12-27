@@ -7,12 +7,6 @@ body {
   background-color: black;
 }
 
-.empty-box {
-  display: block;
-  width: 100%;
-  height: 52px;
-}
-
 .main {
   background-color: #000;
 }
@@ -23,7 +17,6 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  // vertical-align: bottom;
 }
 
 .menu_icon {
@@ -37,33 +30,16 @@ body {
   justify-content: center;
 }
 
-.movies {
-  scroll-snap-type: y mandatory;
-  position: relative;
-  width: 100%;
+.wrapper_movie_lists {
   height: 100vh;
-  overflow-y: scroll;
   margin-top: 80px;
-}
-
-.movie_list {
-  scroll-snap-align: center;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.movie_list::after {
-  display: block;
-  content: "";
-  scroll-snap-align: end;
 }
 
 .MuiTab-wrapper {
   font-weight: bold;
 }
 
+// material-uiのやつらしい
 .wrapper_category {
   display: flex;
   justify-content: flex-start;
@@ -77,10 +53,12 @@ body {
   padding-inline-end: 10px;
 }
 
+// material-uiのやつらしい
 .wrapper_category::-webkit-scrollbar {  /* Chrome, Safari 対応 */
   display:none;
 }
 
+// material-uiのやつらしい
 .category_list {
   width: 60%;
   display: inline-block;
@@ -94,6 +72,7 @@ body {
   padding: 8px 14px;
 }
 
+// material-uiのやつらしい
 .category_list_selected {
   width: 60%;
   display: inline-block;
@@ -107,6 +86,7 @@ body {
   padding: 8px 14px;
 }
 
+// material-uiのやつらしい
 .category_list_selected {
   width: 60%;
   display: inline-block;
@@ -118,64 +98,6 @@ body {
   line-height: 14px;
   font-size: 14px;
   padding: 8px 14px;
-}
-
-.wrapper_movie {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  margin-top: 60px;
-  z-index: 0;
-}
-
-.video_wrapper {
-  display: flex;
-  justify-content: center;
-}
-
-.video_start_icon {
-  width: 100%;
-  position: absolute;
-  top: 17%;
-  display: flex;
-  justify-content: center;
-}
-
-.btn_object {
-  box-sizing: border-box;
-  padding: 40px 0 0 25px;
-  width: 100%;
-  display: flex;
-  position: relative;
-  align-items: flex-end;
-  z-index: 0;
-}
-
-.video_btn {
-  width: 50px;
-  display:flex;
-  justify-content: center;
-  flex-flow: column;
-  align-items: flex-end;
-  cursor: pointer;
-  z-index: 10;
-}
-
-.after_movie_modal {
-  display: flex;
-  flex-direction:column;
-  text-align: center;
-}
-
-.replay_text {
-  margin-top: 40px;
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 16px;
-  color: #606060;
-  text-align: center;
 }
 
 .footer {
@@ -185,87 +107,9 @@ body {
   z-index: 1;
 }
 
-.share_btn {
-  width: 35px;
-  display: flex;
-  flex-direction: column;
-}
-
-.favorites_count {
-  color: #F0F0F0;
-  text-align: center;
-  font-weight: bold;
-}
-
 .sidebar {
   display: flex;
   align-items: flex-end;
-}
-
-.share_drawer_box {
-  height: 210px;
-  width: 375px;
-  background-color: #F0F0F0;
-  margin-bottom: 40px;
-}
-
-.share_title {
-  font-size: 14px;
-  font-weight: bold;
-  text-align: center;
-  margin: 0;
-  padding: 20px 0;
-  background-color: #F0F0F0;
-
-  border: 0;
-}
-
-.share_drawer {
-  width: 100%;
-  height: 100px;
-  display: flex;
-  justify-content: space-around;
-  background-color: #F0F0F0;
-  border-top: 1px solid lightgray;
-
-}
-
-.share_icon {
-  width: 33.333%;
-  text-align: center;
-  margin-top: 8px;
-}
-
-
-.share_text {
-  margin: 0;
-  text-align: center;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.share_footer {
-  text-align: center;
-  width: 100%;
-  height: 50px;
-  z-index: 2;
-  margin: 0;
-  font-size: 18px;
-  font-weight: bold;
-  background-color: #fff;
-}
-
-.copy_link {
-  width: 50px;
-  height: 50px;
-  margin: 0 auto;
-  border-radius: 50%;
-  background-color: red;
-}
-
-.cancel_button {
-  background-color: #fff;
-  color: #000;
 }
 
 .MuiButton-label {
@@ -279,29 +123,4 @@ body {
 .un_select_small_tab {
   color: #606060 !important;
   font-size: 14px !important;
-}
-
-.empty_component {
-  width: 370px;
-  height: 300px;
-}
-
-.wrapper_favorites {
-  position: relative;
-  width: 35px;
-  height: 40px;
-  margin-bottom: 20px;
-  display:flex;
-  justify-content: center;
-  flex-flow: column;
-  z-index: 2;
-}
-
-.favorites_count {
-  margin-top: 4px;
-  font-size: 14px;
-  font-weight: bold;
-  color: #F0F0F0;
-  text-align: center;
-  vertical-align: bottom;
 }
