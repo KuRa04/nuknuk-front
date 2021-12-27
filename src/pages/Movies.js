@@ -117,110 +117,43 @@ const Movies = (props) => {
                 <Tab label="ジャンル別" style={{color: "#F0F0F0", fontSize: '17px', paddingBottom: "2.5px", paddingLeft: "0px", paddingRight: "0px", marginLeft: "12px", marginRight: "12px"}} onClick={() => changeBigTabValue(1, '素人')} />
                 <Tab label="おすすめ" style={{color: "#F0F0F0", fontSize: '17px', paddingBottom: "2.5px", paddingLeft: "0px", paddingRight: "0px", marginLeft: "12px", marginRight: "12px"}} value={13} onClick={() => changeBigTabValue(13, 'おすすめ')}  />
               </Tabs>
-                { bigTabValue === 1 &&
-                  <Tabs
-                    value={smallTabValue} // bigTabValue ⇨ smallTabValueに変更
-                    onChange={() => changeSmallTabValue}
-                    variant='scrollable'
-                    TabIndicatorProps={{style: {display: "none"}}}
-                  >
-                    {/* <Tab value={0} /> */}
-                    {
-                      smallTabs.map((category, index) => {
-                        return <Tab
-                          label={category}
-                          value={index}
-                          key={'category-' + index}
-                          className={smallTabValue === index ? "select_small_tab" : 'un_select_small_tab'}
-                          onClick={() => changeSmallTabValue(index, category)}
-                        />
-                      }) }
-                  </Tabs>
-                }
-              </AppBar>
+              { bigTabValue === 1 &&
+                <Tabs
+                  value={smallTabValue} // bigTabValue ⇨ smallTabValueに変更
+                  onChange={() => changeSmallTabValue}
+                  variant='scrollable'
+                  TabIndicatorProps={{style: {display: "none"}}}
+                >
+                  {/* <Tab value={0} /> */}
+                  {
+                    smallTabs.map((category, index) => {
+                      return <Tab
+                        label={category}
+                        value={index}
+                        key={'category-' + index}
+                        className={smallTabValue === index ? "select_small_tab" : 'un_select_small_tab'}
+                        onClick={() => changeSmallTabValue(index, category)}
+                      />
+                    }) }
+                </Tabs>
+              }
+            </AppBar>
           </Box>
           <SwipeableViews index={horizontalSwipeValue} onChangeIndex={changeHorizontalSwipeValue}>
             { addingBigAndSmallTabs.map((_, index) => {
               return (
                 <div key={"genre-movie-" + index}>
-                  {/* { horizontalSwipeValue === index ? 
+                  { horizontalSwipeValue === index ? 
                     <VerticalMovieLists
                       smallTabValue={smallTabValue}
                       bigTabValue={bigTabValue}
                       ip_address = {props.ip_address}
                     /> 
                     : <EntityEmptyVideo /> 
-                  } */}
-                  <EntityEmptyVideo />
+                  }
                 </div>
               )
             })}
-            
-            {/* <div id= {"genre-movie-1"}>
-              { horizontalSwipeValue === 1 &&
-                <VerticalMovieLists ip_address = {props.ip_address} />
-              }
-            </div>
-            <div id= {"genre-movie-2"}>
-              { horizontalSwipeValue === 2 &&
-                <VerticalMovieLists ip_address = {props.ip_address} />
-              }
-            </div>
-            <div id= {"genre-movie-3"}>
-              { horizontalSwipeValue === 3 &&
-                <VerticalMovieLists ip_address = {props.ip_address} />
-              }
-            </div>
-            <div id= {"genre-movie-4"}>
-              { horizontalSwipeValue === 4 &&
-                <VerticalMovieLists ip_address = {props.ip_address} />
-              }
-            </div>
-            <div id= {"genre-movie-5"}>
-              { horizontalSwipeValue === 5 &&
-                <VerticalMovieLists ip_address = {props.ip_address} />
-              }
-            </div>
-            <div id= {"genre-movie-6"}>
-              { horizontalSwipeValue === 6 &&
-                <VerticalMovieLists ip_address = {props.ip_address} />
-              }
-            </div>
-            <div id= {"genre-movie-7"}>
-              { horizontalSwipeValue === 7 &&
-                <VerticalMovieLists ip_address = {props.ip_address} />
-              }
-            </div>
-            <div id= {"genre-movie-8"}>
-              { horizontalSwipeValue === 8 &&
-                <VerticalMovieLists ip_address = {props.ip_address} />
-              }
-            </div>
-            <div id= {"genre-movie-9"}>
-              { horizontalSwipeValue === 9 &&
-                <VerticalMovieLists ip_address = {props.ip_address} />
-              }
-            </div>
-            <div id= {"genre-movie-10"}>
-              { horizontalSwipeValue === 10 &&
-                <VerticalMovieLists ip_address = {props.ip_address} />
-              }
-            </div>
-            <div id= {"genre-movie-11"}>
-              { horizontalSwipeValue === 11 &&
-                <VerticalMovieLists ip_address = {props.ip_address} />
-              }
-            </div>
-            <div id= {"genre-movie-12"}>
-              { horizontalSwipeValue === 12 &&
-                <VerticalMovieLists ip_address = {props.ip_address} />
-              }
-            </div>
-            <div id= {"genre-movie-13"}>
-              {horizontalSwipeValue === 13 &&
-                <VerticalMovieLists ip_address = {props.ip_address} />
-              }
-            </div> */}
           </SwipeableViews>
           {/* サイドバー */}
           <Drawer anchor= 'left' open={isSideMenu} onClick={() => openSideMenu(!isSideMenu)} >
@@ -237,9 +170,7 @@ const Movies = (props) => {
               </List>
             </Box>
           </Drawer>
-
-        <footer className="footer">
-        </footer>
+        <footer className="footer"></footer>
       </div>
       </ThemeProvider>
       <Modal open={isSelectCategoryMenu}>
