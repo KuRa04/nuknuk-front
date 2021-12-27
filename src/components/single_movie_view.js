@@ -65,7 +65,7 @@ const SingleMovieView = (props) => {
    * @param {*} movie いいねしたい動画
    * @param {*} e イベントハンドラ
    */
-     const postFavorites = async (e) => {
+    const postFavorites = async (e) => {
       e.stopPropagation()
       let newFavorites = null
       if (getMovie.is_favorited) {
@@ -75,8 +75,8 @@ const SingleMovieView = (props) => {
       }
       const beforeMovie = getMovie
       const movie = {
-        ...beforeMovie, 
-        ...{is_favorited: newFavorites.is_favorited, 
+        ...beforeMovie,
+        ...{is_favorited: newFavorites.is_favorited,
         favorites_count: newFavorites.favorites_count
       }}
       setMovie(movie)
@@ -169,7 +169,7 @@ const SingleMovieView = (props) => {
             ip_address={props.ip_address}
           />
           <div className="wrapper_video_options_btn">
-            <Favorites 
+            <Favorites
               movie={getMovie}
               postFavorites={(e) => postFavorites(e)}
               ip_address={props.ip_address}
