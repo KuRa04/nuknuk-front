@@ -22,7 +22,12 @@ const Purchases = (props) => {
   return (
     <div className="wrapper_title">
       <p className="movie_title">{props.title}</p>
-      <a className="wrapper_purchases" href={props.affiliateLink} onClick={(e) => postPurchases(props.movie, e)}>
+      <a className="wrapper_purchases"
+        target="_blank"
+        rel="noreferrer noopener"
+        href={props.affiliateLink}
+        onClick={(e) => postPurchases(props.movie, e)}
+      >
         <p className="detail-text">詳細を見てみる！</p>
         <img className="right_arrow" alt="" width="14" height="14" src={RightArrowImg}  />
       </a>
