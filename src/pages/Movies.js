@@ -8,7 +8,7 @@ import SelectCategoryIcon from '../images/select_category.svg'
 import banImg from '../images/ban.svg'
 import SelectGenre from './select_genre'
 import "../styles/pages/movies.scss";
-import { addingBigAndSmallTabs, smallTabs } from '../constant/tabs'
+import { addingBigAndSmallTabs, smallTabs, largeTabs } from '../constant/tabs'
 import VerticalMovieLists from '../components/vertical_movie_lists'
 import EntityEmptyVideo from '../components/entity_empty_video'
 
@@ -16,22 +16,20 @@ const Movies = (props) => {
   // 状態変数
   const [isSideMenu, openSideMenu] = useState(false)
   const [isSelectCategoryMenu, openSelectCategoryMenu] = useState(false)
-  const [bigTabValue, setBigTabValue] = useState(0)
-  const [horizontalSwipeValue, setHorizontalSwipeValue] = useState(0)
+  const [bigTabValue, setBigTabValue] = useState(2)
+  const [horizontalSwipeValue, setHorizontalSwipeValue] = useState(13)
   const [smallTabValue, setSmallTabValue] = useState(0)
 
   /**
    * bigTabの切替
    * スワイプとクリックの両方で呼び出される
-   * @param {*} value bigTabの値 0, 1, 13
+   * @param {*} value bigTabの値 0, 1, 2
    * @param {*} text bigTabの名称 人気, ジャンル別, おすすめ
    */
-  const changeBigTabValue = async (value, text) => {
-    value === 1 && setSmallTabValue(smallTabs.indexOf(text))
-    // const array = await moviesController.getMovieLists(value, largeTab, null, 1, props.ip_address, null)
-    // setMovieLists(array)
-    setBigTabValue(value)
-    setHorizontalSwipeValue(value)
+  const changeBigTabValue = async (text) => {
+    smallTabs.includes(text) && setSmallTabValue(smallTabs.indexOf(text))
+    setBigTabValue(largeTabs.indexOf(text))
+    setHorizontalSwipeValue(addingBigAndSmallTabs.indexOf(text))
   }
 
   /**
@@ -43,17 +41,17 @@ const Movies = (props) => {
     switch (value) {
       case 0:
       case 13:
-        changeBigTabValue(value, addingBigAndSmallTabs[value])
+        changeBigTabValue(addingBigAndSmallTabs[value])
         break;
       case 1:
       case 12:
         setBigTabValue(1)
         console.log(value)
         --value //smallTabsでは人気、おすすめが含まれていないため、-1する
-        changeSmallTabValue(value, smallTabs[value])
+        changeSmallTabValue(smallTabs[value])
         break;
       default:
-        changeSmallTabValue(value,addingBigAndSmallTabs[value])
+        changeSmallTabValue(addingBigAndSmallTabs[value])
         break;
     }
   }
@@ -64,11 +62,9 @@ const Movies = (props) => {
    * @param {*} value smallTabの値（constantを参照）
    * @param {*} text smallTabの名称（constantを参照）
    */
-  const changeSmallTabValue = async (value, text) => {
-    // const array = await moviesController.getMovieLists(value, 'genre', null, 1, props.ip_address, null)
-    // setMovieLists(array)
-    setHorizontalSwipeValue(value)
+  const changeSmallTabValue = async (text) => {
     setSmallTabValue(smallTabs.indexOf(text))
+    setHorizontalSwipeValue(addingBigAndSmallTabs.indexOf(text))
   }
 
   const theme = createTheme({
@@ -113,9 +109,25 @@ const Movies = (props) => {
               }}}
                 centered
               >
-                <Tab label="人気" style={{color: "#F0F0F0", fontSize: '17px', paddingLeft: "0px", paddingRight: "0px", marginLeft: "12px", marginRight: "12px", }} onClick={() => changeBigTabValue(0, '人気')} />
-                <Tab label="ジャンル別" style={{color: "#F0F0F0", fontSize: '17px', paddingBottom: "2.5px", paddingLeft: "0px", paddingRight: "0px", marginLeft: "12px", marginRight: "12px"}} onClick={() => changeBigTabValue(1, '素人')} />
-                <Tab label="おすすめ" style={{color: "#F0F0F0", fontSize: '17px', paddingBottom: "2.5px", paddingLeft: "0px", paddingRight: "0px", marginLeft: "12px", marginRight: "12px"}} value={13} onClick={() => changeBigTabValue(13, 'おすすめ')}  />
+                {
+                  largeTabs.map((largeTab, index) => {
+                    return (
+                      <Tab label={largeTab} 
+                        style={
+                          { 
+                            color: "#F0F0F0", 
+                            fontSize: '17px', 
+                            paddingLeft: "0px",
+                            paddingRight: "0px",
+                            marginLeft: "12px",
+                            marginRight: "12px" 
+                          }
+                        } 
+                        onClick={() => changeBigTabValue(largeTab)} key={'largeTab' + index } 
+                      />
+                    )
+                  }) 
+                }
               </Tabs>
               { bigTabValue === 1 &&
                 <Tabs
@@ -131,7 +143,7 @@ const Movies = (props) => {
                         value={index}
                         key={'category-' + index}
                         className={smallTabValue === index ? "select_small_tab" : 'un_select_small_tab'}
-                        onClick={() => changeSmallTabValue(index, category)}
+                        onClick={() => changeSmallTabValue(category)}
                       />
                     }) }
                 </Tabs>
@@ -142,11 +154,12 @@ const Movies = (props) => {
             { addingBigAndSmallTabs.map((_, index) => {
               return (
                 <div key={"genre-movie-" + index}>
-                  { 0 === index ?
+                  { horizontalSwipeValue === index ?
                     <VerticalMovieLists
                       smallTabValue={smallTabValue}
                       bigTabValue={bigTabValue}
                       isSelectCategoryMenu={isSelectCategoryMenu}
+                      isSideMenu={isSideMenu}
                       ip_address = {props.ip_address}
                     />
                     : <EntityEmptyVideo />

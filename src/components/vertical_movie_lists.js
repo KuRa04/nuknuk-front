@@ -7,7 +7,7 @@ import {
   TwitterIcon
 } from 'react-share'
 import CopyLink from '../images/clip.svg'
-import { largeTabsMapping } from '../constant/tabs'
+import { largeTabsMapping, largeTabsArray } from '../constant/tabs'
 import sharesController from '../controller/shares_controller'
 import moviesController from '../controller/movies_controller'
 import SingleMovieView from "./single_movie_view"
@@ -23,11 +23,11 @@ const VerticalMovieLists = (props) => {
   useEffect(() => {
     const searchUrl = window.location.search
     const getMovies = async () => {
-      const array = await moviesController.getMovieLists(-1, 'popular', null, 1, '', searchUrl)
+      const array = await moviesController.getMovieLists(props.smallTabValue, largeTabsArray[props.bigTabValue], null, 1, props.ip_address, searchUrl)
       setMovieLists(array)
     }
     getMovies()
-  }, [])
+  }, [props.bigTabValue, props.ip_address, props.smallTabValue])
 
   useEffect(() => {
     // 無限ループしない
@@ -55,7 +55,7 @@ const VerticalMovieLists = (props) => {
   }
 
   const getNextMovieLists = async () => {
-    const array = await moviesController.getMovieLists(props.smallTabValue, largeTabsMapping[props.bigTabValue], null, pageCount, "", null)
+    const array = await moviesController.getMovieLists(props.smallTabValue, largeTabsMapping[props.bigTabValue], null, pageCount, props.ip_address, null)
     console.log(array)
     setMovieLists(movieLists.concat(array))
   }
@@ -71,13 +71,15 @@ const VerticalMovieLists = (props) => {
                 title={movie.title}
                 movieImage={movie.image}
                 movieUrl={movie.movie_url}
-                favoritesCount={movie.favorites_count}
                 affiliateLink={movie.affiliate_link}
                 ip_address={props.ip_address}
                 toggleShareDrawer={toggleShareDrawer}
                 getNextMovieLists={getNextMovieLists}
                 isLastVideo={movie.is_last_video}
+                isFavorited={movie.isFavorited}
+                favoritesCount={movie.favorites_count}
                 isSelectCategoryMenu={props.isSelectCategoryMenu}
+                isSideMenu={props.isSideMenu}
                 />
             </div>
           })
@@ -111,10 +113,9 @@ const VerticalMovieLists = (props) => {
           </div>
         </div>
         <div className="share_footer">
-          <Button className="cancel_button" onClick={() => openShareDrawer(false)}>キャンセル</Button>
+          <Button className="cancel_button" onClick={() => openShareDrawer(!isShareDrawer)}>キャンセル</Button>
         </div>
       </Drawer>
-      {console.log(props.isSelectCategoryMenu)}
     </>
   )
 }
