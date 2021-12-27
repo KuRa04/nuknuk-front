@@ -30,14 +30,20 @@ export const smallTabs = [
   "盗撮・のぞき",
 ]
 
+export const largeTabs = [
+  "人気",
+  "ジャンル別",
+  "おすすめ"
+]
+
 export const largeTabsMapping = {
   "人気": 'popular',
   "ジャンル別": 'genre',
-  "おすすめ": 'new'
+  "おすすめ": 'recommend'
 }
 
 export const largeTabsArray = [
   'popular',
   'genre',
-  'new'
+  'recommend'
 ]
