@@ -17,8 +17,6 @@ const VerticalMovieLists = (props) => {
   const [pageCount, setPageCount] = useState(0)
   const [isShareDrawer, openShareDrawer] = useState(false)
   const [shareMovieId, setShareMovieId] = useState(0)
-  // let isShareDrawer = false
-  // let shareMovieId = 0
 
   //TODO useEffectにpropsの値を含める方法を調査
   useEffect(() => {
