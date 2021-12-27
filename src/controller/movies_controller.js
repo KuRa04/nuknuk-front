@@ -16,6 +16,7 @@ async function getMovieLists(small_tab, large_tab, movie_id, page, ip_address, s
     page: page,
     ip_address: ip_address
   }
+  console.log(param)
   await axios.get(getMovieUrl, { params: param }).then((res) => {
     console.log(res.data)
     movies = res.data.movies
