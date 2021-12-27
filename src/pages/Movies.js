@@ -142,7 +142,7 @@ const Movies = (props) => {
             { addingBigAndSmallTabs.map((_, index) => {
               return (
                 <div key={"genre-movie-" + index}>
-                  { horizontalSwipeValue === index ?
+                  { 0 === index ?
                     <VerticalMovieLists
                       smallTabValue={smallTabValue}
                       bigTabValue={bigTabValue}

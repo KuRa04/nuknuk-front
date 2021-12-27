@@ -11,6 +11,7 @@ import { largeTabsMapping } from '../constant/tabs'
 import sharesController from '../controller/shares_controller'
 import moviesController from '../controller/movies_controller'
 import SingleMovieView from "./single_movie_view"
+import "../styles/components/vertical_movie_list.scss";
 
 const VerticalMovieLists = (props) => {
   const [movieLists, setMovieLists] = useState([])
@@ -61,10 +62,10 @@ const VerticalMovieLists = (props) => {
 
   return  (
     <>
-      <div className="movies">
+      <div className="wrapper_vertical_movies">
         {
           movieLists.map((movie, index) =>{
-            return <div key={index} className="movie_list">
+            return <div key={index} className="wrapper_single_movie_view_component">
               <SingleMovieView
                 movie={movie}
                 title={movie.title}
@@ -81,7 +82,7 @@ const VerticalMovieLists = (props) => {
           })
         }
       </div>
-      <Drawer className="share_drawer_box" anchor='bottom' open={isShareDrawer} onClick={() => openShareDrawer(!isShareDrawer)} >
+      <Drawer className="wrapper_share_drawer_box" anchor='bottom' open={isShareDrawer} onClick={() => openShareDrawer(!isShareDrawer)} >
         <p className="share_title">この動画をシェアする</p>
         <div className="share_drawer">
           <div className="share_icon">

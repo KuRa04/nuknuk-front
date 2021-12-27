@@ -10,7 +10,7 @@ import viewListsController from '../controller/view_lists_controller'
 import Shares from './share'
 import Purchases from './purchase'
 import VideoComponent from './video'
-
+import "../styles/components/single_movie_view.scss"
 
 /**
    * @param {*} props movie title movieImage movieUrl favoritesCount affiliateLink ip_address
@@ -100,7 +100,7 @@ const SingleMovieView = (props) => {
       // const movieId = wrapVideoRef.current.id.split('video-player-')[1]
       // const movie = movieListCopy.filter((movie) => movie.id === Number(movieId))[0]
 
-       props.isLastVideo && props.getNextMovieLists()
+      props.isLastVideo && props.getNextMovieLists()
 
       postViewList(props.movie)
       ReactDOM.render(
@@ -127,52 +127,52 @@ const SingleMovieView = (props) => {
   })
 
   return (
-      <div className="wrapper_movie" id={"movie-url-" + props.movie.id}>
-        {
-          !isPlaying &&
-          <div className="video_start_icon">
-            <img src={VideoStartIcon} alt="" width={48} height={59}/>
-          </div>
-        }
-        <div ref={observe}>
-          <div className="empty_component" id={"video-player-" + props.movie.id} ref={wrapVideoRef} onTouchStart={(e) => toggleTappedProcess(e)}></div>
+    <div className="wrapper_single_movie_view" id={"movie-url-" + props.movie.id}>
+      {
+        !isPlaying &&
+        <div className="video_start_icon">
+          <img src={VideoStartIcon} alt="" width={48} height={59}/>
         </div>
-        {
-          !isModalAfterViewing &&
-          <div className="btn_object">
-            <Purchases
-              movie={props.movie}
-              title={props.title}
-              affiliateLink={props.affiliateLink}
-              ip_address={props.ip_address}
-            />
-            <div className="video_btn">
-              <div className="wrapper_favorites">
-                <img onClick={(e) => postFavorites(props.movie, e)} alt="" width="35" height="35" src={isFavorited ? AfterFavoriteImg : BeforeFavoriteImg} />
-                <span className="favorites_count">{favoriteCount}</span>
-              </div>
-              <div className="share_btn">
-                <Shares
-                  movie={props.movie}
-                  ip_address={props.ip_address}
-                  onToggle={props.toggleShareDrawer}
-                />
-              </div>
+      }
+      <div ref={observe}>
+        <div className="empty_video" id={"video-player-" + props.movie.id} ref={wrapVideoRef} onTouchStart={(e) => toggleTappedProcess(e)}></div>
+      </div>
+      {
+        !isModalAfterViewing &&
+        <div className="wrapper_purchases_and_chares_btn">
+          <Purchases
+            movie={props.movie}
+            title={props.title}
+            affiliateLink={props.affiliateLink}
+            ip_address={props.ip_address}
+          />
+          <div className="wrapper_video_options_btn">
+            <div className="wrapper_favorites_btn">
+              <img onClick={(e) => postFavorites(props.movie, e)} alt="" width="35" height="35" src={isFavorited ? AfterFavoriteImg : BeforeFavoriteImg} />
+              <span className="video_favorites_count">{favoriteCount}</span>
+            </div>
+            <div className="wrapper_share_btn">
+              <Shares
+                movie={props.movie}
+                ip_address={props.ip_address}
+                onToggle={props.toggleShareDrawer}
+              />
             </div>
           </div>
-        }
-        <Modal open={isModalAfterViewing} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-          <div className="after_movie_modal">
-            <Purchases
-              movie={props.movie}
-              title={props.title}
-              affiliateLink={props.affiliateLink}
-              ip_address={props.ip_address}
-            />
-            <div className="replay_text" onTouchStart={() => replayVideo()}>リプレイ</div>
-          </div>
-        </Modal>
-       </div>
+        </div>
+      }
+      <Modal open={isModalAfterViewing} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+        <div className="after_movie_modal">
+          <Purchases
+            movie={props.movie}
+            title={props.title}
+            affiliateLink={props.affiliateLink}
+            ip_address={props.ip_address}
+          />
+          <div className="replay_text" onTouchStart={() => replayVideo()}>リプレイ</div>
+        </div>
+      </Modal>
+    </div>
   )
 }
 
