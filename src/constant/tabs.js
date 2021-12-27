@@ -35,3 +35,9 @@ export const largeTabsMapping = {
   "ジャンル別": 'genre',
   "おすすめ": 'new'
 }
+
+export const largeTabsArray = [
+  'popular',
+  'genre',
+  'new'
+]

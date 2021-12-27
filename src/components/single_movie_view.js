@@ -19,6 +19,7 @@ const SingleMovieView = (props) => {
   const [isPlaying, setPlaying] = useState(true)
   const [getMovie, setMovie] = useState(props.movie)
   const [isModalAfterViewing, openModalAfterViewing] = useState(false)
+  const [funcPostViewList, setPostViewList] = useState(null)
   const videoRef = useRef();
   const wrapVideoRef = useRef();
 
@@ -45,8 +46,18 @@ const SingleMovieView = (props) => {
   /**
    * @param {*} movie //動画一覧
    */
-  const postViewList = async (movie) => {
-    await viewListsController.postViewList(movie.id, props.ip_address)
+  const postViewList = () => {
+    viewListsController.postViewList(props.movie.id, props.ip_address)
+  }
+
+  const afterPostViewList = () => {
+    setPostViewList(setTimeout(() => {
+      postViewList()
+    }, 5000))
+  }
+
+  const chancelPostViewList = () => {
+    clearTimeout(funcPostViewList)
   }
 
   /**
@@ -112,7 +123,7 @@ const SingleMovieView = (props) => {
       unobserve()
       setPlaying(true)
       props.isLastVideo && props.getNextMovieLists()
-      postViewList(props.movie)
+      afterPostViewList()
       ReactDOM.render(
         <VideoComponent
           movie={props.movie}
@@ -126,6 +137,7 @@ const SingleMovieView = (props) => {
     },
     onLeave: ({ observe, unobserve }) => {
       unobserve()
+      chancelPostViewList()
       videoRef.current && videoRef.current.pause()
       videoRef.current.currentTime = 0
       const movieId = wrapVideoRef.current.id.split('video-player-')[1]
