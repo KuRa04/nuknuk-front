@@ -50,12 +50,18 @@ const SingleMovieView = (props) => {
     viewListsController.postViewList(props.movie.id, props.ip_address)
   }
 
+  /**
+   * viewListのpostを5秒後に設定
+   */
   const afterPostViewList = () => {
     setPostViewList(setTimeout(() => {
       postViewList()
     }, 5000))
   }
 
+  /**
+   * 5秒以内に別動画へ移動したらpostの設定を削除
+   */
   const chancelPostViewList = () => {
     clearTimeout(funcPostViewList)
   }
@@ -90,6 +96,7 @@ const SingleMovieView = (props) => {
    */
   const toggleTappedProcess = (e) => {
     e.preventDefault()
+    // e.stopPropagation()
     if (!tapCount) {
       ++tapCount
       setTimeout(() => {
@@ -107,6 +114,13 @@ const SingleMovieView = (props) => {
       tapCount = 0
     }
   }
+
+  useEffect(() => {
+    wrapVideoRef.current?.addEventListener("touchstart", toggleTappedProcess, { passive: false })
+    return (() => {
+      wrapVideoRef.current?.removeEventListener("touchstart", toggleTappedProcess) // この警告の消し方が分からん
+    })
+  })
 
   /**
    * リプレイボタンを押したときに動画を再生
@@ -157,7 +171,7 @@ const SingleMovieView = (props) => {
         </div>
       }
       <div ref={observe}>
-        <div className="empty_video" id={"video-player-" + props.movie.id} ref={wrapVideoRef} onTouchStart={(e) => toggleTappedProcess(e)}></div>
+        <div className="empty_video" id={"video-player-" + props.movie.id} ref={wrapVideoRef} ></div>
       </div>
       {
         !isModalAfterViewing &&

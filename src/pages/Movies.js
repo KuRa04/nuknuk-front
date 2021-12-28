@@ -112,21 +112,21 @@ const Movies = (props) => {
                 {
                   largeTabs.map((largeTab, index) => {
                     return (
-                      <Tab label={largeTab} 
+                      <Tab label={largeTab}
                         style={
-                          { 
-                            color: "#F0F0F0", 
-                            fontSize: '17px', 
+                          {
+                            color: "#F0F0F0",
+                            fontSize: '17px',
                             paddingLeft: "0px",
                             paddingRight: "0px",
                             marginLeft: "12px",
-                            marginRight: "12px" 
+                            marginRight: "12px"
                           }
-                        } 
-                        onClick={() => changeBigTabValue(largeTab)} key={'largeTab' + index } 
+                        }
+                        onClick={() => changeBigTabValue(largeTab)} key={'largeTab' + index }
                       />
                     )
-                  }) 
+                  })
                 }
               </Tabs>
               { bigTabValue === 1 &&

@@ -100,13 +100,13 @@ const VerticalMovieLists = (props) => {
             <p className="share_text">リンクをコピー</p>
           </div>
           <div className="share_icon">
-            <TwitterShareButton onClick={() => postShare("twitter")} url={"https://nuknuk-front-01.herokuapp.com?movie_id=" + shareMovieId}>
+            <TwitterShareButton onClick={() => postShare("twitter")} url={window.location.host + "?movie_id=" + shareMovieId}>
               <TwitterIcon size={50} round />
             </TwitterShareButton>
             <p className="share_text">Twitter</p>
           </div>
           <div className="share_icon">
-            <LineShareButton onClick={() => postShare("line")} url={"https://nuknuk-front-01.herokuapp.com?movie_id=" + shareMovieId}>
+            <LineShareButton onClick={() => postShare("line")} url={window.location.host + "?movie_id=" + shareMovieId}>
               <LineIcon size={50} round />
             </LineShareButton>
             <p className="share_text">LINE</p>
