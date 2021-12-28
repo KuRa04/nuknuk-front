@@ -146,7 +146,12 @@ const SingleMovieView = (props) => {
         />,
         document.getElementById("video-player-" + props.movie.id)
       )
+      videoRef.current.defaultMuted = true
+      console.log(videoRef.current)
+      videoRef.current.currentTime = 3
+      videoRef.current.autoplay = true
       videoRef.current && videoRef.current.play()
+      document.getElementById("movie-list-" + props.movie.id).removeAttribute("muted")
       observe()
     },
     onLeave: ({ observe, unobserve }) => {
