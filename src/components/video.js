@@ -4,9 +4,7 @@ import "../styles/components/video.scss"
 const VideoComponent = (props) => {
  return (
   <video
-    muted
     controls={false}
-    playsInline
     width="370"
     height="300"
     poster={props.movie.image}
