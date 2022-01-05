@@ -136,7 +136,6 @@ const SingleMovieView = (props) => {
     onEnter: async ({ observe, unobserve }) => {
       unobserve()
       setPlaying(true)
-      props.isLastVideo && props.getNextMovieLists()
       afterPostViewList()
       ReactDOM.render(
         <VideoComponent
