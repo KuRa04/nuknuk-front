@@ -1,19 +1,18 @@
 
 .wrapper_vertical_movies {
-  scroll-snap-type: y mandatory;
   position: relative;
   width: 100%;
-  // height: 100vh;
+  scroll-snap-type: y mandatory;
   overflow-y: scroll;
   margin-top: 80px;
 }
 
 .wrapper_single_movie_view_component {
-  scroll-snap-align: center;
   width: 100%;
-  height: 100%;
+  height: 600px;
   display: flex;
   justify-content: center;
+  scroll-snap-align: center;
 }
 
 .wrapper_single_movie_view_component::after {
