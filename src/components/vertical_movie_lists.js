@@ -6,6 +6,7 @@ import {
   TwitterShareButton,
   TwitterIcon
 } from 'react-share'
+import InfiniteScroll from 'react-infinite-scroller'
 import CopyLink from '../images/clip.svg'
 import { largeTabsMapping, largeTabsArray } from '../constant/tabs'
 import sharesController from '../controller/shares_controller'
@@ -18,6 +19,7 @@ const VerticalMovieLists = (props) => {
   const [pageCount, setPageCount] = useState(0)
   const [isShareDrawer, openShareDrawer] = useState(false)
   const [shareMovieId, setShareMovieId] = useState(0)
+  const [hasMore, setHasMore] = useState(true);  //再読み込み判定
 
   //TODO useEffectにpropsの値を含める方法を調査
   useEffect(() => {
@@ -54,37 +56,53 @@ const VerticalMovieLists = (props) => {
     await sharesController.postShare(channelName, movieId)
   }
 
-  const getNextMovieLists = async () => {
+  const loadMore = async () => {
     const array = await moviesController.getMovieLists(props.smallTabValue, largeTabsMapping[props.bigTabValue], null, pageCount, props.ip_address, null)
     console.log(array)
-    setMovieLists(movieLists.concat(array))
+    if (array.length < 1) {
+      setHasMore(false)
+      return
+    }
+    setMovieLists([...movieLists, ...array])
   }
 
   return  (
     <>
-      <div className="wrapper_vertical_movies">
-        {
-          movieLists.map((movie, index) =>{
-            return <div key={index} className="wrapper_single_movie_view_component">
-              <SingleMovieView
-                movie={movie}
-                title={movie.title}
-                movieImage={movie.image}
-                movieUrl={movie.movie_url}
-                affiliateLink={movie.affiliate_link}
-                ip_address={props.ip_address}
-                toggleShareDrawer={toggleShareDrawer}
-                getNextMovieLists={getNextMovieLists}
-                isLastVideo={movie.is_last_video}
-                isFavorited={movie.isFavorited}
-                favoritesCount={movie.favorites_count}
-                isSelectCategoryMenu={props.isSelectCategoryMenu}
-                isSideMenu={props.isSideMenu}
-                />
-            </div>
-          })
-        }
-      </div>
+      <InfiniteScroll
+        data-testid="episodes-infinite-scroll"
+        loadMore={loadMore}
+        hasMore={hasMore}
+        initialLoad={false}
+        loader={<div key={0}>ただいまロード中です</div>}
+      >
+        <div className="wrapper_vertical_movies">
+          {
+            movieLists.map((movie, index) =>{
+              return <div key={index} className="wrapper_single_movie_view_component">
+                {(index + 1) % 10 !== 0 ? 
+                  <SingleMovieView
+                  movie={movie}
+                  title={movie.title}
+                  movieImage={movie.image}
+                  movieUrl={movie.movie_url}
+                  affiliateLink={movie.affiliate_link}
+                  ip_address={props.ip_address}
+                  toggleShareDrawer={toggleShareDrawer}
+                  isFavorited={movie.isFavorited}
+                  favoritesCount={movie.favorites_count}
+                  isSelectCategoryMenu={props.isSelectCategoryMenu}
+                  isSideMenu={props.isSideMenu}
+                  />
+                : 
+                  <a className="wrapper_dx_live_ad" href="https://click.dtiserv2.com/Click100/1103032-103-222429" target="_blank" rel="noopener">
+                    <img className="dx_live_ad_img"src="https://affiliate.dtiserv.com/image/dxlive/300_250.jpg" border="0" />
+                  </a>
+                }
+              </div>
+            })
+          }
+        </div>
+      </InfiniteScroll>
       <Drawer className="wrapper_share_drawer_box" anchor='bottom' open={isShareDrawer} onClick={() => openShareDrawer(!isShareDrawer)} >
         <p className="share_title">この動画をシェアする</p>
         <div className="share_drawer">
