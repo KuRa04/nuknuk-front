@@ -68,37 +68,35 @@ const VerticalMovieLists = (props) => {
 
   return  (
     <>
-      <div className="wrapper_vertical_movies">
-        <div className="wrapper_single_movie_view_component">
-          <InfiniteScroll
-            data-testid="episodes-infinite-scroll"
-            loadMore={loadMore}
-            hasMore={hasMore}
-            initialLoad={false}
-            loader={<div key={0}>ただいまロード中です</div>}
-          >
-            {
-              movieLists.map((movie, index) =>{
-                return <div key={index} >
-                  <SingleMovieView
-                    movie={movie}
-                    title={movie.title}
-                    movieImage={movie.image}
-                    movieUrl={movie.movie_url}
-                    affiliateLink={movie.affiliate_link}
-                    ip_address={props.ip_address}
-                    toggleShareDrawer={toggleShareDrawer}
-                    isFavorited={movie.isFavorited}
-                    favoritesCount={movie.favorites_count}
-                    isSelectCategoryMenu={props.isSelectCategoryMenu}
-                    isSideMenu={props.isSideMenu}
-                  />
-                </div>
-              })
-            }
-          </InfiniteScroll>
+      <InfiniteScroll
+        data-testid="episodes-infinite-scroll"
+        loadMore={loadMore}
+        hasMore={hasMore}
+        initialLoad={false}
+        loader={<div key={0}>ただいまロード中です</div>}
+      >
+        <div className="wrapper_vertical_movies">
+          {
+            movieLists.map((movie, index) =>{
+              return <div key={index} className="wrapper_single_movie_view_component">
+                <SingleMovieView
+                  movie={movie}
+                  title={movie.title}
+                  movieImage={movie.image}
+                  movieUrl={movie.movie_url}
+                  affiliateLink={movie.affiliate_link}
+                  ip_address={props.ip_address}
+                  toggleShareDrawer={toggleShareDrawer}
+                  isFavorited={movie.isFavorited}
+                  favoritesCount={movie.favorites_count}
+                  isSelectCategoryMenu={props.isSelectCategoryMenu}
+                  isSideMenu={props.isSideMenu}
+                />
+              </div>
+            })
+          }
         </div>
-      </div>
+      </InfiniteScroll>
       <Drawer className="wrapper_share_drawer_box" anchor='bottom' open={isShareDrawer} onClick={() => openShareDrawer(!isShareDrawer)} >
         <p className="share_title">この動画をシェアする</p>
         <div className="share_drawer">

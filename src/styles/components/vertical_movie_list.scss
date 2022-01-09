@@ -19,7 +19,7 @@
 .wrapper_single_movie_view_component::after {
   display: block;
   content: "";
-  // scroll-snap-align: end;
+  scroll-snap-align: end;
 }
 
 .wrapper_share_drawer_box {
