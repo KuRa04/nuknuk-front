@@ -19,4 +19,4 @@ const VideoComponent = (props) => {
  )
 }
 
-export default VideoComponent;
+export default VideoComponent

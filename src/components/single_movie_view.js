@@ -145,12 +145,17 @@ const SingleMovieView = (props) => {
         />,
         document.getElementById("video-player-" + props.movie.id)
       )
-      videoRef.current.defaultMuted = true
-      console.log(videoRef.current)
+      console.log(videoRef.current.defaultMuted)
       videoRef.current.currentTime = 3
-      videoRef.current.autoplay = true
+      videoRef.current.volume = 0.25
       videoRef.current && videoRef.current.play()
-      document.getElementById("movie-list-" + props.movie.id).removeAttribute("muted")
+      videoRef.current.addEventListener("play", function() {
+        // videoRef.current.pause()
+        // videoRef.current.muted = false
+        // videoRef.current.play()
+        // document.getElementById("movie-list-" + props.movie.id).removeAttribute("muted")
+        console.log(videoRef.current)
+      })
       observe()
     },
     onLeave: ({ observe, unobserve }) => {
