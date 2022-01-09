@@ -1,5 +1,4 @@
 import React from 'react';
-import "../styles/components/video.scss"
 
 const VideoComponent = (props) => {
  return (
@@ -7,7 +6,7 @@ const VideoComponent = (props) => {
     muted={true}
     controls={false}
     playsInline
-    width="370"
+    width="100%"
     height="300"
     poster={props.movie.image}
     src={props.movie.movie_url}
@@ -15,7 +14,6 @@ const VideoComponent = (props) => {
     preload="metadata"
     ref={props.videoRef}
     onEnded={props.onEnded}
-    className="video-wrapper"
   >
   </video>
  )
