@@ -79,7 +79,8 @@ const VerticalMovieLists = (props) => {
           {
             movieLists.map((movie, index) =>{
               return <div key={index} className="wrapper_single_movie_view_component">
-                <SingleMovieView
+                {(index + 1) % 10 !== 0 ? 
+                  <SingleMovieView
                   movie={movie}
                   title={movie.title}
                   movieImage={movie.image}
@@ -91,7 +92,12 @@ const VerticalMovieLists = (props) => {
                   favoritesCount={movie.favorites_count}
                   isSelectCategoryMenu={props.isSelectCategoryMenu}
                   isSideMenu={props.isSideMenu}
-                />
+                  />
+                : 
+                  <a className="wrapper_dx_live_ad" href="https://click.dtiserv2.com/Click100/1103032-103-222429" target="_blank" rel="noopener">
+                    <img className="dx_live_ad_img"src="https://affiliate.dtiserv.com/image/dxlive/300_250.jpg" border="0" />
+                  </a>
+                }
               </div>
             })
           }
