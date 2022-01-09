@@ -136,7 +136,6 @@ const SingleMovieView = (props) => {
     onEnter: async ({ observe, unobserve }) => {
       unobserve()
       setPlaying(true)
-      props.isLastVideo && props.getNextMovieLists()
       afterPostViewList()
       ReactDOM.render(
         <VideoComponent
@@ -169,13 +168,13 @@ const SingleMovieView = (props) => {
 
   return (
     <div className="wrapper_single_movie_view" id={"movie-url-" + props.movie.id}>
-      {
-        !isPlaying &&
-        <div className="video_start_icon">
-          <img src={VideoStartIcon} alt="" width={48} height={59}/>
-        </div>
-      }
       <div ref={observe}>
+        {
+          !isPlaying &&
+          <div className="video_start_icon">
+            <img src={VideoStartIcon} alt="" width={48} height={59}/>
+          </div>
+        }
         <div className="empty_video" id={"video-player-" + props.movie.id} ref={wrapVideoRef} ></div>
       </div>
       {
