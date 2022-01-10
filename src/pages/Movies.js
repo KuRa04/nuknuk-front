@@ -27,9 +27,15 @@ const Movies = (props) => {
    * @param {*} text bigTabの名称 人気, ジャンル別, おすすめ
    */
   const changeBigTabValue = async (text) => {
-    smallTabs.includes(text) && setSmallTabValue(smallTabs.indexOf(text))
-    setBigTabValue(largeTabs.indexOf(text))
-    setHorizontalSwipeValue(addingBigAndSmallTabs.indexOf(text))
+    let bigValue = largeTabs.indexOf(text)
+    let allTabText = addingBigAndSmallTabs.indexOf(text)
+    if (allTabText < 0) {
+      setSmallTabValue(0)
+      allTabText = 1
+      bigValue = 1
+    }
+    setBigTabValue(bigValue)
+    setHorizontalSwipeValue(allTabText)
   }
 
   /**
@@ -46,7 +52,6 @@ const Movies = (props) => {
       case 1:
       case 12:
         setBigTabValue(1)
-        console.log(value)
         --value //smallTabsでは人気、おすすめが含まれていないため、-1する
         changeSmallTabValue(smallTabs[value])
         break;

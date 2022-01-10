@@ -136,7 +136,6 @@ const SingleMovieView = (props) => {
     onEnter: async ({ observe, unobserve }) => {
       unobserve()
       setPlaying(true)
-      props.isLastVideo && props.getNextMovieLists()
       afterPostViewList()
       ReactDOM.render(
         <VideoComponent
@@ -146,12 +145,17 @@ const SingleMovieView = (props) => {
         />,
         document.getElementById("video-player-" + props.movie.id)
       )
-      videoRef.current.defaultMuted = true
-      console.log(videoRef.current)
+      console.log(videoRef.current.defaultMuted)
       videoRef.current.currentTime = 3
-      videoRef.current.autoplay = true
+      videoRef.current.volume = 0.25
       videoRef.current && videoRef.current.play()
-      document.getElementById("movie-list-" + props.movie.id).removeAttribute("muted")
+      videoRef.current.addEventListener("play", function() {
+        // videoRef.current.pause()
+        // videoRef.current.muted = false
+        // videoRef.current.play()
+        // document.getElementById("movie-list-" + props.movie.id).removeAttribute("muted")
+        console.log(videoRef.current)
+      })
       observe()
     },
     onLeave: ({ observe, unobserve }) => {
@@ -169,13 +173,13 @@ const SingleMovieView = (props) => {
 
   return (
     <div className="wrapper_single_movie_view" id={"movie-url-" + props.movie.id}>
-      {
-        !isPlaying &&
-        <div className="video_start_icon">
-          <img src={VideoStartIcon} alt="" width={48} height={59}/>
-        </div>
-      }
       <div ref={observe}>
+        {
+          !isPlaying &&
+          <div className="video_start_icon">
+            <img src={VideoStartIcon} alt="" width={48} height={59}/>
+          </div>
+        }
         <div className="empty_video" id={"video-player-" + props.movie.id} ref={wrapVideoRef} ></div>
       </div>
       {
