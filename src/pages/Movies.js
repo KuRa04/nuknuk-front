@@ -16,8 +16,8 @@ const Movies = (props) => {
   // 状態変数
   const [isSideMenu, openSideMenu] = useState(false)
   const [isSelectCategoryMenu, openSelectCategoryMenu] = useState(false)
-  const [bigTabValue, setBigTabValue] = useState(2)
-  const [horizontalSwipeValue, setHorizontalSwipeValue] = useState(13)
+  const [bigTabValue, setBigTabValue] = useState(1)
+  const [horizontalSwipeValue, setHorizontalSwipeValue] = useState(12)
   const [smallTabValue, setSmallTabValue] = useState(0)
 
   /**
@@ -31,8 +31,8 @@ const Movies = (props) => {
     let allTabText = addingBigAndSmallTabs.indexOf(text)
     if (allTabText < 0) {
       setSmallTabValue(0)
-      allTabText = 1
-      bigValue = 1
+      allTabText = 0
+      bigValue = 0
     }
     setBigTabValue(bigValue)
     setHorizontalSwipeValue(allTabText)
@@ -46,14 +46,12 @@ const Movies = (props) => {
   const changeHorizontalSwipeValue = (value) => {
     switch (value) {
       case 0:
-      case 13:
-        changeBigTabValue(addingBigAndSmallTabs[value])
-        break;
-      case 1:
-      case 12:
-        setBigTabValue(1)
-        --value //smallTabsでは人気、おすすめが含まれていないため、-1する
+      case 11:
+        setBigTabValue(0)
         changeSmallTabValue(smallTabs[value])
+        break;
+      case 12:
+        changeBigTabValue(addingBigAndSmallTabs[value])
         break;
       default:
         changeSmallTabValue(addingBigAndSmallTabs[value])
@@ -134,7 +132,7 @@ const Movies = (props) => {
                   })
                 }
               </Tabs>
-              { bigTabValue === 1 &&
+              { bigTabValue === 0 &&
                 <Tabs
                   value={smallTabValue}
                   onChange={() => changeSmallTabValue}
