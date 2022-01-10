@@ -1,5 +1,4 @@
 export const addingBigAndSmallTabs = [
-  "人気",
   "素人",
   "巨乳・美乳",
   "制服（JK、ナース他）",
@@ -31,19 +30,16 @@ export const smallTabs = [
 ]
 
 export const largeTabs = [
-  "人気",
   "ジャンル別",
   "おすすめ"
 ]
 
 export const largeTabsMapping = {
-  "人気": 'popular',
   "ジャンル別": 'genre',
   "おすすめ": 'recommend'
 }
 
 export const largeTabsArray = [
-  'popular',
   'genre',
   'recommend'
 ]
