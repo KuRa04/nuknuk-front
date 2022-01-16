@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
-import ReactDOM from 'react-dom'
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import useInView from "react-cool-inview"
 import { Modal } from '@material-ui/core'
 import VideoStartIcon from '../images/video_start.svg'
@@ -20,35 +19,32 @@ const SingleMovieView = (props) => {
   const [getMovie, setMovie] = useState(props.movie)
   const [isModalAfterViewing, openModalAfterViewing] = useState(false)
   const [funcPostViewList, setPostViewList] = useState(null)
-  const [openModal, setOpenModal] = useState(false)
+  // const [isStopVideoByModal, setStopVideoByModal] = useState(false)
   const videoRef = useRef();
   const wrapVideoRef = useRef();
 
-  // このplay()でエラーが出てる
+  const togglePlayVideo = useCallback(() => {
+    console.log("aaa")
+    if (isPlaying) {
+      // chancelPostViewList() // 一旦コメントアウト
+      videoRef.current && videoRef.current.pause()
+    }
+  },[isPlaying])
+
   useEffect(() => {
     if (props.isSelectCategoryMenu) {
-      setPlaying(false)
-      setOpenModal(true)
-      videoRef.current && videoRef.current.pause()
-    } else if (openModal) {
-      setPlaying(true)
-      setOpenModal(false)
-      videoRef.current && videoRef.current.play()
+      togglePlayVideo()
     }
-  }, [openModal, props.isSelectCategoryMenu])
+  }, [togglePlayVideo, isPlaying, props.isSelectCategoryMenu])
 
-  // このplay()でエラーが出てる
   useEffect(() => {
     if (props.isSideMenu) {
-      setPlaying(false)
-      setOpenModal(true)
-      videoRef.current && videoRef.current.pause()
-    } else if (openModal) {
-      setPlaying(true)
-      setOpenModal(false)
-      videoRef.current && videoRef.current.play()
+      togglePlayVideo()
     }
-  }, [openModal, props.isSideMenu])
+  }, [isPlaying, props.isSideMenu, togglePlayVideo])
+
+
+
 
   /**
    * @param {*} movie //動画一覧
