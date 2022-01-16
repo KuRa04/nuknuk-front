@@ -20,6 +20,7 @@ const SingleMovieView = (props) => {
   const [getMovie, setMovie] = useState(props.movie)
   const [isModalAfterViewing, openModalAfterViewing] = useState(false)
   const [funcPostViewList, setPostViewList] = useState(null)
+  const [openModal, setOpenModal] = useState(false)
   const videoRef = useRef();
   const wrapVideoRef = useRef();
 
@@ -27,23 +28,27 @@ const SingleMovieView = (props) => {
   useEffect(() => {
     if (props.isSelectCategoryMenu) {
       setPlaying(false)
+      setOpenModal(true)
       videoRef.current && videoRef.current.pause()
-      } else {
+    } else if (openModal) {
       setPlaying(true)
+      setOpenModal(false)
       videoRef.current && videoRef.current.play()
     }
-  }, [props.isSelectCategoryMenu])
+  }, [openModal, props.isSelectCategoryMenu])
 
   // このplay()でエラーが出てる
   useEffect(() => {
     if (props.isSideMenu) {
       setPlaying(false)
+      setOpenModal(true)
       videoRef.current && videoRef.current.pause()
-      } else {
+    } else if (openModal) {
       setPlaying(true)
+      setOpenModal(false)
       videoRef.current && videoRef.current.play()
     }
-  }, [props.isSideMenu])
+  }, [openModal, props.isSideMenu])
 
   /**
    * @param {*} movie //動画一覧
