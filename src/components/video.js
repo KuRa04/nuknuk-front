@@ -9,12 +9,13 @@ const VideoComponent = (props) => {
     width="100%"
     height="300"
     poster={props.movie.image}
-    src={props.movie.movie_url}
     id={'movie-list-' + props.movie.id}
-    preload="metadata"
+    preload="preload"
     ref={props.videoRef}
     onEnded={props.onEnded}
+    autoPlay
   >
+    <source src="" type="video/mp4"></source>
   </video>
  )
 }
