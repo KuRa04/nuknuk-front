@@ -23,6 +23,7 @@ const SingleMovieView = (props) => {
   const videoRef = useRef();
   const wrapVideoRef = useRef();
 
+  // このplay()でエラーが出てる
   useEffect(() => {
     if (props.isSelectCategoryMenu) {
       setPlaying(false)
@@ -33,6 +34,7 @@ const SingleMovieView = (props) => {
     }
   }, [props.isSelectCategoryMenu])
 
+  // このplay()でエラーが出てる
   useEffect(() => {
     if (props.isSideMenu) {
       setPlaying(false)
@@ -135,27 +137,14 @@ const SingleMovieView = (props) => {
     threshold: 1,
     onEnter: async ({ observe, unobserve }) => {
       unobserve()
+      videoRef.current.children[0].src = props.movie.movie_url + '#t=3'
+      try {
+        videoRef.current.load()
+      } catch (error) {
+        console.log(error)
+      }
       setPlaying(true)
       afterPostViewList()
-      ReactDOM.render(
-        <VideoComponent
-          movie={props.movie}
-          videoRef={videoRef}
-          onEnded={() => openModalAfterViewing(!isModalAfterViewing)}
-        />,
-        document.getElementById("video-player-" + props.movie.id)
-      )
-      console.log(videoRef.current.defaultMuted)
-      videoRef.current.currentTime = 3
-      videoRef.current.volume = 0.25
-      videoRef.current && videoRef.current.play()
-      videoRef.current.addEventListener("play", function() {
-        // videoRef.current.pause()
-        // videoRef.current.muted = false
-        // videoRef.current.play()
-        // document.getElementById("movie-list-" + props.movie.id).removeAttribute("muted")
-        console.log(videoRef.current)
-      })
       observe()
     },
     onLeave: ({ observe, unobserve }) => {
@@ -163,10 +152,8 @@ const SingleMovieView = (props) => {
       chancelPostViewList()
       videoRef.current && videoRef.current.pause()
       videoRef.current.currentTime = 0
-      const movieId = wrapVideoRef.current.id.split('video-player-')[1]
-      let movie = document.getElementById("video-player-" + movieId).replaceChildren
-      movie = null
-      console.log(movie)
+      videoRef.current.children[0].src = ''
+      videoRef.current.load()
       observe()
     },
   })
@@ -180,7 +167,13 @@ const SingleMovieView = (props) => {
             <img src={VideoStartIcon} alt="" width={48} height={59}/>
           </div>
         }
-        <div className="empty_video" id={"video-player-" + props.movie.id} ref={wrapVideoRef} ></div>
+        <div className="empty_video" id={"video-player-" + props.movie.id} ref={wrapVideoRef} >
+          <VideoComponent
+            movie={props.movie}
+            videoRef={videoRef}
+            onEnded={() => openModalAfterViewing(!isModalAfterViewing)}
+          />
+        </div>
       </div>
       {
         !isModalAfterViewing &&
