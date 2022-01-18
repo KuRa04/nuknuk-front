@@ -113,13 +113,6 @@ const SingleMovieView = (props) => {
     }
   }
 
-  // useEffect(() => {
-  //   wrapVideoRef.current?.addEventListener("touchend", toggleTappedProcess, { passive: false })
-  //   return (() => {
-  //     // wrapVideoRef.current?.removeEventListener("touchstart", toggleTappedProcess) // この警告の消し方が分からん
-  //   })
-  // })
-
   /**
    * リプレイボタンを押したときに動画を再生
    */
