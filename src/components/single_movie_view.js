@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import useInView from "react-cool-inview"
 import { Modal } from '@material-ui/core'
+import Backdrop from '@material-ui/core/Backdrop';
 import VideoStartIcon from '../images/video_start.svg'
 import favoritesController from '../controller/favorites_controller'
 import viewListsController from '../controller/view_lists_controller'
@@ -189,7 +190,18 @@ const SingleMovieView = (props) => {
           </div>
         </div>
       }
-      <Modal open={isModalAfterViewing} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+      <Modal 
+        open={isModalAfterViewing} 
+        onClose={() => replayVideo()}
+        BackdropComponent={Backdrop}
+        style={
+          {
+            display:'flex', 
+            alignItems:'center', 
+            justifyContent:'center'
+          }
+        }
+      >
         <div className="after_movie_modal">
           <Purchases
             movie={props.movie}
