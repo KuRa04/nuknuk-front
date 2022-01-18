@@ -43,9 +43,6 @@ const SingleMovieView = (props) => {
     }
   }, [isPlaying, props.isSideMenu, togglePlayVideo])
 
-
-
-
   /**
    * @param {*} movie //動画一覧
    */
@@ -98,8 +95,6 @@ const SingleMovieView = (props) => {
    * @param {*} e イベントハンドラ
    */
   const toggleTappedProcess = (e) => {
-    e.preventDefault()
-    // e.stopPropagation()
     if (!tapCount) {
       ++tapCount
       setTimeout(() => {
@@ -111,19 +106,12 @@ const SingleMovieView = (props) => {
           setPlaying(false)
         }
         tapCount = 0
-      }, 500)
+      }, 350)
     } else {
       postFavorites(e)
       tapCount = 0
     }
   }
-
-  useEffect(() => {
-    wrapVideoRef.current?.addEventListener("touchstart", toggleTappedProcess, { passive: false })
-    return (() => {
-      wrapVideoRef.current?.removeEventListener("touchstart", toggleTappedProcess) // この警告の消し方が分からん
-    })
-  })
 
   /**
    * リプレイボタンを押したときに動画を再生
@@ -168,7 +156,7 @@ const SingleMovieView = (props) => {
             <img src={VideoStartIcon} alt="" width={48} height={59}/>
           </div>
         }
-        <div className="empty_video" id={"video-player-" + props.movie.id} ref={wrapVideoRef} >
+        <div className="empty_video" id={"video-player-" + props.movie.id} ref={wrapVideoRef} onTouchEnd={toggleTappedProcess}>
           <VideoComponent
             movie={props.movie}
             videoRef={videoRef}
