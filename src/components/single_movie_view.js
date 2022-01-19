@@ -200,28 +200,6 @@ const SingleMovieView = (props) => {
         </div>
       }
       </div>
-      {/* <Modal 
-        open={isModalAfterViewing} 
-        onClose={() => replayVideo()}
-        BackdropComponent={Backdrop}
-        style={
-          {
-            display:'flex', 
-            alignItems:'center', 
-            justifyContent:'center'
-          }
-        }
-      >
-        <div className="after_movie_modal">
-          <Purchases
-            movie={props.movie}
-            title={props.title}
-            affiliateLink={props.affiliateLink}
-            ip_address={props.ip_address}
-          />
-          <div className="replay_text" onTouchStart={() => replayVideo()}>リプレイ</div>
-        </div>
-      </Modal> */}
     </div>
   )
 }
