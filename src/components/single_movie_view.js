@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import useInView from "react-cool-inview"
-import { Modal } from '@material-ui/core'
-import Backdrop from '@material-ui/core/Backdrop';
 import VideoStartIcon from '../images/video_start.svg'
 import favoritesController from '../controller/favorites_controller'
 import viewListsController from '../controller/view_lists_controller'
@@ -100,6 +98,7 @@ const SingleMovieView = (props) => {
       ++tapCount
       setTimeout(() => {
         if (!isPlaying && !!tapCount) {
+          openModalAfterViewing(false);
           videoRef.current && videoRef.current.play()
           setPlaying(true)
         } else if (isPlaying && !!tapCount) {
@@ -139,6 +138,7 @@ const SingleMovieView = (props) => {
     },
     onLeave: ({ observe, unobserve }) => {
       unobserve()
+      openModalAfterViewing();
       chancelPostViewList()
       videoRef.current && videoRef.current.pause()
       videoRef.current.currentTime = 0
@@ -150,23 +150,32 @@ const SingleMovieView = (props) => {
 
   return (
     <div className="wrapper_single_movie_view" id={"movie-url-" + props.movie.id}>
-      <div ref={observe}>
-        {
-          !isPlaying &&
-          <div className="video_start_icon">
-            <img src={VideoStartIcon} alt="" width={48} height={59}/>
-          </div>
-        }
-        <div className="empty_video" id={"video-player-" + props.movie.id} ref={wrapVideoRef} onTouchEnd={toggleTappedProcess}>
+      <div ref={observe}>  
+        <div className={isModalAfterViewing ? "wrapper_video_shadow" : "wrapper_video"} id={"video-player-" + props.movie.id} ref={wrapVideoRef} onTouchEnd={toggleTappedProcess}>
           <VideoComponent
             movie={props.movie}
             videoRef={videoRef}
             onEnded={() => openModalAfterViewing(!isModalAfterViewing)}
           />
+           {
+            !isPlaying &&
+              <div className="video_start_icon">
+                <img src={VideoStartIcon} alt="" width={48} height={59}/>
+              </div>
+            }
         </div>
-      </div>
-      {
-        !isModalAfterViewing &&
+        {
+        isModalAfterViewing ?
+        <div className="after_movie_modal">
+          <Purchases
+            movie={props.movie}
+            title={props.title}
+            affiliateLink={props.affiliateLink}
+            ip_address={props.ip_address}
+          />
+          <div className="replay_text" onTouchStart={() => replayVideo()}>リプレイ</div>
+       </div>
+        :
         <div className="wrapper_purchases_and_chares_btn">
           <Purchases
             movie={props.movie}
@@ -190,7 +199,8 @@ const SingleMovieView = (props) => {
           </div>
         </div>
       }
-      <Modal 
+      </div>
+      {/* <Modal 
         open={isModalAfterViewing} 
         onClose={() => replayVideo()}
         BackdropComponent={Backdrop}
@@ -211,7 +221,7 @@ const SingleMovieView = (props) => {
           />
           <div className="replay_text" onTouchStart={() => replayVideo()}>リプレイ</div>
         </div>
-      </Modal>
+      </Modal> */}
     </div>
   )
 }
