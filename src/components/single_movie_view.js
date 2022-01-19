@@ -138,7 +138,7 @@ const SingleMovieView = (props) => {
     },
     onLeave: ({ observe, unobserve }) => {
       unobserve()
-      openModalAfterViewing();
+      openModalAfterViewing(false);
       chancelPostViewList()
       videoRef.current && videoRef.current.pause()
       videoRef.current.currentTime = 0
