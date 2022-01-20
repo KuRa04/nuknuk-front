@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import useInView from "react-cool-inview"
-import { Modal } from '@material-ui/core'
 import VideoStartIcon from '../images/video_start.svg'
 import favoritesController from '../controller/favorites_controller'
 import viewListsController from '../controller/view_lists_controller'
@@ -42,9 +41,6 @@ const SingleMovieView = (props) => {
       togglePlayVideo()
     }
   }, [isPlaying, props.isSideMenu, togglePlayVideo])
-
-
-
 
   /**
    * @param {*} movie //動画一覧
@@ -98,12 +94,11 @@ const SingleMovieView = (props) => {
    * @param {*} e イベントハンドラ
    */
   const toggleTappedProcess = (e) => {
-    e.preventDefault()
-    // e.stopPropagation()
     if (!tapCount) {
       ++tapCount
       setTimeout(() => {
         if (!isPlaying && !!tapCount) {
+          openModalAfterViewing(false);
           videoRef.current && videoRef.current.play()
           setPlaying(true)
         } else if (isPlaying && !!tapCount) {
@@ -111,13 +106,13 @@ const SingleMovieView = (props) => {
           setPlaying(false)
         }
         tapCount = 0
-      }, 500)
+      }, 350)
     } else {
       postFavorites(e)
       tapCount = 0
     }
   }
-
+  
   useEffect(() => {
     wrapVideoRef.current?.addEventListener("touchstart", toggleTappedProcess, { passive: false })
     return (() => {
@@ -158,6 +153,7 @@ const SingleMovieView = (props) => {
     },
     onLeave: ({ observe, unobserve }) => {
       unobserve()
+      openModalAfterViewing(false);
       chancelPostViewList()
       videoRef.current && videoRef.current.pause()
       videoRef.current.currentTime = 0
@@ -169,24 +165,32 @@ const SingleMovieView = (props) => {
 
   return (
     <div className="wrapper_single_movie_view" id={"movie-url-" + props.movie.id}>
-      <div ref={observe}>
-        {
-          !isPlaying &&
-          <div className="video_start_icon">
-            <img src={VideoStartIcon} alt="" width={48} height={59}/>
-          </div>
-        }
-        <div id={"empty-element-" + props.movie.id} onClick={() => removeMuted()} />
-        <div className="empty_video" id={"video-player-" + props.movie.id} ref={wrapVideoRef} >
+      <div ref={observe}>  
+        <div className={isModalAfterViewing ? "wrapper_video_shadow" : "wrapper_video"} id={"video-player-" + props.movie.id} ref={wrapVideoRef} onTouchEnd={toggleTappedProcess}>
           <VideoComponent
             movie={props.movie}
             videoRef={videoRef}
             onEnded={() => openModalAfterViewing(!isModalAfterViewing)}
           />
+           {
+            !isPlaying &&
+              <div className="video_start_icon">
+                <img src={VideoStartIcon} alt="" width={48} height={59}/>
+              </div>
+            }
         </div>
-      </div>
-      {
-        !isModalAfterViewing &&
+        {
+        isModalAfterViewing ?
+        <div className="after_movie_modal">
+          <Purchases
+            movie={props.movie}
+            title={props.title}
+            affiliateLink={props.affiliateLink}
+            ip_address={props.ip_address}
+          />
+          <div className="replay_text" onTouchStart={() => replayVideo()}>リプレイ</div>
+       </div>
+        :
         <div className="wrapper_purchases_and_chares_btn">
           <Purchases
             movie={props.movie}
@@ -210,17 +214,7 @@ const SingleMovieView = (props) => {
           </div>
         </div>
       }
-      <Modal open={isModalAfterViewing} style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
-        <div className="after_movie_modal">
-          <Purchases
-            movie={props.movie}
-            title={props.title}
-            affiliateLink={props.affiliateLink}
-            ip_address={props.ip_address}
-          />
-          <div className="replay_text" onTouchStart={() => replayVideo()}>リプレイ</div>
-        </div>
-      </Modal>
+      </div>
     </div>
   )
 }
