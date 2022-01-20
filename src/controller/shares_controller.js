@@ -1,11 +1,10 @@
-import axios from 'axios'
-import {dbUrl} from '../constant/db_url'
+import axios from '../constant/axios'
 
 /**
  * @param {*} channelName シェアするチャネル名
  */
 async function postShare(channelName, movieId) {
-  await axios.post(dbUrl + '/shares', {
+  await axios.post('/api/v1/shares', {
     channel: channelName,
     movie_id: movieId,
   }).then((res) => {
