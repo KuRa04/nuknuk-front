@@ -121,7 +121,7 @@ const SingleMovieView = (props) => {
   useEffect(() => {
     wrapVideoRef.current?.addEventListener("touchstart", toggleTappedProcess, { passive: false })
     return (() => {
-      wrapVideoRef.current?.removeEventListener("touchstart", toggleTappedProcess) // この警告の消し方が分からん
+      // wrapVideoRef.current?.removeEventListener("touchstart", toggleTappedProcess) // この警告の消し方が分からん
     })
   })
 
@@ -134,16 +134,24 @@ const SingleMovieView = (props) => {
     setPlaying(true);
   }
 
+  const removeMuted = () => {
+    videoRef.current.volume = 0.25
+    console.log(videoRef.current.volume)
+  }
+
   const { observe } = useInView({
     threshold: 1,
     onEnter: async ({ observe, unobserve }) => {
       unobserve()
       videoRef.current.children[0].src = props.movie.movie_url + '#t=3'
       try {
+        videoRef.current.volume = 0
         videoRef.current.load()
       } catch (error) {
         console.log(error)
       }
+      videoRef.current.play()
+      // videoRef.current.addEventListener('play', clickEmptyMovie, false)
       setPlaying(true)
       afterPostViewList()
       observe()
@@ -168,6 +176,7 @@ const SingleMovieView = (props) => {
             <img src={VideoStartIcon} alt="" width={48} height={59}/>
           </div>
         }
+        <div id={"empty-element-" + props.movie.id} onClick={() => removeMuted()} />
         <div className="empty_video" id={"video-player-" + props.movie.id} ref={wrapVideoRef} >
           <VideoComponent
             movie={props.movie}

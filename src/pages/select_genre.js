@@ -1,9 +1,8 @@
 import React, { useEffect, useState }  from 'react'
 import "../styles/pages/genre.scss";
-import axios from 'axios';
 import CloseIcon from '@material-ui/icons/Close';
 import genresController from '../controller/select_genres_controller';
-import {dbUrl} from '../constant/db_url'
+import axios from '../constant/axios'
 
 /**
  * @param {*} props
@@ -16,7 +15,7 @@ const SelectGenre = (props) => {
 
   useEffect( () => {
     const param = {ip_address: ip_address}
-    axios.get(dbUrl + "/selected_first_genres", {params: param}).then((res) => {
+    axios.get("/api/v1/selected_first_genres", {params: param}).then((res) => {
       const genresObj = JSON.parse(res.data.selected_first_genres)
       setGenres(genresObj)
       const alreadySelected = []

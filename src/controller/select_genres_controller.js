@@ -1,5 +1,4 @@
-import axios from 'axios';
-import {dbUrl} from '../constant/db_url'
+import axios from '../constant/axios'
 
 /**
  * (コントロール + option + D) * 2
@@ -8,7 +7,7 @@ import {dbUrl} from '../constant/db_url'
  */
 async function postSelectedGenres(genres, ip_address) {
   console.log(genres, ip_address)
-  await axios.post(dbUrl + '/visitors_selected_genres', {
+  await axios.post('/api/v1/visitors_selected_genres', {
     select_genres: genres,
     ip_address: ip_address,
   }).then((res) => {
