@@ -86,12 +86,12 @@ const SelectGenre = (props) => {
       </div>
       <div className="wrap_page_title">
         <div className="page_title">こだわり条件</div>
-          <img
-            className="close_icon"
-            src={closeIcon}
-            alt=''
-            onClick={() => closeSelectGenreMenu()}
-          />
+        <img
+          className="close_icon"
+          src={closeIcon}
+          alt=''
+          onClick={() => closeSelectGenreMenu()}
+        />
       </div>
       <div className="sub_text">興味関心は表示内容のカスタマイズに使用されます。</div>
       <div className="genres_group">
