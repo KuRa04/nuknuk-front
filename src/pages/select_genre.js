@@ -47,7 +47,7 @@ const SelectGenre = (props) => {
         setError(true)
         setTimeout(() => {
           setError(false)
-        }, 1000)
+        }, 3000)
         return
       }
       selectGenres.push(genre.name)
@@ -80,7 +80,7 @@ const SelectGenre = (props) => {
         {
           isError && 
           <div className="wrap_error_text">
-            <p className="error_text">こだわり条件を3つ以上選択しています。</p>
+            <p className="error_text">こだわり条件は最大3つまで選択できます。</p>
           </div>
         }
       </div>
