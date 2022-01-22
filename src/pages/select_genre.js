@@ -1,6 +1,6 @@
 import React, { useEffect, useState }  from 'react'
 import "../styles/pages/genre.scss";
-import CloseIcon from '@material-ui/icons/Close';
+import closeIcon from '../images/close_icon.svg'
 import genresController from '../controller/select_genres_controller';
 import axios from '../constant/axios'
 
@@ -11,6 +11,7 @@ import axios from '../constant/axios'
 const SelectGenre = (props) => {
   const [genres, setGenres] = useState([])
   const [selectedGenres, setSelectedGenres] = useState([])
+  const [isError, setError] = useState(false)
   const ip_address = props.ip_address
 
   useEffect( () => {
@@ -41,7 +42,14 @@ const SelectGenre = (props) => {
     const alreadySelected = selectGenres.includes(genre.name)
     if (alreadySelected) {
       selectGenres = selectGenres.filter((name) => !name.match(genre.name))
-    }else {
+    } else {
+      if (selectedGenres.length === 3) {
+        setError(true)
+        setTimeout(() => {
+          setError(false)
+        }, 1000)
+        return
+      }
       selectGenres.push(genre.name)
     }
     setSelectedGenres(selectGenres)
@@ -68,13 +76,23 @@ const SelectGenre = (props) => {
 
   return (
     <div className="wrap_select_genres">
-      <div className="page_title">こだわり条件</div>
-      <CloseIcon
-        className="close_icon"
-        fontSize="large"
-        style={{ color: 'white' }}
-        onClick={() => closeSelectGenreMenu()}
-      />
+      <div className="space_on_title">
+        {
+          isError && 
+          <div className="wrap_error_text">
+            <p className="error_text">こだわり条件を3つ以上選択しています。</p>
+          </div>
+        }
+      </div>
+      <div className="wrap_page_title">
+        <div className="page_title">こだわり条件</div>
+          <img
+            className="close_icon"
+            src={closeIcon}
+            alt=''
+            onClick={() => closeSelectGenreMenu()}
+          />
+      </div>
       <div className="sub_text">興味関心は表示内容のカスタマイズに使用されます。</div>
       <div className="genres_group">
         {genres.map((genre, index) => {

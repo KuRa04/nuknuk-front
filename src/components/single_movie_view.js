@@ -129,10 +129,10 @@ const SingleMovieView = (props) => {
     setPlaying(true);
   }
 
-  const removeMuted = () => {
-    videoRef.current.volume = 0.25
-    console.log(videoRef.current.volume)
-  }
+  // const removeMuted = () => {
+  //   videoRef.current.volume = 0.25
+  //   console.log(videoRef.current.volume)
+  // }
 
   const { observe } = useInView({
     threshold: 1,
@@ -166,7 +166,7 @@ const SingleMovieView = (props) => {
   return (
     <div className="wrapper_single_movie_view" id={"movie-url-" + props.movie.id}>
       <div ref={observe}>  
-        <div className={isModalAfterViewing ? "wrapper_video_shadow" : "wrapper_video"} id={"video-player-" + props.movie.id} ref={wrapVideoRef} onTouchEnd={toggleTappedProcess}>
+        <div className={isModalAfterViewing ? "wrapper_video_shadow" : "wrapper_video"} id={"video-player-" + props.movie.id} ref={wrapVideoRef}>
           <VideoComponent
             movie={props.movie}
             videoRef={videoRef}
