@@ -167,12 +167,12 @@ const SingleMovieView = (props) => {
             videoRef={videoRef}
             onEnded={() => openModalAfterViewing(!isModalAfterViewing)}
           />
-           {
+          {
             !isPlaying &&
-              <div className="video_start_icon">
-                <img src={VideoStartIcon} alt="" width={48} height={59}/>
-              </div>
-            }
+            <div className="video_start_icon">
+              <img src={VideoStartIcon} alt="" width={48} height={59}/>
+            </div>
+          }
         </div>
         {
         isModalAfterViewing ?
@@ -184,7 +184,7 @@ const SingleMovieView = (props) => {
             ip_address={props.ip_address}
           />
           <div className="replay_text" onTouchStart={() => replayVideo()}>リプレイ</div>
-       </div>
+      </div>
         :
         <div className="wrapper_purchases_and_chares_btn">
           <Purchases
