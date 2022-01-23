@@ -4,6 +4,7 @@ const VideoComponent = (props) => {
   return (
     <>
       <video
+        muted
         controls={false}
         playsInline
         width="100%"
