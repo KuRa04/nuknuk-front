@@ -112,7 +112,7 @@ const SingleMovieView = (props) => {
       tapCount = 0
     }
   }
-  
+
   useEffect(() => {
     wrapVideoRef.current?.addEventListener("touchstart", toggleTappedProcess, { passive: false })
     return (() => {
@@ -127,11 +127,6 @@ const SingleMovieView = (props) => {
     openModalAfterViewing(!isModalAfterViewing);
     videoRef.current && videoRef.current.play();
     setPlaying(true);
-  }
-
-  const removeMuted = () => {
-    videoRef.current.volume = 0.25
-    console.log(videoRef.current.volume)
   }
 
   const { observe } = useInView({
@@ -165,7 +160,7 @@ const SingleMovieView = (props) => {
 
   return (
     <div className="wrapper_single_movie_view" id={"movie-url-" + props.movie.id}>
-      <div ref={observe}>  
+      <div ref={observe}>
         <div className={isModalAfterViewing ? "wrapper_video_shadow" : "wrapper_video"} id={"video-player-" + props.movie.id} ref={wrapVideoRef} onTouchEnd={toggleTappedProcess}>
           <VideoComponent
             movie={props.movie}
