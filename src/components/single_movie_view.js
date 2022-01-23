@@ -112,7 +112,7 @@ const SingleMovieView = (props) => {
       tapCount = 0
     }
   }
-  
+
   useEffect(() => {
     wrapVideoRef.current?.addEventListener("touchstart", toggleTappedProcess, { passive: false })
     return (() => {
@@ -128,11 +128,6 @@ const SingleMovieView = (props) => {
     videoRef.current && videoRef.current.play();
     setPlaying(true);
   }
-
-  // const removeMuted = () => {
-  //   videoRef.current.volume = 0.25
-  //   console.log(videoRef.current.volume)
-  // }
 
   const { observe } = useInView({
     threshold: 1,
@@ -165,19 +160,19 @@ const SingleMovieView = (props) => {
 
   return (
     <div className="wrapper_single_movie_view" id={"movie-url-" + props.movie.id}>
-      <div ref={observe}>  
-        <div className={isModalAfterViewing ? "wrapper_video_shadow" : "wrapper_video"} id={"video-player-" + props.movie.id} ref={wrapVideoRef}>
+      <div ref={observe}>
+        <div className={isModalAfterViewing ? "wrapper_video_shadow" : "wrapper_video"} id={"video-player-" + props.movie.id} ref={wrapVideoRef} onTouchEnd={toggleTappedProcess}>
           <VideoComponent
             movie={props.movie}
             videoRef={videoRef}
             onEnded={() => openModalAfterViewing(!isModalAfterViewing)}
           />
-           {
+          {
             !isPlaying &&
-              <div className="video_start_icon">
-                <img src={VideoStartIcon} alt="" width={48} height={59}/>
-              </div>
-            }
+            <div className="video_start_icon">
+              <img src={VideoStartIcon} alt="" width={48} height={59}/>
+            </div>
+          }
         </div>
         {
         isModalAfterViewing ?
@@ -189,7 +184,7 @@ const SingleMovieView = (props) => {
             ip_address={props.ip_address}
           />
           <div className="replay_text" onTouchStart={() => replayVideo()}>リプレイ</div>
-       </div>
+      </div>
         :
         <div className="wrapper_purchases_and_chares_btn">
           <Purchases
