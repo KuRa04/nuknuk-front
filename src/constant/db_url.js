@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-export const dbUrl = process.env.REACT_APP_HEROKU_DB_URL;
-// export const dbUrl = process.env.REACT_APP_LOCAL_DB_URL
-// export const dbUrl = process.env.REACT_APP_PRODUCTION_DB_URL
-=======
 let dbUrl = ""
 if (process.env.REACT_APP_ENVIRONMENT === 'development') {
   dbUrl = process.env.REACT_APP_LOCAL_DB_URL
@@ -13,4 +8,3 @@ if (process.env.REACT_APP_ENVIRONMENT === 'development') {
 }
 console.log(dbUrl)
 export default dbUrl
->>>>>>> develop
