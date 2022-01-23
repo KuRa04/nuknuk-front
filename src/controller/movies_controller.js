@@ -1,7 +1,6 @@
-import axios from 'axios';
-import {dbUrl} from '../constant/db_url'
+import axios from '../constant/axios'
 
-const endpoint = dbUrl + '/movies'
+const endpoint = '/api/v1/movies'
 
 /**
  * @param {*} channelName シェアするチャネル名

@@ -1,9 +1,8 @@
 import React, { useEffect, useState }  from 'react'
 import "../styles/pages/genre.scss";
-import axios from 'axios';
-import CloseIcon from '@material-ui/icons/Close';
+import closeIcon from '../images/close_icon.svg'
 import genresController from '../controller/select_genres_controller';
-import {dbUrl} from '../constant/db_url'
+import axios from '../constant/axios'
 
 /**
  * @param {*} props
@@ -12,11 +11,12 @@ import {dbUrl} from '../constant/db_url'
 const SelectGenre = (props) => {
   const [genres, setGenres] = useState([])
   const [selectedGenres, setSelectedGenres] = useState([])
+  const [isError, setError] = useState(false)
   const ip_address = props.ip_address
 
   useEffect( () => {
     const param = {ip_address: ip_address}
-    axios.get(dbUrl + "/selected_first_genres", {params: param}).then((res) => {
+    axios.get("/api/v1/selected_first_genres", {params: param}).then((res) => {
       const genresObj = JSON.parse(res.data.selected_first_genres)
       setGenres(genresObj)
       const alreadySelected = []
@@ -42,7 +42,14 @@ const SelectGenre = (props) => {
     const alreadySelected = selectGenres.includes(genre.name)
     if (alreadySelected) {
       selectGenres = selectGenres.filter((name) => !name.match(genre.name))
-    }else {
+    } else {
+      if (selectedGenres.length === 3) {
+        setError(true)
+        setTimeout(() => {
+          setError(false)
+        }, 3000)
+        return
+      }
       selectGenres.push(genre.name)
     }
     setSelectedGenres(selectGenres)
@@ -69,13 +76,23 @@ const SelectGenre = (props) => {
 
   return (
     <div className="wrap_select_genres">
-      <div className="page_title">こだわり条件</div>
-      <CloseIcon
-        className="close_icon"
-        fontSize="large"
-        style={{ color: 'white' }}
-        onClick={() => closeSelectGenreMenu()}
-      />
+      <div className="space_on_title">
+        {
+          isError && 
+          <div className="wrap_error_text">
+            <p className="error_text">こだわり条件は最大3つまで選択できます。</p>
+          </div>
+        }
+      </div>
+      <div className="wrap_page_title">
+        <div className="page_title">こだわり条件</div>
+        <img
+          className="close_icon"
+          src={closeIcon}
+          alt=''
+          onClick={() => closeSelectGenreMenu()}
+        />
+      </div>
       <div className="sub_text">興味関心は表示内容のカスタマイズに使用されます。</div>
       <div className="genres_group">
         {genres.map((genre, index) => {

@@ -1,7 +1,6 @@
-import axios from 'axios';
-import {dbUrl} from '../constant/db_url'
+import axios from '../constant/axios'
 
-const endpoint = dbUrl + '/favorites'
+const endpoint = '/api/v1/favorites'
 
 /**
  * @param {*} movieId いいねする動画のID
