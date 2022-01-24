@@ -23,7 +23,6 @@ const SingleMovieView = (props) => {
   const wrapVideoRef = useRef();
 
   const togglePlayVideo = useCallback(() => {
-    console.log("aaa")
     if (isPlaying) {
       // chancelPostViewList() // 一旦コメントアウト
       videoRef.current && videoRef.current.pause()
@@ -113,13 +112,6 @@ const SingleMovieView = (props) => {
     }
   }
 
-  useEffect(() => {
-    wrapVideoRef.current?.addEventListener("touchstart", toggleTappedProcess, { passive: false })
-    return (() => {
-      // wrapVideoRef.current?.removeEventListener("touchstart", toggleTappedProcess) // この警告の消し方が分からん
-    })
-  })
-
   /**
    * リプレイボタンを押したときに動画を再生
    */
@@ -141,7 +133,6 @@ const SingleMovieView = (props) => {
         console.log(error)
       }
       videoRef.current.play()
-      // videoRef.current.addEventListener('play', clickEmptyMovie, false)
       setPlaying(true)
       afterPostViewList()
       observe()
@@ -161,7 +152,12 @@ const SingleMovieView = (props) => {
   return (
     <div className="wrapper_single_movie_view" id={"movie-url-" + props.movie.id}>
       <div ref={observe}>
-        <div className={isModalAfterViewing ? "wrapper_video_shadow" : "wrapper_video"} id={"video-player-" + props.movie.id} ref={wrapVideoRef} onTouchEnd={toggleTappedProcess}>
+        <div
+          className={isModalAfterViewing ? "wrapper_video_shadow" : "wrapper_video"}
+          id={"video-player-" + props.movie.id}
+          ref={wrapVideoRef}
+          onTouchEnd={toggleTappedProcess}
+        >
           <VideoComponent
             movie={props.movie}
             videoRef={videoRef}
