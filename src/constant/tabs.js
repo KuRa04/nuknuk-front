@@ -1,7 +1,7 @@
 export const addingBigAndSmallTabs = [
   "素人",
   "巨乳・美乳",
-  "制服（JK、ナース他）",
+  "制服",
   "人妻・若妻",
   "ハメ撮り",
   "スレンダー",
@@ -17,7 +17,7 @@ export const addingBigAndSmallTabs = [
 export const smallTabs = [
   "素人",
   "巨乳・美乳",
-  "制服（JK、ナース他）",
+  "制服",
   "人妻・若妻",
   "ハメ撮り",
   "スレンダー",
