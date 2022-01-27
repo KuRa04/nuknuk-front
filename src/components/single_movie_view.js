@@ -51,12 +51,12 @@ const SingleMovieView = (props) => {
   }
 
   /**
-   * viewListのpostを5秒後に設定
+   * viewListのpostを5秒後に設定 → サムネ表示の2秒と足し7
    */
   const afterPostViewList = () => {
     setPostViewList(setTimeout(() => {
       postViewList()
-    }, 5000))
+    }, 7000))
   }
 
   /**
@@ -132,19 +132,19 @@ const SingleMovieView = (props) => {
     threshold: 1,
     onEnter: async ({ observe, unobserve }) => {
       unobserve()
+      videoRef.current.children[0].src = props.movie.movie_url + '#t=3'
+      try {
+        videoRef.current.volume = 0
+        videoRef.current.load()
+      } catch (error) {
+        console.log(error)
+      }
       //2秒間サムネ表示のため、2秒遅延させている
       setTimeout(() => {
-        videoRef.current.children[0].src = props.movie.movie_url + '#t=3'
-        try {
-          videoRef.current.volume = 0
-          videoRef.current.load()
-        } catch (error) {
-          console.log(error)
-        }
         videoRef.current.play()
         setPlaying(true)
-        afterPostViewList()  
       }, 2000)
+      afterPostViewList()
       observe()
     },
     onLeave: ({ observe, unobserve }) => {
