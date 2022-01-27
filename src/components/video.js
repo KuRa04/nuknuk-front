@@ -5,7 +5,7 @@ const VideoComponent = (props) => {
     <>
       <video
         muted
-        controls={false}
+        controls={true}
         playsInline
         width="100%"
         height="300"
