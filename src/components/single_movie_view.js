@@ -21,6 +21,8 @@ const SingleMovieView = (props) => {
   // const [isStopVideoByModal, setStopVideoByModal] = useState(false)
   const videoRef = useRef();
   const wrapVideoRef = useRef();
+  const isRequestFavorite = useRef(false)
+
 
   const togglePlayVideo = useCallback(() => {
     if (isPlaying) {
@@ -49,12 +51,12 @@ const SingleMovieView = (props) => {
   }
 
   /**
-   * viewListのpostを5秒後に設定
+   * viewListのpostを5秒後に設定 → サムネ表示の2秒と足し7
    */
   const afterPostViewList = () => {
     setPostViewList(setTimeout(() => {
       postViewList()
-    }, 5000))
+    }, 7000))
   }
 
   /**
@@ -71,6 +73,10 @@ const SingleMovieView = (props) => {
    */
     const postFavorites = async (e) => {
       e.stopPropagation()
+      if (isRequestFavorite.current) {
+        return
+      }
+      isRequestFavorite.current = true
       let newFavorites = null
       if (getMovie.is_favorited) {
         newFavorites = await favoritesController.deleteFavorite(props.movie.id, props.ip_address)
@@ -84,6 +90,7 @@ const SingleMovieView = (props) => {
         favorites_count: newFavorites.favorites_count
       }}
       setMovie(movie)
+      isRequestFavorite.current = false
     }
 
   let tapCount = 0 //TODO useStateで書き換える
@@ -132,8 +139,11 @@ const SingleMovieView = (props) => {
       } catch (error) {
         console.log(error)
       }
-      videoRef.current.play()
-      setPlaying(true)
+      //2秒間サムネ表示のため、2秒遅延させている
+      setTimeout(() => {
+        videoRef.current.play()
+        setPlaying(true)
+      }, 2000)
       afterPostViewList()
       observe()
     },
